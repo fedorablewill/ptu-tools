@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>PTU Pokemon Generator</title>
+
+    <!-- Favicon -->
+    <link href="/img/pokeball-ico.png" rel="icon" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="/vendor/nucleo/css/nucleo.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/3.0.39/css/materialdesignicons.min.css">
+
+    <!-- Argon CSS -->
+    <link type="text/css" href="/css/argon.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            padding-bottom: 102px;
+        }
+
+        .btn-boxpokemon, .btn-boxpokemon img {
+            padding: 0;
+            max-width: 70px;
+            max-height: 70px;
+        }
+    </style>
+</head>
+<body class="bg-danger">
+
+<nav class="navbar navbar-expand-lg fixed-bottom navbar-dark bg-dark">
+    <span id="nav-roll-damage" class="navbar-brand">Your Box:</span>
+    <span class="pull-right">
+        <span class="btn-group dropup" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-boxpokemon rounded-circle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img alt="Pokemon Name" src="https://cdn.bulbagarden.net/upload/1/19/133MS8.png"/>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <span class="dropdown-item">Eevee <small class="text-muted float-right">LVL 4</small></span>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Export to Exodus Spreadsheet</a>
+                <a class="dropdown-item" href="#">Export to Fancy Spreadsheet</a>
+                <a class="dropdown-item" href="#">Export to Roll20</a>
+                <a class="dropdown-item" href="#">Export to JSON File</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-primary" href="#">View</a>
+                <a class="dropdown-item text-danger" href="#">Delete</a>
+            </div>
+        </span>
+    </span>
+</nav>
+
+<div class="container">
+    <h1 class="display-3 text-center">PTU 1.05 Pokemon Generator</h1>
+    <section>
+        <h2>Filters</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="filter-species">Species</label>
+                    <input class="form-control" type="text" id="filter-species" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="filter-species">Type</label>
+                    <input class="form-control" type="text" id="filter-type" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="filter-species">Habitat</label>
+                    <input class="form-control" type="text" id="filter-habitat" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="filter-species">Region of Origin</label>
+                    <input class="form-control" type="text" id="filter-region" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="filter-species">Evolution Stage</label>
+                    <input class="form-control" type="text" id="filter-stage" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="togglebutton">
+                    <label>
+                        <input type="checkbox" id="genmon-legend" checked> Include Legendaries
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2>Stats & Settings</h2>
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="genmon-lvlmin">Min Level</label>
+                    <input class="form-control" type="number" id="genmon-lvlmin" min="1" max="100" value="1" required />
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <label class="control-label" for="genmon-lvl-slider">Level Range</label>
+                <div class="slider slider-danger" id="genmon-lvl-slider"></div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="genmon-lvlmax">Max Level</label>
+                    <input class="form-control" type="number" id="genmon-lvlmax" min="1" max="100" value="100" required />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="genmon-tmmin">Min Leanred TMs</label>
+                    <input class="form-control" type="number" id="genmon-tmmin" min="0" max="9" value="0" required />
+                    <p class="help-block">Includes TMs, HMs, and Tutor Moves</p>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="genmon-tmmax">Max Learned TMs</label>
+                    <input class="form-control" type="number" id="genmon-tmmax" min="0" max="9" value="0" required />
+                    <p class="help-block">Includes TMs, HMs, and Tutor Moves</p>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="genmon-emmin">Min Egg Moves</label>
+                    <input class="form-control" type="number" id="genmon-emmin" min="0" max="9" value="0" required />
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="genmon-emmax">Max Egg Moves</label>
+                    <input class="form-control" type="number" id="genmon-emmax" min="0" max="9" value="0" required />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="genmon-shiny-odds">Nature</label>
+                    <select class="form-control" id="genmon-nature">
+                        <option value="">Any</option>
+                        <option value="Cuddly">Cuddly</option>
+                        <option value="Distracted">Distracted</option>
+                        <option value="Proud">Proud</option>
+                        <option value="Decisive">Decisive</option>
+                        <option value="Patient">Patient</option>
+                        <option value="Desperate">Desperate</option>
+                        <option value="Lonely">Lonely</option>
+                        <option value="Adamant">Adamant</option>
+                        <option value="Naughty">Naughty</option>
+                        <option value="Brave">Brave</option>
+                        <option value="Stark">Stark</option>
+                        <option value="Bold">Bold</option>
+                        <option value="Impish">Impish</option>
+                        <option value="Lax">Lax</option>
+                        <option value="Relaxed">Relaxed</option>
+                        <option value="Curious">Curious</option>
+                        <option value="Modest">Modest</option>
+                        <option value="Mild">Mild</option>
+                        <option value="Rash">Rash</option>
+                        <option value="Quiet">Quiet</option>
+                        <option value="Dreamy">Dreamy</option>
+                        <option value="Calm">Calm</option>
+                        <option value="Gentle">Gentle</option>
+                        <option value="Careful">Careful</option>
+                        <option value="Sassy">Sassy</option>
+                        <option value="Skittish">Skittish</option>
+                        <option value="Timid">Timid</option>
+                        <option value="Hasty">Hasty</option>
+                        <option value="Jolly">Jolly</option>
+                        <option value="Naive">Naive</option>
+                        <option value="Composed">Composed</option>
+                        <option value="Hardy">Hardy</option>
+                        <option value="Docile">Docile</option>
+                        <option value="Bashful">Bashful</option>
+                        <option value="Quirky">Quirky</option>
+                        <option value="Serious">Serious</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="genmon-shiny-odds">Shiny Odds (%)</label>
+                    <input class="form-control" type="number" id="genmon-shiny-odds" min="0" max="100" value="0.01220703125" required />
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Core -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+<script>
+    //Remove JQuery UI conflicts with Bootstrap
+    $.widget.bridge('uibutton', $.ui.button);
+    $.widget.bridge('uitooltip', $.ui.tooltip);
+</script>
+<script src="/vendor/popper/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/nouislider/js/nouislider.min.js"></script>
+
+<!-- Theme JS -->
+<script src="/js/argon.min.js"></script>
+</body>
+</html>
