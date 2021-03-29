@@ -9,7 +9,21 @@ internal class GeneratorServiceTest {
     @Test
     fun generatePokemon() {
         val service = GeneratorService()
-        val pokemon = service.generatePokemon(PokedexEntry(), 1, 100)
+        val dexEntry = PokedexEntry("",
+            baseStats = mapOf(
+                "hp" to 10,
+                "atk" to 5,
+                "def" to 5,
+                "spatk" to 5,
+                "spdef" to 5,
+                "spd" to 5
+            ),
+            basicAbilities = listOf(""),
+            advancedAbilities = listOf(""),
+            highAbilities = listOf(""),
+            levelUpMoves = mapOf("" to 1)
+        )
+        val pokemon = service.generatePokemon(dexEntry, 1, 100)
 
         assertNotNull(pokemon)
     }

@@ -33,6 +33,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
         </dependency>
@@ -81,6 +85,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>2.4.4</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -108,6 +117,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>appengine-maven-plugin</artifactId>
+                <version>2.2.0</version>
+                <configuration>
+                    <deploy.projectId>GCLOUD_CONFIG</deploy.projectId>
+                    <deploy.version>GCLOUD_CONFIG</deploy.version>
+                    <deploy.promote>true</deploy.promote>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
