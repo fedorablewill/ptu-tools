@@ -3,8 +3,12 @@ package com.willstep.ptutools.dataaccess.dto
 import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
+import java.util.*
+import kotlin.collections.ArrayList
 
 data class Pokemon(
+    val pokemonDocumentId: String = UUID.randomUUID().toString(),
+
     var pokedexEntry: PokedexEntry,
 
     var name: String? = pokedexEntry.species,

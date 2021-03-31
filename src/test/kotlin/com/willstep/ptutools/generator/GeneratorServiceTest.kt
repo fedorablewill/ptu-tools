@@ -30,7 +30,7 @@ internal class GeneratorServiceTest {
 
     @Test
     fun randomizeStats_usesBaseStatRelationsRule() {
-        val pokemon = Pokemon(PokedexEntry())
+        val pokemon = Pokemon(pokedexEntry = PokedexEntry())
 
 //        pokemon.pokedexEntry.baseStats["hp"] =
     }

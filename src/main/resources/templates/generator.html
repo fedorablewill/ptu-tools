@@ -17,8 +17,9 @@
     <link href="/vendor/nucleo/css/nucleo.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/3.0.39/css/materialdesignicons.min.css">
 
-    <!-- Argon CSS -->
+    <!-- Libraries CSS -->
     <link type="text/css" href="/css/argon.min.css" rel="stylesheet">
+    <link type="text/css" href="/vendor/tagcomplete/css/tagcomplete.min.css" rel="stylesheet">
 
     <style>
         body {
@@ -30,11 +31,21 @@
             max-width: 70px;
             max-height: 70px;
         }
+
+        .autocomplete {
+            position: absolute !important;
+            min-width: 70% !important;
+            border-top: solid 1px #b0bec5 !important;
+        }
+
+        #genmon-submit {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body class="bg-danger">
 
-<nav class="navbar navbar-expand-lg fixed-bottom navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg fixed-bottom navbar-dark bg-dark" style="display: none">
     <span id="nav-roll-damage" class="navbar-brand">Your Box:</span>
     <span class="pull-right">
         <span class="btn-group dropup" role="group">
@@ -44,10 +55,10 @@
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <span class="dropdown-item">Eevee <small class="text-muted float-right">LVL 4</small></span>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Export to Exodus Spreadsheet</a>
-                <a class="dropdown-item" href="#">Export to Fancy Spreadsheet</a>
-                <a class="dropdown-item" href="#">Export to Roll20</a>
-                <a class="dropdown-item" href="#">Export to JSON File</a>
+                <a class="dropdown-item" href="#" onclick="alert('Coming Soon')">Export to Exodus Spreadsheet</a>
+                <a class="dropdown-item" href="#" onclick="alert('Coming Soon')">Export to Fancy Spreadsheet</a>
+                <a class="dropdown-item" href="#" onclick="alert('Coming Soon')">Export to Roll20</a>
+                <a class="dropdown-item" href="#" onclick="alert('Coming Soon')">Export to JSON File</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item text-primary" href="#">View</a>
                 <a class="dropdown-item text-danger" href="#">Delete</a>
@@ -64,31 +75,31 @@
             <div class="col-md-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Species</label>
-                    <input class="form-control" type="text" id="filter-species" />
+                    <input class="form-control tags_input" type="text" id="filter-species" data-filter="pokedexEntryDocumentId" data-filter-method="EQUALS" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Type</label>
-                    <input class="form-control" type="text" id="filter-type" />
+                    <input class="form-control tags_input" type="text" id="filter-type" data-filter="types" data-filter-method="ARRAY_CONTAINS" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Habitat</label>
-                    <input class="form-control" type="text" id="filter-habitat" />
+                    <input class="form-control tags_input" type="text" id="filter-habitat" data-filter="habitats" data-filter-method="ARRAY_CONTAINS" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Region of Origin</label>
-                    <input class="form-control" type="text" id="filter-region" />
+                    <input class="form-control tags_input" type="text" id="filter-region" data-filter="regionOfOrigin" data-filter-method="EQUALS" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Evolution Stage</label>
-                    <input class="form-control" type="text" id="filter-stage" />
+                    <input class="form-control tags_input" type="text" id="filter-stage" data-filter="evolutionStage" data-filter-method="EQUALS" />
                 </div>
             </div>
             <div class="col-md-6">
@@ -202,6 +213,7 @@
                 </div>
             </div>
         </div>
+        <button class="btn btn-large btn-primary" id="genmon-submit">GENERATE</button>
     </section>
 </div>
 
@@ -218,8 +230,142 @@
 <script src="/vendor/popper/popper.min.js"></script>
 <script src="/vendor/bootstrap/bootstrap.min.js"></script>
 <script src="/vendor/nouislider/js/nouislider.min.js"></script>
+<script src="/vendor/tagcomplete/js/tagcomplete.min.js"></script>
 
 <!-- Theme JS -->
 <script src="/js/argon.min.js"></script>
+
+<!-- Custom JS -->
+<script src="/js/script.js"></script>
+
+<script>
+    //
+    // Initialize Components
+    //
+
+    // Slider
+    let sliderElem = document.getElementById('genmon-lvl-slider');
+
+    noUiSlider.create(sliderElem, {
+        start: [1, 100],
+        step: 1,
+        connect: true,
+        range: {
+            'min': 1,
+            'max': 100
+        }
+    })
+
+    // Autocomplete
+
+    $("#filter-type").tagComplete({
+        autocomplete: {
+            data: TYPES
+        },
+        freeInput: false,
+        freeEdit: true
+    })
+
+    $("#filter-species").tagComplete({
+        autocomplete: {
+            ajaxOpts: {
+                url: "/speciesOptions",
+                method:'GET',
+                dataType:'json',
+                data: {}
+            }
+        },
+        freeInput: false,
+        freeEdit: true
+    })
+
+    $("#filter-habitat").tagComplete({
+        autocomplete: {
+            data: HABITATS
+        },
+        freeInput: false,
+        freeEdit: false
+    })
+
+    $("#filter-region").tagComplete({
+        autocomplete: {
+            data: REGIONS
+        },
+        freeInput: false,
+        freeEdit: false
+    })
+
+    $("#filter-stage").tagComplete({
+        autocomplete: {
+            data: ["1", "2", "3"]
+        },
+        freeInput: false,
+        freeEdit: false
+    })
+
+
+    //
+    // Event Handlers
+    //
+
+    // Slider handlers
+    sliderElem.noUiSlider.on('update', function (values, handle) {
+
+        var value = values[handle];
+
+        if (handle) {
+            $('#genmon-lvlmax').val(Math.round(value));
+        } else {
+            $('#genmon-lvlmin').val(Math.round(value));
+        }
+    })
+
+    $('#genmon-lvlmin').change(function() {
+        sliderElem.noUiSlider.set([$(this).val(), null])
+    })
+
+    $('#genmon-lvlmax').change(function() {
+        sliderElem.noUiSlider.set([null, $(this).val()])
+    })
+
+    // Submit and send AJAX request
+    $("#genmon-submit").click(function() {
+        var requestBody = {
+            minLevel: $("#genmon-lvlmin").val(),
+            maxLevel: $("#genmon-lvlmax").val(),
+            params: []
+        }
+
+
+        $("input[data-filter]").each(function (i) {
+            let elem = $(this)
+            if (elem.val()) {
+                requestBody["params"].push({
+                    field: elem.attr("data-filter"),
+                    method: elem.val().includes(",") ? elem.attr("data-filter-method") + "_LIST" : elem.attr("data-filter-method"),
+                    value: elem.val().includes(",") ? elem.val().split(",") : elem.val()
+                })
+            }
+        })
+
+        if (!$("#genmon-legend").is(':checked')) {
+            requestBody["params"].push({
+                field: "legendary",
+                method: "EQUALS",
+                value: false
+            })
+        }
+
+        $.ajax("/generatePokemon", {
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(requestBody)
+        }).done(function(response) {
+            window.alert(JSON.stringify(response))
+        }).fail(function(jqxhr, textStatus, errorThrown)  {
+            alert("Error: " + textStatus + " : " + errorThrown)
+        })
+    })
+</script>
 </body>
 </html>

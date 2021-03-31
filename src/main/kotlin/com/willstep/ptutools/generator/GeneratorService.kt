@@ -18,7 +18,7 @@ class GeneratorService {
             level = level,
             exp = EXPERIENCE_CHART[level-1],
             moves = randomizeMoves(pokedexEntry, level, 6),
-            gender = if (pokedexEntry.genderless) "No Gender" else if (Random.nextDouble(100.0) <= pokedexEntry.malePercent ?: 0) "Male" else "Female"
+            gender = if (pokedexEntry.genderless) "No Gender" else if (Random.nextDouble(100.0) <= pokedexEntry.malePercent ?: 0.0) "Male" else "Female"
         )
 
         randomizeNature(pokemon)

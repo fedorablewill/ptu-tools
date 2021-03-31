@@ -54,8 +54,8 @@ class UploadDataTool {
                     form = "Galarian"
                 }
                 species.contains("(") -> {
-                    form = species.substring(species.indexOf("(") + 1, species.lastIndexOf(")") + 1)
-                    species = species.removeRange(species.indexOf(" (") - 1, species.length + 1)
+                    form = species.substring(species.indexOf("(") + 1, species.lastIndexOf(")"))
+                    species = species.removeRange(species.indexOf(" ("), species.length)
                 }
             }
 
@@ -82,12 +82,12 @@ class UploadDataTool {
 
             val capabilities = HashMap<String, Int>()
             for (capability in entry["capabilities"] as List<String>) {
-                if (capability.matches(Regex("\\d$"))) {
+                if (capability.matches(Regex(".* \\d$"))) {
                     val splitIndex = capability.lastIndexOf(' ')
                     val name = capability.substring(0, splitIndex)
-                    val value = capability.substring(0, splitIndex)
+                    val value = capability.substring(splitIndex + 1, capability.length)
 
-                    if ("Jump" == name) {
+                    if ("Jump" == name && value.contains('/')) {
                         val jumps = value.split('/')
                         capabilities["High Jump"] = jumps[0].toInt()
                         capabilities["Long Jump"] = jumps[1].toInt()
@@ -99,11 +99,11 @@ class UploadDataTool {
                 }
             }
 
-            var malePercent = 0
-            var femalePercent = 0
-            if ((entry["gender"] as String).matches(Regex("\\d+% M \\/ \\d+% F"))) {
-                malePercent = (entry["gender"] as String).substring(0, (entry["gender"] as String).indexOf('%')).toInt()
-                femalePercent = (entry["gender"] as String).substring((entry["gender"] as String).indexOf(" / ") + 3, (entry["gender"] as String).lastIndexOf('%')).toInt()
+            var malePercent = 0.0
+            var femalePercent = 0.0
+            if ((entry["gender"] as String).matches(Regex("[\\d.]+% M \\/ [\\d.]+% F"))) {
+                malePercent = (entry["gender"] as String).substring(0, (entry["gender"] as String).indexOf('%')).toDouble()
+                femalePercent = (entry["gender"] as String).substring((entry["gender"] as String).indexOf(" / ") + 3, (entry["gender"] as String).lastIndexOf('%')).toDouble()
             }
 
             val moveList = HashMap<String, Int>()
@@ -174,7 +174,7 @@ class UploadDataTool {
                 highAbilities = entry["highAbilities"] as List<String>,
                 skills = skillList,
                 evolutionFamilyDocumentId = null,
-                evolitionStage = entry["stage"] as Int,
+                evolutionStage = entry["stage"] as Int,
                 megaEvolution = mega,
             ))
 
