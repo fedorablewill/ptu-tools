@@ -9,8 +9,9 @@ import java.util.*
 import kotlin.random.Random
 
 
-class GeneratorService {
-    val firestoreService = FirestoreService()
+class GeneratorService(
+    val firestoreService: FirestoreService = FirestoreService()
+) {
 
     fun generatePokemon(pokedexEntry: PokedexEntry, minLevel: Int, maxLevel: Int): Pokemon {
         val level = Random.nextInt(minLevel, maxLevel + 1)
