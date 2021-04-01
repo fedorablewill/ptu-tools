@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="pokemon" type="com.willstep.ptutools.dataaccess.dto.Pokemon"*/-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>PTU Pokemon Generator</title>
+
+    <!-- Favicon -->
+    <link href="/img/pokeball-ico.png" rel="icon" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="/vendor/nucleo/css/nucleo.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/3.0.39/css/materialdesignicons.min.css">
+
+    <!-- Libraries CSS -->
+    <link type="text/css" href="/css/argon.min.css" rel="stylesheet">
+    <link type="text/css" href="/vendor/tagcomplete/css/tagcomplete.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #434343;
+            color: white;
+            padding-bottom: 2rem;
+        }
+
+        h2 {
+            color: #e9ecef;
+        }
+
+        hr {
+            border-top: .0625rem solid rgba(255, 255, 255, 0.1);
+        }
+
+        .char-section-title hr {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .navbar {
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            background: none;
+            color: #cad1d7;
+        }
+
+        .form-control:disabled, .form-control[readonly] {
+            opacity: 1;
+            background: none;
+            border-color: rgba(50,151,211,.25);
+        }
+
+        .focused .form-control {
+            border-color: #cad1d7;
+        }
+
+        .form-group {
+            position: relative;
+            margin-top: 0.5rem;
+        }
+
+        .form-inline.form-group {
+            margin: 0;
+        }
+
+        .form-skill-die {
+            width: 2.5rem;
+            display: inline-block;
+        }
+
+        .form-skill-bonus {
+            width: 3rem;
+            display: inline-block;
+        }
+
+        .custom-checkbox label {
+            padding-bottom: 50px;
+            z-index: 50;
+            background: none;
+        }
+
+        .custom-checkbox .custom-control-label {
+            margin-bottom: 0;
+            position: relative;
+            left: 40px;
+            top: 0.75rem;
+        }
+
+        .control-label {
+            position: absolute;
+            text-transform: uppercase;
+            font-size: .7rem;
+            background-color: #434343;
+            left: 12px;
+            top: -0.5rem;
+            padding: 0 4px;
+            margin-bottom: 0;
+        }
+
+        .navbar .control-label {
+            background-color: #f5365c;
+        }
+
+        .control-action {
+            border: none;
+            position: absolute;
+            font-size: .7rem;
+            background: #434343;
+            right: 12px;
+            top: -0.5rem;
+            padding: 0 4px;
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+        .control-action img {
+            height: 1rem;
+        }
+
+        .btn-form {
+            width: inherit;
+        }
+
+        .char-picture {
+            background: white;
+            position: absolute;
+            height: 85px;
+            left: 0;
+            width: 85px;
+            padding: 1rem;
+        }
+
+        .char-picture img {
+            width: 100%;
+            height: auto;
+        }
+
+        .navbar {
+            padding-left: 110px;
+        }
+
+        .form-table {
+            border: 1px solid #cad1d7;
+            border-radius: .25rem;
+        }
+
+        .form-table td:not(.form-group), .form-table th {
+            padding: 0.5rem;
+        }
+
+        .form-table td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .row-slim {
+            margin-right: -5px;
+            margin-left: -5px;
+        }
+
+        .row-slim>div {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .border-none {
+            border-color: transparent !important;
+        }
+    </style>
+</head>
+<body>
+
+<form class="container">
+    <div class="char char-pokemon">
+        <nav class="navbar navbar-expand-lg navbar-light bg-danger">
+            <div class="char-picture navbar-brand">
+                <img src="/img/pokemon/001.png" />
+            </div>
+            <div class="form-inline form-group label-floating">
+                <label class="control-label" for="char-name">Name</label>
+                <input class="form-control" type="text" id="char-name" th:value="${pokemon.name}" />
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#geninfo">General Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#health">Health</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#stats">Stats</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#capabilities">Capabilities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#moves">Moves</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#abilities">Abilities</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="row row-slim">
+            <div class="form-group label-floating col-md-3 col-xs-12">
+                <label class="control-label" for="char-species">Species</label>
+                <input class="form-control" type="text" id="char-species" />
+            </div>
+            <div class="form-group label-floating col-md-3 col-xs-12">
+                <label class="control-label" for="char-form">Form</label>
+                <input class="form-control" type="text" id="char-form" />
+            </div>
+            <div class="form-group label-floating col-md-2 ml-md-5 col-sm-9">
+                <label class="control-label" for="char-level">Level</label>
+                <input class="form-control" type="number" id="char-level" />
+            </div>
+            <div class="form-group label-floating col-md-1 col-sm-3">
+                <label class="control-label" for="char-exp">EXP</label>
+                <input class="form-control" type="number" id="char-exp" />
+            </div>
+        </div>
+        <div class="row">
+            <section id="geninfo" class="col-xs-12 col-md-6">
+                <div class="char-section-title">
+                    <h2>General Info</h2>
+                    <hr/>
+                </div>
+                <div class="row row-slim">
+                    <div class="form-group label-floating col-sm-4">
+                        <label class="control-label" for="char-type1">Type 1</label>
+                        <input class="form-control" type="text" id="char-type1" />
+                    </div>
+                    <div class="form-group label-floating col-sm-4">
+                        <label class="control-label" for="char-type2">Type 2</label>
+                        <input class="form-control" type="text" id="char-type2" />
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <button class="btn btn-outline-danger btn-form">Effectivity</button>
+                    </div>
+                </div>
+                <div class="row row-slim">
+                    <div class="form-group label-floating col-md-3 col-xs-6">
+                        <label class="control-label" for="char-gender">Gender</label>
+                        <input class="form-control" type="text" id="char-gender" />
+                    </div>
+                    <div class="form-group label-floating col-md-3 col-xs-6">
+                        <label class="control-label" for="char-nature">Nature</label>
+                        <input class="form-control" type="text" id="char-nature" />
+                    </div>
+                    <div class="form-group label-floating col-md-3 col-xs-6">
+                        <label class="control-label" for="char-size">Size</label>
+                        <input class="form-control" type="text" id="char-size" />
+                    </div>
+                    <div class="form-group label-floating col-md-3 col-xs-6">
+                        <label class="control-label" for="char-weight">Weight</label>
+                        <input class="form-control" type="text" id="char-weight" />
+                    </div>
+                </div>
+                <div class="row row-slim">
+                    <div class="form-group label-floating col-sm-6">
+                        <label class="control-label" for="char-egg-group">Egg Group</label>
+                        <input class="form-control" type="text" id="char-egg-group" />
+                    </div>
+                    <div class="form-group label-floating col-md-3 col-xs-6">
+                        <label class="control-label" for="char-nature-likes">Likes</label>
+                        <input class="form-control" type="text" id="char-nature-likes" disabled />
+                    </div>
+                    <div class="form-group label-floating col-md-3 col-xs-6">
+                        <label class="control-label" for="char-nature-dislikes">Dislikes</label>
+                        <input class="form-control" type="text" id="char-nature-dislikes" disabled />
+                    </div>
+                </div>
+                <div class="row row-slim">
+                    <div class="form-group label-floating col-sm-6">
+                        <label class="control-label" for="char-capture-rate">Capture Rate</label>
+                        <input class="form-control" type="number" id="char-capture-rate" disabled />
+                    </div>
+                    <div class="form-group label-floating custom-checkbox col-sm-3">
+                        <label class="control-label" for="char-legendary">Is Legendary?</label>
+                        <input class="form-control custom-control-input" type="checkbox" id="char-legendary" />
+                        <span class="custom-control-label"></span>
+                    </div>
+                    <div class="form-group label-floating custom-checkbox col-sm-3">
+                        <label class="control-label" for="char-shiny">Is Shiny?</label>
+                        <input class="form-control custom-control-input" type="checkbox" id="char-shiny" />
+                        <span class="custom-control-label"></span>
+                    </div>
+                </div>
+            </section>
+            <section id="health" class="col-xs-12 col-md-6">
+                <div class="char-section-title">
+                    <h2>Health</h2>
+                    <hr/>
+                </div>
+                <div class="row row-slim">
+                    <div class="form-group label-floating col-md-4 col-xs-6">
+                        <label class="control-label" for="char-hp-current">Current</label>
+                        <button class="btn control-action">
+                            <img src="/img/icons/octagram-outline.png">
+                        </button>
+                        <input class="form-control" type="number" id="char-hp-current" />
+                    </div>
+                    <div class="form-group label-floating col-md-2 col-xs-3">
+                        <label class="control-label" for="char-hp-max-inj">Inj. Max</label>
+                        <input class="form-control" type="number" id="char-hp-max-inj" disabled />
+                    </div>
+                    <div class="form-group label-floating col-md-2 col-xs-3">
+                        <label class="control-label" for="char-hp-max">Max</label>
+                        <input class="form-control" type="number" id="char-hp-max" disabled />
+                    </div>
+                    <div class="form-group label-floating col-md-2 col-xs-3">
+                        <label class="control-label" for="char-dr">DR</label>
+                        <input class="form-control" type="number" id="char-dr" />
+                    </div>
+                    <div class="form-group label-floating col-md-2 col-xs-3">
+                        <label class="control-label" for="char-hp-temp">Temp</label>
+                        <input class="form-control" type="number" id="char-hp-temp" />
+                    </div>
+                </div>
+                <div class="row row-slim">
+                    <div class="form-group label-floating col-md-4 col-xs-6">
+                        <label class="control-label" for="char-injuries">Injuries</label>
+                        <input class="form-control" type="number" id="char-injuries" />
+                    </div>
+                    <div class="form-group label-floating col-md-2 col-xs-3">
+                        <label class="control-label" for="char-hp-max-half">1/2</label>
+                        <input class="form-control" type="number" id="char-hp-max-half" disabled />
+                    </div>
+                    <div class="form-group label-floating col-md-2 col-xs-3">
+                        <label class="control-label" for="char-hp-max-third">1/3</label>
+                        <input class="form-control" type="number" id="char-hp-max-third" disabled />
+                    </div>
+                    <div class="form-group label-floating col-md-2 col-xs-3">
+                        <label class="control-label" for="char-max-quarter">1/4</label>
+                        <input class="form-control" type="number" id="char-max-quarter" disabled />
+                    </div>
+                    <div class="form-group label-floating col-md-2 col-xs-3">
+                        <label class="control-label" for="char-hp-tick">Tick</label>
+                        <input class="form-control" type="number" id="char-hp-tick" disabled />
+                    </div>
+                </div>
+                <div class="row row-slim">
+                    <div class="form-group label-floating col-sm-12">
+                        <label class="control-label" for="char-afflict">Afflictions</label>
+                        <input class="form-control" type="text" id="char-afflict" />
+                    </div>
+                </div>
+                <div class="row row-slim">
+                    <div class="form-group label-floating col-sm-12">
+                        <label class="control-label" for="char-buff">Buffs</label>
+                        <input class="form-control" type="text" id="char-buff" />
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="row">
+            <section id="stats" class="col-xs-12 col-md-6">
+                <div class="char-section-title">
+                    <h2>Stats</h2>
+                    <hr/>
+                </div>
+                <div class="form-table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Stat</th>
+                            <th>Base</th>
+                            <th>Bonus</th>
+                            <th>Lvl. Up</th>
+                            <th>CS</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>HP</td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-hp-base" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-hp-bonus" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-hp-lvlup" />
+                            </td>
+                            <td class="form-group"></td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-hp-total" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Attack</td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-atk-base" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-atk-bonus" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-atk-lvlup" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-atk-cs" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-atk-total" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Defense</td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-def-base" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-def-bonus" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-def-lvlup" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-def-cs" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-def-total" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sp. Atk.</td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-satk-base" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-satk-bonus" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-satk-lvlup" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-satk-cs" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-satk-total" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sp. Def.</td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-sdef-base" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-sdef-bonus" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-sdef-lvlup" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-sdef-cs" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-sdef-total" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Speed</td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-spd-base" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-spd-bonus" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-spd-lvlup" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-spd-cs" />
+                            </td>
+                            <td class="form-group">
+                                <input class="form-control border-none" type="number" id="char-stat-spd-total" />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row row-slim mt-3">
+                    <div class="col-sm-4"><label for="char-evd-physical-total"><strong>Physical Evasion:</strong></label></div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm" type="number" id="char-evd-physical-base" alt="Base" value="3" disabled />
+                    </div>
+                    <div class="col-sm-1 text-center"> + </div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm" type="number" id="char-evd-physical-add" alt="Add" value="0" />
+                    </div>
+                    <div class="col-sm-1 text-center"> = </div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm" type="number" id="char-evd-physical-total" alt="Total" value="3" disabled />
+                    </div>
+                </div>
+                <div class="row row-slim">
+                    <div class="col-sm-4"><label for="char-evd-special-total"><strong>Special Evasion:</strong></label></div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm" type="number" id="char-evd-special-base" alt="Base" value="3" disabled />
+                    </div>
+                    <div class="col-sm-1 text-center"> + </div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm" type="number" id="char-evd-special-add" alt="Add" value="0" />
+                    </div>
+                    <div class="col-sm-1 text-center"> = </div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm" type="number" id="char-evd-special-total" alt="Total" value="3" disabled />
+                    </div>
+                </div>
+                <div class="row row-slim">
+                    <div class="col-sm-4"><label for="char-evd-speed-total"><strong>Speed Evasion:</strong></label></div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm" type="number" id="char-evd-speed-base" alt="Base" value="3" disabled />
+                    </div>
+                    <div class="col-sm-1 text-center"> + </div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm" type="number" id="char-evd-speed-add" alt="Add" value="0" />
+                    </div>
+                    <div class="col-sm-1 text-center"> = </div>
+                    <div class="col-sm-2">
+                        <input class="form-control form-control-sm" type="number" id="char-evd-speed-total" alt="Total" value="3" disabled />
+                    </div>
+                </div>
+            </section>
+            <div class="col-xs-12 col-md-6">
+                <section id="capabilities">
+                    <div class="char-section-title">
+                        <h2>Capabilities</h2>
+                        <hr/>
+                    </div>
+                    <div class="row row-slim">
+                        <div class="col-sm-4"><label for="char-capble-overland"><strong>Overland:</strong></label></div>
+                        <div class="col-sm-2">
+                            <input class="form-control form-control-sm" type="number" id="char-capble-overland" value="6" />
+                        </div>
+                        <div class="col-sm-4"><label for="char-capble-burrow"><strong>Burrow:</strong></label></div>
+                        <div class="col-sm-2">
+                            <input class="form-control form-control-sm" type="number" id="char-capble-burrow" value="6" />
+                        </div>
+                        <div class="col-sm-4"><label for="char-capble-swim"><strong>Swim:</strong></label></div>
+                        <div class="col-sm-2">
+                            <input class="form-control form-control-sm" type="number" id="char-capble-swim" value="6" />
+                        </div>
+                        <div class="col-sm-4"><label for="char-capble-high"><strong>High Jump:</strong></label></div>
+                        <div class="col-sm-2">
+                            <input class="form-control form-control-sm" type="number" id="char-capble-high" value="6" />
+                        </div>
+                        <div class="col-sm-4"><label for="char-capble-sky"><strong>Sky:</strong></label></div>
+                        <div class="col-sm-2">
+                            <input class="form-control form-control-sm" type="number" id="char-capble-sky" value="6" />
+                        </div>
+                        <div class="col-sm-4"><label for="char-capble-long"><strong>Long Jump:</strong></label></div>
+                        <div class="col-sm-2">
+                            <input class="form-control form-control-sm" type="number" id="char-capble-long" value="6" />
+                        </div>
+                        <div class="col-sm-4"><label for="char-capble-levitate"><strong>Levitate:</strong></label></div>
+                        <div class="col-sm-2">
+                            <input class="form-control form-control-sm" type="number" id="char-capble-levitate" value="6" />
+                        </div>
+                        <div class="col-sm-4"><label for="char-capble-power"><strong>Power:</strong></label></div>
+                        <div class="col-sm-2">
+                            <input class="form-control form-control-sm" type="number" id="char-capble-power" value="6" />
+                        </div>
+                    </div>
+                    <div class="row row-slim">
+                        <div class="form-group label-floating col-sm-12">
+                            <label class="control-label" for="char-capble-other">Other Capabilities</label>
+                            <input class="form-control" type="text" id="char-capble-other" />
+                        </div>
+                    </div>
+                </section>
+                <section id="skills">
+                    <div class="char-section-title">
+                        <h2>Skills</h2>
+                        <hr/>
+                    </div>
+                    <div class="row row-slim">
+                        <div class="col-md-6">
+                            <div class="form-table">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">Body Skills</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Acrobatics</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-acro-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-acro-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Athletics</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-athl-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-athl-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Combat</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-comb-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-comb-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Intimidate</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-intim-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-intim-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stealth</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-stealth-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-stealth-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Survival</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-surv-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-surv-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-table">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">Mind Skills</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>General Ed</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-gened-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-gened-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Med. Ed</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-meded-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-meded-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Occult Ed</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-occed-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-occed-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Poke. Ed</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-poked-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-poked-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tech Ed</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-teched-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-teched-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Perception</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-perc-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-perc-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-md-3">
+                            <div class="form-table">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">Spirit Skills</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Charm</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-charm-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-charm-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Command</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-command-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-command-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Focus</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-focus-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-focus-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Intuition</td>
+                                        <td>
+                                            <input class="form-control form-control-sm form-skill-die" type="number"
+                                                   id="char-intuit-die" alt="Number of Die" min="1" max="6" value="2" />
+                                            <small> d6 + </small>
+                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
+                                                   id="char-intuit-bonus" alt="Bonus" value="0" />
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- Core -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+<script>
+    //Remove JQuery UI conflicts with Bootstrap
+    $.widget.bridge('uibutton', $.ui.button);
+    $.widget.bridge('uitooltip', $.ui.tooltip);
+</script>
+<script src="/vendor/popper/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/nouislider/js/nouislider.min.js"></script>
+<script src="/vendor/tagcomplete/js/tagcomplete.min.js"></script>
+
+<!-- Theme JS -->
+<script src="/js/argon.min.js"></script>
+
+<!-- Custom JS -->
+<script src="/js/script.js"></script>
+</body>
+</html>

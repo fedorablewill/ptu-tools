@@ -9,7 +9,7 @@ import kotlin.collections.ArrayList
 data class Pokemon(
     val pokemonDocumentId: String = UUID.randomUUID().toString(),
 
-    var pokedexEntry: PokedexEntry,
+    var pokedexEntry: PokedexEntry = PokedexEntry(),
 
     var name: String? = pokedexEntry.species,
     var level: Int = 1,
@@ -23,6 +23,12 @@ data class Pokemon(
     var spatk: Stat = Stat(pokedexEntry.baseStats["spatk"] ?: 0),
     var spdef: Stat = Stat(pokedexEntry.baseStats["spdef"] ?: 0),
     var spd: Stat = Stat(pokedexEntry.baseStats["spd"] ?: 0),
+
+    var evasionPhysicalBonus: Int = 0,
+    var evasionSpecialBonus: Int = 0,
+    var evasionSpeedBonus: Int = 0,
+
+    var heldItem: String? = null,
 
     var moves: MutableList<String> = ArrayList(),
     var abilities: MutableList<String> = ArrayList()

@@ -4,13 +4,14 @@ import com.willstep.ptutools.core.EXPERIENCE_CHART
 import com.willstep.ptutools.core.Nature
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Pokemon
+import com.willstep.ptutools.dataaccess.service.FirestoreService
+import java.util.*
 import kotlin.random.Random
-import java.util.ArrayList
-
-
 
 
 class GeneratorService {
+    val firestoreService = FirestoreService()
+
     fun generatePokemon(pokedexEntry: PokedexEntry, minLevel: Int, maxLevel: Int): Pokemon {
         val level = Random.nextInt(minLevel, maxLevel + 1)
         val pokemon = Pokemon(
@@ -24,6 +25,8 @@ class GeneratorService {
         randomizeNature(pokemon)
         randomizeStats(pokemon)
         randomizeAbilities(pokemon)
+
+        firestoreService.saveAsDocument("pokemon", pokemon.pokemonDocumentId, pokemon)
 
         return pokemon
     }
