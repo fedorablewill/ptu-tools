@@ -1,10 +1,8 @@
 package com.willstep.ptutools
 
 import com.willstep.ptutools.dataaccess.dto.Pokemon
-import com.willstep.ptutools.dataaccess.service.FirestoreService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -36,14 +34,15 @@ class PtuToolsTemplateController {
     }
     @GetMapping("/pokemon/{pokemonId}")
     fun pokemon(@PathVariable pokemonId: String, model: Model): ResponseEntity<String>? {
-        val pokemon = FirestoreService().getDocument("pokemon", pokemonId).get().get()
-
-        if (!pokemon.exists()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
-        }
+//        val pokemon = FirestoreService().getDocument("pokemon", pokemonId).get().get()
+//
+//        if (!pokemon.exists()) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
+//        }
 
         val context = Context()
-        context.setVariable("pokemon", pokemon.toObject(Pokemon::class.java))
+//        context.setVariable("pokemon", pokemon.toObject(Pokemon::class.java))
+        context.setVariable("pokemon", Pokemon())
 
         return ResponseEntity.ok(htmlTemplateEngine.process("pokemon", context))
     }

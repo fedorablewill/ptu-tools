@@ -46,3 +46,14 @@ const REGIONS = [
     "Alola",
     "Galar"
 ]
+
+// INITIALIZE WIDGETS
+
+$(function () {
+    $('.collapse').collapse()
+    $('[data-toggle="tooltip"]').tooltip()
+
+    $('[data-autocomplete="type"]').autocomplete({
+        source: TYPES
+    })
+})
