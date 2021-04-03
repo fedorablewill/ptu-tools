@@ -1,8 +1,11 @@
 package com.willstep.ptutools
 
+import com.willstep.ptutools.core.PTUCoreInfoService
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
+import com.willstep.ptutools.dataaccess.dto.Type
 import com.willstep.ptutools.dataaccess.service.FirestoreService
 import com.willstep.ptutools.dataaccess.service.UploadDataTool
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -36,6 +39,22 @@ class PtuToolsRestController {
         val pokemon = FirestoreService().getDocument("pokemon", pokemonId).delete()
 
         return ResponseEntity.ok("Deleted 1 Entry")
+    }
+
+    @GetMapping("/typeEffectivity")
+    fun getTypeEffectivity(@RequestParam types: List<String>, model: Model): ResponseEntity<Map<String, Double>> {
+        val typeList = ArrayList<Type>()
+
+        try {
+            for (type in types) {
+                typeList.add(Type.valueOf(type.toUpperCase()))
+            }
+        } catch (e: Exception) {
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+        }
+
+        return ResponseEntity.ok(PTUCoreInfoService().getTypeEffectivity(typeList).toList()
+            .map { pair -> Pair(pair.first.displayName, pair.second) } .sortedBy { pair -> pair.second * -1.0 } .toMap())
     }
 //
 //    @GetMapping("/pokedex/")

@@ -52,8 +52,4 @@ const REGIONS = [
 $(function () {
     $('.collapse').collapse()
     $('[data-toggle="tooltip"]').tooltip()
-
-    $('[data-autocomplete="type"]').autocomplete({
-        source: TYPES
-    })
 })

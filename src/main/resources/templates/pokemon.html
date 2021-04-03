@@ -31,7 +31,11 @@
             padding-bottom: 2rem;
         }
 
-        h2 {
+        .bg-dark {
+            background-color: #434343 !important;
+        }
+
+        h2, h3, h4 {
             color: #e9ecef;
         }
 
@@ -42,6 +46,12 @@
         .char-section-title hr {
             margin-top: 0;
             margin-bottom: 0.5rem;
+        }
+
+        .modal-body hr {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            max-width: 220px;
         }
 
         .navbar {
@@ -199,6 +209,15 @@
         .border-none {
             border-color: transparent !important;
         }
+
+        .tag_complete {
+            background: none;
+            height: 3.2rem;
+        }
+
+        ul.autocomplete {
+            color: #0a0c0d;
+        }
     </style>
 </head>
 <body>
@@ -264,16 +283,12 @@
                     <hr/>
                 </div>
                 <div class="row row-slim">
-                    <div class="form-group label-floating col-sm-4">
-                        <label class="control-label" for="char-type1">Type 1</label>
-                        <input class="form-control" type="text" id="char-type1" data-autocomplete="type" />
-                    </div>
-                    <div class="form-group label-floating col-sm-4">
-                        <label class="control-label" for="char-type2">Type 2</label>
-                        <input class="form-control" type="text" id="char-type2" data-autocomplete="type" />
+                    <div class="form-group label-floating col-sm-8">
+                        <label class="control-label" for="char-types">Types</label>
+                        <input class="form-control" type="text" id="char-types" data-tagcomplete="type" />
                     </div>
                     <div class="form-group col-sm-4">
-                        <button type="button" class="btn btn-outline-danger btn-form">Effectivity</button>
+                        <button type="button" class="btn btn-outline-danger btn-form" onclick="if (buildTypeEffectivity()) $('#typeEffectModal').modal('show')">Effectivity</button>
                     </div>
                 </div>
                 <div class="row row-slim">
@@ -1017,6 +1032,24 @@
         </div>
     </div>
 </form>
+
+<!-- Type Effectivity Modal -->
+<div class="modal fade" id="typeEffectModal" tabindex="-1" aria-labelledby="typeEffectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title" id="typeEffectModalLabel">Type Effectivity</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-dark text-center" id="typeEffectModalBody"></div>
+            <div class="modal-footer bg-dark">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Core -->

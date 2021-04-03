@@ -320,3 +320,11 @@
 .text-t-none, .form-table.border-t-none .control-label .form-control {
     color: #68A090;
 }
+
+/*
+    Common Components
+ */
+
+.modal-header.bg-danger, .modal-header.bg-dark, .modal-footer.bg-danger, .modal-footer.bg-dark {
+    border-color: rgba(255, 255, 255, 0.1);
+}
