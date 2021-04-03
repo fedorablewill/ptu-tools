@@ -584,7 +584,7 @@
                         <hr/>
                     </div>
                     <div class="row row-slim">
-                        <div class="form-table col-sm-12 mt-3 border-t-normal">
+                        <div class="form-table form-move col-sm-12 mt-3 border-t-normal" id="move-1">
                             <label class="control-label control-label-title">
                                 <input class="form-control form-control-sm" type="text" id="move-1-name" value="Struggle" />
                             </label>
@@ -628,10 +628,11 @@
                                 <div class="form-group label-floating col-sm-3">
                                     <label class="control-label" for="move-1-db">DB</label>
                                     <button type="button" class="btn control-action" data-toggle="tooltip" data-placement="top" data-html="true"
-                                            title="2<img src=&quot;/img/icons/dice-d6-outline.png&quot; alt=&quot;d6&quot; />+8 + 12">
+                                            id="move-1-db-tooltip" title="No DB entered"
+                                            data-subscribe="move-1-db,move-1-class,char-stat-satk-total,char-stat-atk-total" data-subscribe-callback="buildDBTooltip">
                                         <img src="/img/icons/help-rhombus-outline.png" alt="View Die Formula" />
                                     </button>
-                                    <input class="form-control" type="number" id="move-1-db" />
+                                    <input class="form-control" type="number" id="move-1-db" value="4" data-db-tooltip />
                                 </div>
 
                                 <div class="row row-slim collapse move-collapse show" id="move-1-collapse">
@@ -660,7 +661,7 @@
                                 Show More
                             </button>
                         </div>
-                        <div class="form-table col-sm-12 mt-4 border-t-grass">
+                        <div class="form-table form-move col-sm-12 mt-4 border-t-grass" id="move-2">
                             <label class="control-label control-label-title">
                                 <input class="form-control form-control-sm" type="text" id="move-2-name" value="Bullet Seed" />
                             </label>
@@ -704,10 +705,11 @@
                                 <div class="form-group label-floating col-sm-3">
                                     <label class="control-label" for="move-2-db">DB</label>
                                     <button type="button" class="btn control-action" data-toggle="tooltip" data-placement="top" data-html="true"
-                                            title="2<img src=&quot;/img/icons/dice-d6-outline.png&quot; alt=&quot;d6&quot; />+8 + 12">
+                                            id="move-2-db-tooltip" title="No DB entered"
+                                            data-subscribe="move-2-db,move-2-class,char-stat-satk-total,char-stat-atk-total" data-subscribe-callback="buildDBTooltip">
                                         <img src="/img/icons/help-rhombus-outline.png" alt="View Die Formula" />
                                     </button>
-                                    <input class="form-control" type="number" id="move-2-db" />
+                                    <input class="form-control" type="number" id="move-2-db" data-db-tooltip />
                                 </div>
                             </div>
 
