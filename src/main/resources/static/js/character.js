@@ -12,7 +12,11 @@ $(function () {
         freeEdit: true
     })
 
-    // $('[data-db-tooltip]').each(buildDBTooltip)
+    $('[data-autocomplete="type"]').autocomplete({
+        source: TYPES
+    })
+
+    $(".form-move [data-autocomplete=\"type\"]").each(function() {changeMoveTypeColor(this)})
 })
 
 //
@@ -68,6 +72,17 @@ function buildDBTooltip(inputElem) {
     }
 
     $('#' + moveId + "-db-tooltip").attr("data-original-title", text).tooltip()
+}
+
+function changeMoveTypeColor(elem) {
+    elem = $(elem)
+    let type = elem.val()
+
+    if (TYPES.includes(type)) {
+        elem.closest(".form-move").attr("class", "form-table form-move col-sm-12 mt-3 border-t-" + type.toLowerCase())
+    } else {
+        elem.closest(".form-move").attr("class", "form-table form-move col-sm-12 mt-3")
+    }
 }
 
 //
