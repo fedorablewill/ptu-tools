@@ -218,6 +218,10 @@
         ul.autocomplete {
             color: #0a0c0d;
         }
+
+        #stats input {
+            min-width: 3.5rem;
+        }
     </style>
 </head>
 <body>
@@ -355,11 +359,17 @@
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-max-inj">Inj. Max</label>
-                        <input class="form-control" type="number" id="char-hp-max-inj" disabled />
+                        <input class="form-control" type="number" id="char-hp-max-inj" disabled
+                               data-subscribe="char-hp-max,char-injuries"
+                               data-subscribe-callback="buildValueFromSubscribedFields"
+                               data-formula="Math.floor(#0 * (1 - (#1 * 0.1)))" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-max">Max</label>
-                        <input class="form-control" type="number" id="char-hp-max" disabled />
+                        <input class="form-control" type="number" id="char-hp-max" disabled
+                               data-subscribe="char-level,char-stat-hp-total"
+                               data-subscribe-callback="buildValueFromSubscribedFields"
+                               data-formula="#0 + (#1 * 3) + 10" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-dr">DR</label>
@@ -377,19 +387,31 @@
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-max-half">1/2</label>
-                        <input class="form-control" type="number" id="char-hp-max-half" disabled />
+                        <input class="form-control" type="number" id="char-hp-max-half" disabled
+                               data-subscribe="char-hp-max"
+                               data-subscribe-callback="buildValueFromSubscribedFields"
+                               data-formula="Math.round(#0 / 2)" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-max-third">1/3</label>
-                        <input class="form-control" type="number" id="char-hp-max-third" disabled />
+                        <input class="form-control" type="number" id="char-hp-max-third" disabled
+                               data-subscribe="char-hp-max"
+                               data-subscribe-callback="buildValueFromSubscribedFields"
+                               data-formula="Math.round(#0 / 3)" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-max-quarter">1/4</label>
-                        <input class="form-control" type="number" id="char-max-quarter" disabled />
+                        <input class="form-control" type="number" id="char-max-quarter" disabled
+                               data-subscribe="char-hp-max"
+                               data-subscribe-callback="buildValueFromSubscribedFields"
+                               data-formula="Math.round(#0 / 4)" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-tick">Tick</label>
-                        <input class="form-control" type="number" id="char-hp-tick" disabled />
+                        <input class="form-control" type="number" id="char-hp-tick" disabled
+                               data-subscribe="char-hp-max"
+                               data-subscribe-callback="buildValueFromSubscribedFields"
+                               data-formula="Math.floor(#0 / 10)" />
                     </div>
                 </div>
                 <div class="row row-slim">
@@ -439,7 +461,11 @@
                                 </td>
                                 <td class="form-group"></td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-hp-total" />
+                                    <input class="form-control border-none" type="number" id="char-stat-hp-total"
+                                           data-subscribe="char-stat-hp-base,char-stat-hp-bonus,char-stat-hp-lvlup"
+                                           data-subscribe-callback="buildValueFromSubscribedFields"
+                                           data-formula="#0 + #1 + #2"
+                                           disabled />
                                 </td>
                             </tr>
                             <tr>
@@ -454,10 +480,14 @@
                                     <input class="form-control border-none" type="number" id="char-stat-atk-lvlup" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-atk-cs" />
+                                    <input class="form-control border-none" type="number" id="char-stat-atk-cs" min="-6" max="6" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-atk-total" />
+                                    <input class="form-control border-none" type="number" id="char-stat-atk-total"
+                                           data-subscribe="char-stat-atk-base,char-stat-atk-bonus,char-stat-atk-lvlup,char-stat-atk-cs"
+                                           data-subscribe-callback="buildValueFromSubscribedFields"
+                                           data-formula="Math.floor((#0 + #1 + #2) * getCsModifier(#3))"
+                                           disabled />
                                 </td>
                             </tr>
                             <tr>
@@ -472,10 +502,14 @@
                                     <input class="form-control border-none" type="number" id="char-stat-def-lvlup" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-def-cs" />
+                                    <input class="form-control border-none" type="number" id="char-stat-def-cs" min="-6" max="6" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-def-total" />
+                                    <input class="form-control border-none" type="number" id="char-stat-def-total"
+                                           data-subscribe="char-stat-def-base,char-stat-def-bonus,char-stat-def-lvlup,char-stat-def-cs"
+                                           data-subscribe-callback="buildValueFromSubscribedFields"
+                                           data-formula="Math.floor((#0 + #1 + #2) * getCsModifier(#3))"
+                                           disabled />
                                 </td>
                             </tr>
                             <tr>
@@ -490,10 +524,14 @@
                                     <input class="form-control border-none" type="number" id="char-stat-satk-lvlup" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-cs" />
+                                    <input class="form-control border-none" type="number" id="char-stat-satk-cs" min="-6" max="6" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-total" />
+                                    <input class="form-control border-none" type="number" id="char-stat-satk-total"
+                                           data-subscribe="char-stat-satk-base,char-stat-satk-bonus,char-stat-satk-lvlup,char-stat-satk-cs"
+                                           data-subscribe-callback="buildValueFromSubscribedFields"
+                                           data-formula="Math.floor((#0 + #1 + #2) * getCsModifier(#3))"
+                                           disabled />
                                 </td>
                             </tr>
                             <tr>
@@ -508,10 +546,14 @@
                                     <input class="form-control border-none" type="number" id="char-stat-sdef-lvlup" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-cs" />
+                                    <input class="form-control border-none" type="number" id="char-stat-sdef-cs" min="-6" max="6" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-total" />
+                                    <input class="form-control border-none" type="number" id="char-stat-sdef-total"
+                                           data-subscribe="char-stat-sdef-base,char-stat-sdef-bonus,char-stat-sdef-lvlup,char-stat-sdef-cs"
+                                           data-subscribe-callback="buildValueFromSubscribedFields"
+                                           data-formula="Math.floor((#0 + #1 + #2) * getCsModifier(#3))"
+                                           disabled />
                                 </td>
                             </tr>
                             <tr>
@@ -526,10 +568,13 @@
                                     <input class="form-control border-none" type="number" id="char-stat-spd-lvlup" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-spd-cs" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spd-cs" min="-6" max="6" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-spd-total" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spd-total"
+                                           data-subscribe="char-stat-spd-base,char-stat-spd-bonus,char-stat-spd-lvlup,char-stat-spd-cs"
+                                           data-subscribe-callback="buildValueFromSubscribedFields"
+                                           data-formula="Math.floor((#0 + #1 + #2) * getCsModifier(#3))" />
                                 </td>
                             </tr>
                             </tbody>
@@ -538,7 +583,10 @@
                     <div class="row row-slim mt-3">
                         <div class="col-sm-4"><label for="char-evd-physical-total"><strong>Physical Evasion:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-physical-base" alt="Base" value="3" disabled />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-physical-base" alt="Base" disabled
+                                   data-subscribe="char-stat-def-total"
+                                   data-subscribe-callback="buildValueFromSubscribedFields"
+                                   data-formula="Math.max(-6, Math.min(6, Math.floor(#0 / 5)))" />
                         </div>
                         <div class="col-sm-1 text-center"> + </div>
                         <div class="col-sm-2">
@@ -546,35 +594,50 @@
                         </div>
                         <div class="col-sm-1 text-center"> = </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-physical-total" alt="Total" value="3" disabled />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-physical-total" alt="Total" value="3" disabled
+                                   data-subscribe="char-evd-physical-base,char-evd-physical-add"
+                                   data-subscribe-callback="buildValueFromSubscribedFields"
+                                   data-formula="Math.min(9, #0 + #1)" /> <!-- Core 1.05 p234 -->
                         </div>
                     </div>
                     <div class="row row-slim">
                         <div class="col-sm-4"><label for="char-evd-special-total"><strong>Special Evasion:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-special-base" alt="Base" value="3" disabled />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-special-base" alt="Base" value="3" disabled
+                                   data-subscribe="char-stat-sdef-total"
+                                   data-subscribe-callback="buildValueFromSubscribedFields"
+                                   data-formula="Math.max(-6, Math.min(6, Math.floor(#0 / 5)))" />
                         </div>
                         <div class="col-sm-1 text-center"> + </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-special-add" alt="Add" value="0" />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-special-add" alt="Add" value="0" max="9" />
                         </div>
                         <div class="col-sm-1 text-center"> = </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-special-total" alt="Total" value="3" disabled />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-special-total" alt="Total" value="3" disabled
+                                   data-subscribe="char-evd-special-base,char-evd-special-add"
+                                   data-subscribe-callback="buildValueFromSubscribedFields"
+                                   data-formula="Math.min(9, #0 + #1)" /> <!-- Core 1.05 p234 -->
                         </div>
                     </div>
                     <div class="row row-slim">
                         <div class="col-sm-4"><label for="char-evd-speed-total"><strong>Speed Evasion:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-speed-base" alt="Base" value="3" disabled />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-speed-base" alt="Base" value="3" disabled
+                                   data-subscribe="char-stat-spd-total"
+                                   data-subscribe-callback="buildValueFromSubscribedFields"
+                                   data-formula="Math.max(-6, Math.min(6, Math.floor(#0 / 5)))" />
                         </div>
                         <div class="col-sm-1 text-center"> + </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-speed-add" alt="Add" value="0" />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-speed-add" alt="Add" value="0" max="9" />
                         </div>
                         <div class="col-sm-1 text-center"> = </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-speed-total" alt="Total" value="3" disabled />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-speed-total" alt="Total" value="3" disabled
+                                   data-subscribe="char-evd-speed-base,char-evd-speed-add"
+                                   data-subscribe-callback="buildValueFromSubscribedFields"
+                                   data-formula="Math.min(9, #0 + #1)" /> <!-- Core 1.05 p234 -->
                         </div>
                     </div>
                 </section>

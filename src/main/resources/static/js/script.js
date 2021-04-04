@@ -214,8 +214,26 @@ $(function () {
 })
 
 function subscribe(elem, targetIds, callback) {
-    targetIds.forEach(targetId => $('#' + targetId).change(function () {callback(elem); $(this).change();}))
+    targetIds.forEach(targetId => $('#' + targetId).change(function () {callback(elem); $(elem).change();}))
     callback(elem)
+}
+
+// Sum Subscriber Callback
+function buildValueFromSubscribedFields(elem) {
+    elem = $(elem)
+    var formula = elem.attr("data-formula")
+    var i = 0
+
+    elem.attr("data-subscribe").split(',').forEach(targetId => {
+        let value = parseInt($('#' + targetId).val())
+        if (isNaN(value)) {
+            value = 0
+        }
+        formula = formula.replace("#" + i, value)
+        i++
+    })
+
+    elem.val(eval(formula))
 }
 
 //
@@ -233,4 +251,18 @@ function validateTypes(types, errorMessage) {
         }
     })
     return isValid
+}
+
+//
+// Other Utilities
+//
+
+function getCsModifier(cs) {
+    if (cs === 0) {
+        return 1
+    } else if (cs > 0) {
+        return 1 + (0.2 * cs)
+    } else {
+        return 1 - (0.1 * cs)
+    }
 }
