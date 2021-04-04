@@ -56,9 +56,21 @@ class PtuToolsRestController {
         return ResponseEntity.ok(PTUCoreInfoService().getTypeEffectivity(typeList).toList()
             .map { pair -> Pair(pair.first.displayName, pair.second) } .sortedBy { pair -> pair.second * -1.0 } .toMap())
     }
-//
-//    @GetMapping("/pokedex/")
-//    fun getAllPokedexEntries(model: Model) : List<PokedexEntry?> {
-//        return FirestoreService().getCollection("pokedexEntry").listDocuments().toObjects(PokedexEntry::class.java)
-//    }
+
+    @GetMapping("/calculateDamage")
+    fun getCalculateDamage(@RequestParam targetTypes: List<String>, @RequestParam targetDefense: Int, @RequestParam attackType: String, @RequestParam attackAmount: Int) : ResponseEntity<Int> {
+        try {
+            val typeList = ArrayList<Type>()
+            val atkType = Type.valueOf(attackType.toUpperCase())
+
+            for (type in targetTypes) {
+                typeList.add(Type.valueOf(type.toUpperCase()))
+            }
+
+            return ResponseEntity.ok(PTUCoreInfoService().calculateDamage(typeList, targetDefense, atkType, attackAmount))
+
+        } catch (e: Exception) {
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+        }
+    }
 }

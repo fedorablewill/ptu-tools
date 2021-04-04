@@ -67,4 +67,14 @@ internal class PTUCoreInfoServiceTest {
             assertEquals(effect, results[type])
         }
     }
+
+    @Test
+    fun calculateDamage() {
+        // No effect
+        assertEquals(0, ptuCoreInfoService.calculateDamage(listOf(Type.FAIRY, Type.FIGHTING), 1, Type.DRAGON, 12))
+        // Normal
+        assertEquals(2, ptuCoreInfoService.calculateDamage(listOf(Type.FAIRY, Type.FIGHTING), 1, Type.DARK, 12))
+        // Pity Damage
+        assertEquals(1, ptuCoreInfoService.calculateDamage(listOf(Type.FAIRY, Type.FIGHTING), 5, Type.DARK, 12))
+    }
 }

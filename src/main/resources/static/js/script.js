@@ -217,3 +217,20 @@ function subscribe(elem, targetIds, callback) {
     targetIds.forEach(targetId => $('#' + targetId).change(function () {callback(elem); $(this).change();}))
     callback(elem)
 }
+
+//
+// Common Validators
+//
+
+function validateTypes(types, errorMessage) {
+    var isValid = true
+    types.forEach( type => {
+        if (!TYPES.includes(type)) {
+            if (errorMessage != null) {
+                alert(errorMessage + type)
+            }
+            isValid = false
+        }
+    })
+    return isValid
+}

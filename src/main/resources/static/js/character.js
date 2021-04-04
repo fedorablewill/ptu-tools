@@ -15,26 +15,15 @@ $(function () {
     // $('[data-db-tooltip]').each(buildDBTooltip)
 })
 
+//
+// UI Builders & Templates
+//
 
-// Change label of "Show More" and "Show Less" on toggle
-$('.move-collapse').on('hide.bs.collapse', function () {
-    $("button[aria-controls='" + $(this).attr("id") + "']").html("Show More")
-}).on('show.bs.collapse', function () {
-    $("button[aria-controls='" + $(this).attr("id") + "']").html("Show Less")
-})
 
 function buildTypeEffectivity() {
     let types = $("#char-types").val()
-    var isValid = true
 
-    types.split(",").forEach( type => {
-        if (!TYPES.includes(type)) {
-            alert("Cannot calculate effectivity for type: " + type)
-            isValid = false
-        }
-    })
-
-    if (!isValid) {
+    if (!validateTypes(types.split(","), "Cannot calculate effectivity for type: ")) {
         return false
     }
 
@@ -75,8 +64,97 @@ function buildDBTooltip(inputElem) {
     } else if (!DB.hasOwnProperty(db)) {
         text = "Invalid DB"
     } else {
-        text = `${DB[db].diceCount}<img src=/img/icons/dice-d${DB[db].dice}-outline-white.png alt=&quot;d${DB[db].dice}&quot; />+${DB[db].modifier} (+ ${atk})`
+        text = `${DB[db].diceCount}<img src=/img/icons/dice-d${DB[db].dice}-outline-white.png alt=&quot;d${DB[db].dice}&quot; /> + ${DB[db].modifier} (+ ${atk})`
     }
 
     $('#' + moveId + "-db-tooltip").attr("data-original-title", text).tooltip()
+}
+
+//
+// Actions & Handlers
+//
+
+// Change label of "Show More" and "Show Less" on toggle
+$('.move-collapse').on('hide.bs.collapse', function () {
+    $("button[aria-controls='" + $(this).attr("id") + "']").html("Show More")
+}).on('show.bs.collapse', function () {
+    $("button[aria-controls='" + $(this).attr("id") + "']").html("Show Less")
+})
+
+// Submit handler for Quick Damage Modal
+function onSubmitDamage() {
+    let types = $("#char-types").val()
+    let dmgClass = $('#quickDamage-class').val()
+    let def = dmgClass === "Special" ? parseInt($('#char-stat-sdef-total').val()) : parseInt($('#char-stat-def-total').val())
+    let dmgType = $('#quickDamage-type').val()
+    let dmgAmt = parseInt($('#quickDamage-damage').val())
+
+    if (dmgClass === "True") {
+        takeDamage(dmgAmt)
+        return
+    } else if (isNaN(def)) {
+        alert("Pokemon's defense value is not a number. Please enter defense under Stats and try again.")
+        return false
+    }
+
+    if (dmgType === "Typeless") {
+        takeDamage(dmgAmt - def)
+    }
+
+    if (!validateTypes(types.split(","), "Cannot calculate damage for Pokemon's type: ")) {
+        return false
+    }
+
+    $.ajax("/calculateDamage", {
+        method: "GET",
+        contentType: "application/json",
+        data: {
+            targetTypes: types,
+            targetDefense: def,
+            attackType: dmgType,
+            attackAmount: dmgAmt
+        }
+    }).done(function(response) {
+        takeDamage(response)
+    }).fail(function(jqxhr, textStatus, errorThrown)  {
+        alert("Error calculating damage: " + textStatus + " : " + errorThrown)
+    })
+}
+
+// Subtract from Temporary Hit Points & Current Health using Damage Reduction
+function takeDamage(amount) {
+    let dr = parseInt($('#char-dr').val())
+    let thpElem = $('#char-hp-temp');
+
+    // Damage Reduction
+    if (!isNaN(dr)) {
+        amount -= dr
+
+        if (amount < 1) {
+            amount = 1
+        }
+    }
+
+    // Temporary Hit Points
+    let tempHp = parseInt(thpElem.val())
+
+    if (!isNaN(tempHp) && tempHp > 0) {
+        if (tempHp - amount > 0) {
+            thpElem.val(tempHp - amount)
+            return
+        } else {
+            amount -= tempHp
+            thpElem.val("")
+        }
+    }
+
+    // Reduce Current Health
+    let healthElem = $('#char-hp-current')
+    let health = parseInt(healthElem.val())
+
+    if (isNaN(health)) {
+        health = 0
+    }
+
+    healthElem.val(health - amount)
 }
