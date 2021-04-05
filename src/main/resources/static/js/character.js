@@ -4,6 +4,11 @@
 
 // Initialize
 $(function () {
+    initializeWidgets()
+    initialize()
+})
+
+function initialize() {
     $('[data-tagcomplete="type"]').tagComplete({
         autocomplete: {
             data: TYPES
@@ -17,7 +22,7 @@ $(function () {
     })
 
     $(".form-move [data-autocomplete=\"type\"]").each(function() {changeMoveTypeColor(this)})
-})
+}
 
 //
 // UI Builders & Templates

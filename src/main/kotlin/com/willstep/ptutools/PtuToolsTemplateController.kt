@@ -7,7 +7,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import org.thymeleaf.spring5.SpringTemplateEngine
@@ -32,19 +33,16 @@ class PtuToolsTemplateController {
     fun generator(model: Model): String? {
         return "generator"
     }
-    @GetMapping("/pokemon/{pokemonId}")
-    fun pokemon(@PathVariable pokemonId: String, model: Model): ResponseEntity<String>? {
-//        val pokemon = FirestoreService().getDocument("pokemon", pokemonId).get().get()
-//
-//        if (!pokemon.exists()) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
-//        }
-
+    @GetMapping("/pokemon")
+    fun uploadPokemon(model: Model): String? {
+        return "pokemon"
+    }
+    @PostMapping("/pokemon")
+    fun pokemon(@RequestBody pokemon: Pokemon, model: Model): ResponseEntity<String>? {
         val context = Context()
-//        context.setVariable("pokemon", pokemon.toObject(Pokemon::class.java))
-        context.setVariable("pokemon", Pokemon())
+        context.setVariable("pokemon", pokemon)
 
-        return ResponseEntity.ok(htmlTemplateEngine.process("pokemon", context))
+        return ResponseEntity.ok(htmlTemplateEngine.process("characterPokemon", context))
     }
 }
 

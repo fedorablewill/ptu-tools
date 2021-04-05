@@ -196,9 +196,14 @@ const DB = {
 //
 
 $(function () {
+    initializeWidgets()
+})
+
+function initializeWidgets() {
     $('.collapse').collapse()
     $('[data-toggle="tooltip"]').tooltip()
-})
+    $('[data-subscribe]').each(loadSubscriber)
+}
 
 
 
@@ -206,12 +211,10 @@ $(function () {
 // UPDATE SUBSCRIBED FIELDS
 //
 
-$(function () {
-    $('[data-subscribe]').each(function () {
-        let elem = $(this)
-        subscribe(this, elem.attr("data-subscribe").split(','), window[elem.attr("data-subscribe-callback")])
-    })
-})
+function loadSubscriber() {
+    let elem = $(this)
+    subscribe(this, elem.attr("data-subscribe").split(','), window[elem.attr("data-subscribe-callback")])
+}
 
 function subscribe(elem, targetIds, callback) {
     targetIds.forEach(targetId => $('#' + targetId).change(function () {callback(elem); $(elem).change();}))
