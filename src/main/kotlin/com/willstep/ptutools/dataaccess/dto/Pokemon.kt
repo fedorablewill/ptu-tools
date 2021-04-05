@@ -1,8 +1,5 @@
 package com.willstep.ptutools.dataaccess.dto
 
-import java.math.BigDecimal
-import java.math.MathContext
-import java.math.RoundingMode
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -16,6 +13,7 @@ data class Pokemon(
     var exp: Int = 0,
     var nature: String? = null,
     var gender: String? = null,
+    var shiny: Boolean = false,
 
     var hp: Stat = Stat(pokedexEntry.baseStats["hp"] ?: 0),
     var atk: Stat = Stat(pokedexEntry.baseStats["atk"] ?: 0),
@@ -24,13 +22,21 @@ data class Pokemon(
     var spdef: Stat = Stat(pokedexEntry.baseStats["spdef"] ?: 0),
     var spd: Stat = Stat(pokedexEntry.baseStats["spd"] ?: 0),
 
+    var health: Int? = null,
+    var injuries: Int = 0,
+    var thp: Int = 0,
+    var dr: Int = 0,
+
+    var afflictions: String? = null,
+    var buffs: String? = null,
+
     var evasionPhysicalBonus: Int = 0,
     var evasionSpecialBonus: Int = 0,
     var evasionSpeedBonus: Int = 0,
 
     var heldItem: String? = null,
 
-    var moves: MutableList<String> = ArrayList(),
+    var moves: MutableList<Move> = ArrayList(),
     var abilities: MutableList<String> = ArrayList()
 
 ) {
@@ -38,10 +44,10 @@ data class Pokemon(
         var base: Int = 0,
         var lvlUp: Int = 0,
         var add: Int = 0,
-        var multiplier: BigDecimal = BigDecimal.ONE,
+        var cs: Int = 0,
     ) {
         fun getSum(): Int {
-            return BigDecimal(base + lvlUp + add).times(multiplier).round(MathContext(0, RoundingMode.DOWN)).toInt()
+            return base + lvlUp + add
         }
     }
 }

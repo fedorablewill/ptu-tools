@@ -1,6 +1,7 @@
 package com.willstep.ptutools
 
 import com.willstep.ptutools.core.PTUCoreInfoService
+import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Type
 import com.willstep.ptutools.dataaccess.service.FirestoreService
@@ -32,6 +33,11 @@ class PtuToolsRestController {
         } else {
             return FirestoreService().getCollection("pokedexEntries").whereEqualTo("nationalDexNumber", dexNumber).get().get().toObjects(PokedexEntry::class.java)
         }
+    }
+
+    @GetMapping("/move/{moveName}")
+    fun getMoveByName(@PathVariable moveName: String, model: Model): ResponseEntity<Move> {
+        return ResponseEntity.ok(FirestoreService().getDocument("moves", moveName).get().get().toObject(Move::class.java))
     }
 
     @DeleteMapping("/pokemon/{pokemonId}")

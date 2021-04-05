@@ -3,8 +3,6 @@ package com.willstep.ptutools.dataaccess.service
 import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import java.util.*
-import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class UploadDataTool {
@@ -26,6 +24,7 @@ class UploadDataTool {
             firestoreService.saveAsDocument("moves", obj["name"] as String, Move(
                 obj["name"] as String,
                 obj["typeName"] as String?,
+                false,
                 obj["freq"] as String?,
                 obj["ac"] as Int?,
                 obj["db"] as Int?,

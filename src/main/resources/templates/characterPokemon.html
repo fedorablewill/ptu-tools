@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="pokemon" type="com.willstep.ptutools.dataaccess.dto.Pokemon"*/-->
 <form>
     <div class="char char-pokemon">
         <nav class="navbar navbar-expand-lg navbar-light bg-danger">
@@ -39,19 +40,19 @@
         <div class="row row-slim">
             <div class="form-group label-floating col-md-3 col-xs-12">
                 <label class="control-label" for="char-species">Species</label>
-                <input class="form-control" type="text" id="char-species" />
+                <input class="form-control" type="text" id="char-species" th:value="${pokemon.pokedexEntry.species}" />
             </div>
             <div class="form-group label-floating col-md-3 col-xs-12">
                 <label class="control-label" for="char-form">Form</label>
-                <input class="form-control" type="text" id="char-form" />
+                <input class="form-control" type="text" id="char-form" th:value="${pokemon.pokedexEntry.form}" />
             </div>
             <div class="form-group label-floating col-md-2 ml-md-5 col-sm-9">
                 <label class="control-label" for="char-level">Level</label>
-                <input class="form-control" type="number" id="char-level" />
+                <input class="form-control" type="number" id="char-level" th:value="${pokemon.level}" />
             </div>
             <div class="form-group label-floating col-md-1 col-sm-3">
                 <label class="control-label" for="char-exp">EXP</label>
-                <input class="form-control" type="number" id="char-exp" />
+                <input class="form-control" type="number" id="char-exp" th:value="${pokemon.exp}" />
             </div>
         </div>
         <div class="row">
@@ -63,7 +64,7 @@
                 <div class="row row-slim">
                     <div class="form-group label-floating col-sm-8">
                         <label class="control-label" for="char-types">Types</label>
-                        <input class="form-control" type="text" id="char-types" data-tagcomplete="type" />
+                        <input class="form-control" type="text" id="char-types" data-tagcomplete="type" th:value="${#strings.listJoin(pokemon.pokedexEntry.types,',')}" />
                     </div>
                     <div class="form-group col-sm-4">
                         <button type="button" class="btn btn-outline-danger btn-form" onclick="if (buildTypeEffectivity()) $('#typeEffectModal').modal('show')">Effectivity</button>
@@ -72,25 +73,25 @@
                 <div class="row row-slim">
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-gender">Gender</label>
-                        <input class="form-control" type="text" id="char-gender" />
+                        <input class="form-control" type="text" id="char-gender" th:value="${pokemon.gender}" />
                     </div>
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-nature">Nature</label>
-                        <input class="form-control" type="text" id="char-nature" />
+                        <input class="form-control" type="text" id="char-nature" th:value="${pokemon.nature}" />
                     </div>
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-size">Size</label>
-                        <input class="form-control" type="text" id="char-size" />
+                        <input class="form-control" type="text" id="char-size" th:value="${pokemon.pokedexEntry.size}" />
                     </div>
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-weight">Weight</label>
-                        <input class="form-control" type="text" id="char-weight" />
+                        <input class="form-control" type="text" id="char-weight" th:value="${pokemon.pokedexEntry.weight}" />
                     </div>
                 </div>
                 <div class="row row-slim">
                     <div class="form-group label-floating col-sm-6">
                         <label class="control-label" for="char-egg-group">Egg Group</label>
-                        <input class="form-control" type="text" id="char-egg-group" />
+                        <input class="form-control" type="text" id="char-egg-group" th:value="${#strings.listJoin(pokemon.pokedexEntry.eggGroups,',')}" />
                     </div>
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-nature-likes">Likes</label>
@@ -108,12 +109,12 @@
                     </div>
                     <div class="form-group label-floating custom-checkbox col-sm-3">
                         <label class="control-label" for="char-legendary">Is Legendary?</label>
-                        <input class="form-control custom-control-input" type="checkbox" id="char-legendary" />
+                        <input class="form-control custom-control-input" type="checkbox" id="char-legendary" th:value="${pokemon.pokedexEntry.legendary}" />
                         <span class="custom-control-label"></span>
                     </div>
                     <div class="form-group label-floating custom-checkbox col-sm-3">
                         <label class="control-label" for="char-shiny">Is Shiny?</label>
-                        <input class="form-control custom-control-input" type="checkbox" id="char-shiny" />
+                        <input class="form-control custom-control-input" type="checkbox" id="char-shiny" th:value="${pokemon.shiny}" />
                         <span class="custom-control-label"></span>
                     </div>
                 </div>
@@ -129,7 +130,7 @@
                         <button type="button" class="btn control-action" onclick="$('#quickDamageModal').modal('show')">
                             <img src="/img/icons/octagram-outline.png">
                         </button>
-                        <input class="form-control" type="number" id="char-hp-current" />
+                        <input class="form-control" type="number" id="char-hp-current" th:value="${pokemon.health}" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-max-inj">Inj. Max</label>
@@ -147,17 +148,17 @@
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-dr">DR</label>
-                        <input class="form-control" type="number" id="char-dr" />
+                        <input class="form-control" type="number" id="char-dr" th:value="${pokemon.dr}" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-temp">Temp</label>
-                        <input class="form-control" type="number" id="char-hp-temp" />
+                        <input class="form-control" type="number" id="char-hp-temp" th:value="${pokemon.thp}" />
                     </div>
                 </div>
                 <div class="row row-slim">
                     <div class="form-group label-floating col-md-4 col-xs-6">
                         <label class="control-label" for="char-injuries">Injuries</label>
-                        <input class="form-control" type="number" id="char-injuries" />
+                        <input class="form-control" type="number" id="char-injuries" th:value="${pokemon.injuries}" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-max-half">1/2</label>
@@ -191,13 +192,13 @@
                 <div class="row row-slim">
                     <div class="form-group label-floating col-sm-12">
                         <label class="control-label" for="char-afflict">Afflictions</label>
-                        <input class="form-control" type="text" id="char-afflict" />
+                        <input class="form-control" type="text" id="char-afflict" th:value="${pokemon.afflictions}" />
                     </div>
                 </div>
                 <div class="row row-slim">
                     <div class="form-group label-floating col-sm-12">
                         <label class="control-label" for="char-buff">Buffs</label>
-                        <input class="form-control" type="text" id="char-buff" />
+                        <input class="form-control" type="text" id="char-buff" th:value="${pokemon.buffs}" />
                     </div>
                 </div>
             </section>
@@ -225,13 +226,13 @@
                             <tr>
                                 <td>HP</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-hp-base" />
+                                    <input class="form-control border-none" type="number" id="char-stat-hp-base" th:value="${pokemon.hp.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-hp-bonus" />
+                                    <input class="form-control border-none" type="number" id="char-stat-hp-bonus" th:value="${pokemon.hp.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-hp-lvlup" />
+                                    <input class="form-control border-none" type="number" id="char-stat-hp-lvlup" th:value="${pokemon.hp.lvlUp}" />
                                 </td>
                                 <td class="form-group"></td>
                                 <td class="form-group">
@@ -245,16 +246,16 @@
                             <tr>
                                 <td>Attack</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-atk-base" />
+                                    <input class="form-control border-none" type="number" id="char-stat-atk-base" th:value="${pokemon.atk.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-atk-bonus" />
+                                    <input class="form-control border-none" type="number" id="char-stat-atk-bonus" th:value="${pokemon.atk.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-atk-lvlup" />
+                                    <input class="form-control border-none" type="number" id="char-stat-atk-lvlup" th:value="${pokemon.atk.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-atk-cs" min="-6" max="6" />
+                                    <input class="form-control border-none" type="number" id="char-stat-atk-cs" min="-6" max="6" th:value="${pokemon.atk.cs}" />
                                 </td>
                                 <td class="form-group">
                                     <input class="form-control border-none" type="number" id="char-stat-atk-total"
@@ -267,16 +268,16 @@
                             <tr>
                                 <td>Defense</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-def-base" />
+                                    <input class="form-control border-none" type="number" id="char-stat-def-base" th:value="${pokemon.def.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-def-bonus" />
+                                    <input class="form-control border-none" type="number" id="char-stat-def-bonus" th:value="${pokemon.def.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-def-lvlup" />
+                                    <input class="form-control border-none" type="number" id="char-stat-def-lvlup" th:value="${pokemon.def.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-def-cs" min="-6" max="6" />
+                                    <input class="form-control border-none" type="number" id="char-stat-def-cs" min="-6" max="6" th:value="${pokemon.def.cs}" />
                                 </td>
                                 <td class="form-group">
                                     <input class="form-control border-none" type="number" id="char-stat-def-total"
@@ -289,16 +290,16 @@
                             <tr>
                                 <td>Sp. Atk.</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-base" />
+                                    <input class="form-control border-none" type="number" id="char-stat-satk-base" th:value="${pokemon.spatk.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-bonus" />
+                                    <input class="form-control border-none" type="number" id="char-stat-satk-bonus" th:value="${pokemon.spatk.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-lvlup" />
+                                    <input class="form-control border-none" type="number" id="char-stat-satk-lvlup" th:value="${pokemon.spatk.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-cs" min="-6" max="6" />
+                                    <input class="form-control border-none" type="number" id="char-stat-satk-cs" min="-6" max="6" th:value="${pokemon.spatk.cs}" />
                                 </td>
                                 <td class="form-group">
                                     <input class="form-control border-none" type="number" id="char-stat-satk-total"
@@ -311,16 +312,16 @@
                             <tr>
                                 <td>Sp. Def.</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-base" />
+                                    <input class="form-control border-none" type="number" id="char-stat-sdef-base" th:value="${pokemon.spdef.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-bonus" />
+                                    <input class="form-control border-none" type="number" id="char-stat-sdef-bonus" th:value="${pokemon.spdef.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-lvlup" />
+                                    <input class="form-control border-none" type="number" id="char-stat-sdef-lvlup" th:value="${pokemon.spdef.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-cs" min="-6" max="6" />
+                                    <input class="form-control border-none" type="number" id="char-stat-sdef-cs" min="-6" max="6" th:value="${pokemon.spdef.cs}" />
                                 </td>
                                 <td class="form-group">
                                     <input class="form-control border-none" type="number" id="char-stat-sdef-total"
@@ -333,16 +334,16 @@
                             <tr>
                                 <td>Speed</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-spd-base" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spd-base" th:value="${pokemon.spd.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-spd-bonus" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spd-bonus" th:value="${pokemon.spd.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-spd-lvlup" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spd-lvlup" th:value="${pokemon.spd.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-spd-cs" min="-6" max="6" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spd-cs" min="-6" max="6" th:value="${pokemon.spd.cs}" />
                                 </td>
                                 <td class="form-group">
                                     <input class="form-control border-none" type="number" id="char-stat-spd-total"
@@ -364,7 +365,7 @@
                         </div>
                         <div class="col-sm-1 text-center"> + </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-physical-add" alt="Add" value="0" />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-physical-add" alt="Add" max="9" th:value="${pokemon.evasionPhysicalBonus}" />
                         </div>
                         <div class="col-sm-1 text-center"> = </div>
                         <div class="col-sm-2">
@@ -384,7 +385,7 @@
                         </div>
                         <div class="col-sm-1 text-center"> + </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-special-add" alt="Add" value="0" max="9" />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-special-add" alt="Add" max="9" th:value="${pokemon.evasionSpecialBonus}" />
                         </div>
                         <div class="col-sm-1 text-center"> = </div>
                         <div class="col-sm-2">
@@ -404,7 +405,7 @@
                         </div>
                         <div class="col-sm-1 text-center"> + </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-speed-add" alt="Add" value="0" max="9" />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-speed-add" alt="Add" max="9" th:value="${pokemon.evasionSpeedBonus}" />
                         </div>
                         <div class="col-sm-1 text-center"> = </div>
                         <div class="col-sm-2">
@@ -421,9 +422,9 @@
                         <hr/>
                     </div>
                     <div class="row row-slim">
-                        <div class="form-table form-move col-sm-12 mt-3 border-t-normal" id="move-1">
+                        <div class="form-table form-move col-sm-12 mt-3 border-t-normal" th:each="move, iStat: ${pokemon.moves}" th:id="'move-' + ${iStat.index}">
                             <label class="control-label control-label-title">
-                                <input class="form-control form-control-sm" type="text" id="move-1-name" value="Struggle" />
+                                <input class="form-control form-control-sm" type="text" th:id="'move-' + ${iStat.index} + '-name'" th:value="${move.name}" />
                             </label>
                             <span class="control-action">
                                     <button type="button" class="btn">
@@ -438,140 +439,64 @@
                                 </span>
                             <div class="row row-slim mt-4">
                                 <div class="form-group label-floating col-sm-4">
-                                    <label class="control-label" for="move-1-type">Type</label>
-                                    <input class="form-control" type="text" id="move-1-type" data-autocomplete="type" onchange="changeMoveTypeColor(this)" />
+                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-type'">Type</label>
+                                    <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-type'"
+                                           data-autocomplete="type" onchange="changeMoveTypeColor(this)" th:value="${move.type}" />
                                 </div>
                                 <div class="form-group label-floating col-sm-4">
-                                    <label class="control-label" for="move-1-class">Class</label>
-                                    <select class="form-control" id="move-1-class">
+                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-class'">Class</label>
+                                    <select class="form-control" th:id="'move-' + ${iStat.index} + '-class'" th:value="${move.damageClass}">
                                         <option>Physical</option>
                                         <option>Special</option>
                                         <option>Status</option>
                                     </select>
                                 </div>
                                 <div class="form-group label-floating col-sm-4">
-                                    <label class="control-label" for="move-1-freq">Frequency</label>
-                                    <input class="form-control" type="text" id="move-1-freq" />
+                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-freq'">Frequency</label>
+                                    <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-freq'" th:value="${move.frequency}" />
                                 </div>
 
                                 <div class="form-group label-floating col-sm-6">
-                                    <label class="control-label" for="move-1-range">Range</label>
-                                    <input class="form-control" type="text" id="move-1-range" />
+                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-range'">Range</label>
+                                    <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-range'" th:value="${move.range}" />
                                 </div>
                                 <div class="form-group label-floating col-sm-3">
-                                    <label class="control-label" for="move-1-ac">AC</label>
-                                    <input class="form-control" type="number" id="move-1-ac" />
+                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-ac'">AC</label>
+                                    <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-ac'" th:value="${move.accuracyCheck}" />
                                 </div>
                                 <div class="form-group label-floating col-sm-3">
-                                    <label class="control-label" for="move-1-db">DB</label>
+                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-db'">DB</label>
                                     <button type="button" class="btn control-action" data-toggle="tooltip" data-placement="top" data-html="true"
-                                            id="move-1-db-tooltip" title="No DB entered"
+                                            th:id="'move-' + ${iStat.index} + '-db-tooltip'" title="No DB entered"
                                             data-subscribe="move-1-db,move-1-class,char-stat-satk-total,char-stat-atk-total" data-subscribe-callback="buildDBTooltip">
                                         <img src="/img/icons/help-rhombus-outline.png" alt="View Die Formula" />
                                     </button>
-                                    <input class="form-control" type="number" id="move-1-db" value="4" data-db-tooltip />
+                                    <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-db'" data-db-tooltip th:value="${move.damageBase}" />
                                 </div>
 
-                                <div class="row row-slim collapse move-collapse show" id="move-1-collapse">
+                                <div class="row row-slim collapse move-collapse show" th:id="'move-' + ${iStat.index} + '-collapse'">
                                     <div class="form-group label-floating col-sm-3">
-                                        <label class="control-label" for="move-1-crit">Crits On</label>
-                                        <input class="form-control" type="number" id="move-1-crit" />
+                                        <label class="control-label" th:for="'move-' + ${iStat.index} + '-crit'">Crits On</label>
+                                        <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-crit'" th:value="${move.critsOn}" />
                                     </div>
                                     <div class="form-group label-floating custom-checkbox col-sm-3">
-                                        <label class="control-label" for="move-1-stab">Has STAB?</label>
-                                        <input class="form-control custom-control-input" type="checkbox" id="move-1-stab" />
+                                        <label class="control-label" th:for="'move-' + ${iStat.index} + '-stab'">Has STAB?</label>
+                                        <input class="form-control custom-control-input" type="checkbox" th:id="'move-' + ${iStat.index} + '-stab'" th:value="${move.stab}" />
                                         <span class="custom-control-label"></span>
                                     </div>
                                     <div class="form-group label-floating col-sm-6">
-                                        <label class="control-label" for="move-1-contest">Contest Type/Effect</label>
-                                        <input class="form-control" type="text" id="move-1-contest" />
+                                        <label class="control-label" th:for="'move-' + ${iStat.index} + '-contest'">Contest Type/Effect</label>
+                                        <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-contest'" th:value="${move.contestType} + ' / ' + ${move.contestEffect}" />
                                     </div>
 
                                     <div class="form-group label-floating col-sm-12">
-                                        <label class="control-label" for="move-1-effect">Effect</label>
-                                        <textarea class="form-control" type="text" id="move-1-effect"></textarea>
+                                        <label class="control-label" th:for="'move-' + ${iStat.index} + '-effect'">Effect</label>
+                                        <textarea class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-effect'"></textarea>
                                     </div>
                                 </div>
                             </div>
                             <button type="button" class="btn control-action control-action-bottom text-danger"
-                                    data-toggle="collapse" data-target="#move-1-collapse" aria-expanded="false" aria-controls="move-1-collapse">
-                                Show More
-                            </button>
-                        </div>
-                        <div class="form-table form-move col-sm-12 mt-4 border-t-grass" id="move-2">
-                            <label class="control-label control-label-title">
-                                <input class="form-control form-control-sm" type="text" id="move-2-name" value="Bullet Seed" />
-                            </label>
-                            <span class="control-action">
-                                    <button type="button" class="btn">
-                                        <img src="/img/icons/dice-d20-outline.png" alt="Roll AC Only">
-                                    </button>
-                                    <button type="button" class="btn">
-                                        <img src="/img/icons/octagram-outline.png" alt="Roll Everything">
-                                    </button>
-                                    <button type="button" class="btn">
-                                        <img src="/img/icons/delete-forever-outline.png" alt="Delete">
-                                    </button>
-                                </span>
-                            <div class="row row-slim mt-4">
-                                <div class="form-group label-floating col-sm-4">
-                                    <label class="control-label" for="move-2-type">Type</label>
-                                    <input class="form-control" type="text" id="move-2-type" data-autocomplete="type" onchange="changeMoveTypeColor(this)" />
-                                </div>
-                                <div class="form-group label-floating col-sm-4">
-                                    <label class="control-label" for="move-2-class">Class</label>
-                                    <select class="form-control" id="move-2-class">
-                                        <option>Physical</option>
-                                        <option>Special</option>
-                                        <option>Status</option>
-                                    </select>
-                                </div>
-                                <div class="form-group label-floating col-sm-4">
-                                    <label class="control-label" for="move-2-freq">Frequency</label>
-                                    <input class="form-control" type="text" id="move-2-freq" />
-                                </div>
-
-                                <div class="form-group label-floating col-sm-6">
-                                    <label class="control-label" for="move-2-range">Range</label>
-                                    <input class="form-control" type="text" id="move-2-range" />
-                                </div>
-                                <div class="form-group label-floating col-sm-3">
-                                    <label class="control-label" for="move-2-ac">AC</label>
-                                    <input class="form-control" type="number" id="move-2-ac" />
-                                </div>
-                                <div class="form-group label-floating col-sm-3">
-                                    <label class="control-label" for="move-2-db">DB</label>
-                                    <button type="button" class="btn control-action" data-toggle="tooltip" data-placement="top" data-html="true"
-                                            id="move-2-db-tooltip" title="No DB entered"
-                                            data-subscribe="move-2-db,move-2-class,char-stat-satk-total,char-stat-atk-total" data-subscribe-callback="buildDBTooltip">
-                                        <img src="/img/icons/help-rhombus-outline.png" alt="View Die Formula" />
-                                    </button>
-                                    <input class="form-control" type="number" id="move-2-db" data-db-tooltip />
-                                </div>
-                            </div>
-
-                            <div class="row row-slim collapse move-collapse show" id="move-2-collapse">
-                                <div class="form-group label-floating col-sm-3">
-                                    <label class="control-label" for="move-2-crit">Crits On</label>
-                                    <input class="form-control" type="number" id="move-2-crit" />
-                                </div>
-                                <div class="form-group label-floating custom-checkbox col-sm-3">
-                                    <label class="control-label" for="move-2-stab">Has STAB?</label>
-                                    <input class="form-control custom-control-input" type="checkbox" id="move-2-stab" />
-                                    <span class="custom-control-label"></span>
-                                </div>
-                                <div class="form-group label-floating col-sm-6">
-                                    <label class="control-label" for="move-2-contest">Contest Type/Effect</label>
-                                    <input class="form-control" type="text" id="move-2-contest" />
-                                </div>
-
-                                <div class="form-group label-floating col-sm-12">
-                                    <label class="control-label" for="move-2-effect">Effect</label>
-                                    <textarea class="form-control" type="text" id="move-2-effect"></textarea>
-                                </div>
-                            </div>
-                            <button type="button" class="btn control-action control-action-bottom text-danger"
-                                    data-toggle="collapse" data-target="#move-2-collapse" aria-expanded="false" aria-controls="move-2-collapse">
+                                    data-toggle="collapse" th:data-target="'#move-'+${iStat.index}+'-collapse'" aria-expanded="false" th:aria-controls="'move-'+${iStat.index}+'-collapse'">
                                 Show More
                             </button>
                         </div>
@@ -588,41 +513,41 @@
                     <div class="row row-slim">
                         <div class="col-sm-4"><label for="char-capble-overland"><strong>Overland:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-overland" value="6" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-overland" th:value="${pokemon.pokedexEntry.capabilities.get('Overland')}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-burrow"><strong>Burrow:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-burrow" value="6" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-burrow" th:value="${pokemon.pokedexEntry.capabilities.get('Burrow')}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-swim"><strong>Swim:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-swim" value="6" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-swim" th:value="${pokemon.pokedexEntry.capabilities.get('Swim')}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-high"><strong>High Jump:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-high" value="6" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-high" th:value="${pokemon.pokedexEntry.capabilities.get('High Jump')}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-sky"><strong>Sky:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-sky" value="6" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-sky" th:value="${pokemon.pokedexEntry.capabilities.get('Sky')}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-long"><strong>Long Jump:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-long" value="6" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-long" th:value="${pokemon.pokedexEntry.capabilities.get('Long Jump')}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-levitate"><strong>Levitate:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-levitate" value="6" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-levitate" th:value="${pokemon.pokedexEntry.capabilities.get('Levitate')}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-power"><strong>Power:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-power" value="6" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-power" th:value="${pokemon.pokedexEntry.capabilities.get('Power')}" />
                         </div>
                     </div>
                     <div class="row row-slim">
                         <div class="form-group label-floating col-sm-12">
                             <label class="control-label" for="char-capble-other">Other Capabilities</label>
-                            <input class="form-control" type="text" id="char-capble-other" />
+                            <input class="form-control" type="text" id="char-capble-other" th:value="${pokemon.pokedexEntry.getOtherCapabilities()}" />
                         </div>
                     </div>
                 </section>

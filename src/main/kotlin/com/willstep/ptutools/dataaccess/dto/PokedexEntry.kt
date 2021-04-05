@@ -49,4 +49,8 @@ data class PokedexEntry(
     }
 
     constructor() : this(null)
+
+    fun getOtherCapabilities(): String {
+        return capabilities.filter { entry -> entry.value == -1 } .keys.joinToString(",")
+    }
 }

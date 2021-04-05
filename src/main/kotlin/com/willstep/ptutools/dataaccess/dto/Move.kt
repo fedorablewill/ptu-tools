@@ -1,14 +1,16 @@
 package com.willstep.ptutools.dataaccess.dto
 
 data class Move(
-    val name: String,
-    val type: String? = null,
-    val frequency: String? = null,
-    val accuracyCheck: Int? = null,
-    val damageBase: Int? = null,
-    val damageClass: String? = null,
-    val range: String? = null,
-    val effects: String? = null,
-    val contestType: String? = null,
-    val contestEffect: String? = null
+    var name: String? = null,
+    var type: String? = null,
+    var stab: Boolean = false,
+    var frequency: String? = null,
+    var accuracyCheck: Int? = null,
+    var damageBase: Int? = null,
+    var damageClass: String? = null,
+    var range: String? = null,
+    var effects: String? = null,
+    var contestType: String? = null,
+    var contestEffect: String? = null,
+    var critsOn: String? = null
 )

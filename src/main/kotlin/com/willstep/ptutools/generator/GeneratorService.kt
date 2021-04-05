@@ -2,6 +2,7 @@ package com.willstep.ptutools.generator
 
 import com.willstep.ptutools.core.EXPERIENCE_CHART
 import com.willstep.ptutools.core.Nature
+import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Pokemon
 import com.willstep.ptutools.dataaccess.service.FirestoreService
@@ -27,12 +28,10 @@ class GeneratorService(
         randomizeStats(pokemon)
         randomizeAbilities(pokemon)
 
-        firestoreService.saveAsDocument("pokemon", pokemon.pokemonDocumentId, pokemon)
-
         return pokemon
     }
 
-    fun randomizeMoves(pokedexEntry: PokedexEntry, level: Int, count: Int): ArrayList<String> {
+    fun randomizeMoves(pokedexEntry: PokedexEntry, level: Int, count: Int): ArrayList<Move> {
         val filteredList = pokedexEntry.levelUpMoves.filterValues { i -> i <= level }.keys.toMutableList()
         val results = ArrayList<String>()
 
@@ -45,7 +44,13 @@ class GeneratorService(
             results.add(moveName)
         }
 
-        return results
+        val moves = ArrayList<Move>()
+
+        for (name in results) {
+            firestoreService.getDocument("moves", name).get().get().toObject(Move::class.java)?.let { moves.add(it) }
+        }
+
+        return moves
     }
 
     fun randomizeAbilities(pokemon: Pokemon) {
