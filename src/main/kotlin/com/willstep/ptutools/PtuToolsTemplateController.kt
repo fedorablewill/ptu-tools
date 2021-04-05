@@ -35,14 +35,21 @@ class PtuToolsTemplateController {
     }
     @GetMapping("/pokemon")
     fun uploadPokemon(model: Model): String? {
-        return "pokemon"
+        return "uploadCharacter"
+    }
+    @PostMapping("/pokemonFragment")
+    fun pokemonFragment(@RequestBody pokemon: Pokemon, model: Model): ResponseEntity<String>? {
+        val context = Context()
+        context.setVariable("pokemon", pokemon)
+
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragment-characterPokemon", context))
     }
     @PostMapping("/pokemon")
     fun pokemon(@RequestBody pokemon: Pokemon, model: Model): ResponseEntity<String>? {
         val context = Context()
         context.setVariable("pokemon", pokemon)
 
-        return ResponseEntity.ok(htmlTemplateEngine.process("characterPokemon", context))
+        return ResponseEntity.ok(htmlTemplateEngine.process("pokemon", context))
     }
 }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <!--/*@thymesVar id="pokemon" type="com.willstep.ptutools.dataaccess.dto.Pokemon"*/-->
 <head>
     <meta charset="utf-8">
@@ -226,7 +226,15 @@
 </head>
 <body>
 
-<div class="container" id="top" th:insert="fragment-characterPokemon">
+<div class="container" id="top">
+    <div class="text-center col-md-8 col-lg-6 ml-auto mr-auto mt-4">
+        <h1 class="text-danger">Upload Pokemon</h1>
+        <h4 class="text-capitalize text-muted">Upload File</h4>
+        <input type="file" class="form-control" id="upload-file" />
+        <h4 class="text-capitalize text-muted"><label for="upload-paste">Or Paste JSON</label></h4>
+        <textarea type="file" class="form-control" id="upload-paste"></textarea>
+        <button type="button" class="btn btn-danger mt-4" onclick="uploadCharacter()">Submit</button>
+    </div>
 </div>
 
 
@@ -265,7 +273,7 @@
     }
 
     function buildCharacter(json) {
-        $.ajax("/pokemon", {
+        $.ajax("/pokemonFragment", {
             method: "POST",
             contentType: "application/json",
             data: json
