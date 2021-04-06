@@ -16,6 +16,7 @@ PTU Exodus' Advantages
 PokeGenesis' Advantages (but are planned as upcoming features!!!)
 - Easy to switch between and manage Pokemon
 - Dynamax Pokemon
+- Custom Pokedex
 
 ## Technologies
 - Kotlin/Java
