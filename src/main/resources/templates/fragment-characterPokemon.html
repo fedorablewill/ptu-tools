@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="pokemon" type="com.willstep.ptutools.dataaccess.dto.Pokemon"*/-->
-<form>
+<form action="#" th:action="'/savePokemonToFile'" th:object="${pokemon}" method="post">
     <div class="char char-pokemon">
         <nav class="navbar navbar-expand-lg navbar-light bg-danger">
             <div class="char-picture navbar-brand">
-                <img src="/img/pokemon/001.png" />
+                <img th:src="'/img/pokemon/'+${pokemon.pokedexEntry.imageFileUrl}" />
             </div>
             <div class="form-inline form-group label-floating">
                 <label class="control-label" for="char-name">Name</label>
-                <input class="form-control" type="text" id="char-name" th:value="${pokemon.name}" />
+                <input class="form-control" type="text" id="char-name" th:field="*{name}" />
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -40,19 +40,19 @@
         <div class="row row-slim">
             <div class="form-group label-floating col-md-3 col-xs-12">
                 <label class="control-label" for="char-species">Species</label>
-                <input class="form-control" type="text" id="char-species" th:value="${pokemon.pokedexEntry.species}" />
+                <input class="form-control" type="text" id="char-species" th:field="*{pokedexEntry.species}" />
             </div>
             <div class="form-group label-floating col-md-3 col-xs-12">
                 <label class="control-label" for="char-form">Form</label>
-                <input class="form-control" type="text" id="char-form" th:value="${pokemon.pokedexEntry.form}" />
+                <input class="form-control" type="text" id="char-form" th:field="*{pokedexEntry.form}" />
             </div>
             <div class="form-group label-floating col-md-2 ml-md-5 col-sm-9">
                 <label class="control-label" for="char-level">Level</label>
-                <input class="form-control" type="number" id="char-level" th:value="${pokemon.level}" />
+                <input class="form-control" type="number" id="char-level" th:field="*{level}" />
             </div>
             <div class="form-group label-floating col-md-1 col-sm-3">
                 <label class="control-label" for="char-exp">EXP</label>
-                <input class="form-control" type="number" id="char-exp" th:value="${pokemon.exp}" />
+                <input class="form-control" type="number" id="char-exp" th:field="*{exp}" />
             </div>
         </div>
         <div class="row">
@@ -73,19 +73,19 @@
                 <div class="row row-slim">
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-gender">Gender</label>
-                        <input class="form-control" type="text" id="char-gender" th:value="${pokemon.gender}" />
+                        <input class="form-control" type="text" id="char-gender" th:field="*{gender}" />
                     </div>
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-nature">Nature</label>
-                        <input class="form-control" type="text" id="char-nature" th:value="${pokemon.nature}" />
+                        <input class="form-control" type="text" id="char-nature" th:field="*{nature}" />
                     </div>
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-size">Size</label>
-                        <input class="form-control" type="text" id="char-size" th:value="${pokemon.pokedexEntry.size}" />
+                        <input class="form-control" type="text" id="char-size" th:field="*{pokedexEntry.size}" />
                     </div>
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-weight">Weight</label>
-                        <input class="form-control" type="text" id="char-weight" th:value="${pokemon.pokedexEntry.weight}" />
+                        <input class="form-control" type="text" id="char-weight" th:field="*{pokedexEntry.weight}" />
                     </div>
                 </div>
                 <div class="row row-slim">
@@ -109,12 +109,12 @@
                     </div>
                     <div class="form-group label-floating custom-checkbox col-sm-3">
                         <label class="control-label" for="char-legendary">Is Legendary?</label>
-                        <input class="form-control custom-control-input" type="checkbox" id="char-legendary" th:value="${pokemon.pokedexEntry.legendary}" />
+                        <input class="form-control custom-control-input" type="checkbox" id="char-legendary" th:field="*{pokedexEntry.legendary}" />
                         <span class="custom-control-label"></span>
                     </div>
                     <div class="form-group label-floating custom-checkbox col-sm-3">
                         <label class="control-label" for="char-shiny">Is Shiny?</label>
-                        <input class="form-control custom-control-input" type="checkbox" id="char-shiny" th:value="${pokemon.shiny}" />
+                        <input class="form-control custom-control-input" type="checkbox" id="char-shiny" th:field="*{shiny}" />
                         <span class="custom-control-label"></span>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                         <button type="button" class="btn control-action" onclick="$('#quickDamageModal').modal('show')">
                             <img src="/img/icons/octagram-outline.png">
                         </button>
-                        <input class="form-control" type="number" id="char-hp-current" th:value="${pokemon.health}" />
+                        <input class="form-control" type="number" id="char-hp-current" th:field="*{health}" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-max-inj">Inj. Max</label>
@@ -148,17 +148,17 @@
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-dr">DR</label>
-                        <input class="form-control" type="number" id="char-dr" th:value="${pokemon.dr}" />
+                        <input class="form-control" type="number" id="char-dr" th:field="*{dr}" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-temp">Temp</label>
-                        <input class="form-control" type="number" id="char-hp-temp" th:value="${pokemon.thp}" />
+                        <input class="form-control" type="number" id="char-hp-temp" th:field="*{thp}" />
                     </div>
                 </div>
                 <div class="row row-slim">
                     <div class="form-group label-floating col-md-4 col-xs-6">
                         <label class="control-label" for="char-injuries">Injuries</label>
-                        <input class="form-control" type="number" id="char-injuries" th:value="${pokemon.injuries}" />
+                        <input class="form-control" type="number" id="char-injuries" th:field="*{injuries}" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-xs-3">
                         <label class="control-label" for="char-hp-max-half">1/2</label>
@@ -192,13 +192,13 @@
                 <div class="row row-slim">
                     <div class="form-group label-floating col-sm-12">
                         <label class="control-label" for="char-afflict">Afflictions</label>
-                        <input class="form-control" type="text" id="char-afflict" th:value="${pokemon.afflictions}" />
+                        <input class="form-control" type="text" id="char-afflict" th:field="*{afflictions}" />
                     </div>
                 </div>
                 <div class="row row-slim">
                     <div class="form-group label-floating col-sm-12">
                         <label class="control-label" for="char-buff">Buffs</label>
-                        <input class="form-control" type="text" id="char-buff" th:value="${pokemon.buffs}" />
+                        <input class="form-control" type="text" id="char-buff" th:field="*{buffs}" />
                     </div>
                 </div>
             </section>
@@ -226,13 +226,13 @@
                             <tr>
                                 <td>HP</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-hp-base" th:value="${pokemon.hp.base}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-hp-base" th:field="*{hp.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-hp-bonus" th:value="${pokemon.hp.add}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-hp-bonus" th:field="*{hp.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-hp-lvlup" th:value="${pokemon.hp.lvlUp}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-hp-lvlup" th:field="*{hp.lvlUp}" />
                                 </td>
                                 <td class="form-group"></td>
                                 <td class="form-group">
@@ -246,16 +246,16 @@
                             <tr>
                                 <td>Attack</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-atk-base" th:value="${pokemon.atk.base}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-atk-base" th:field="*{atk.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-atk-bonus" th:value="${pokemon.atk.add}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-atk-bonus" th:field="*{atk.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-atk-lvlup" th:value="${pokemon.atk.lvlUp}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-atk-lvlup" th:field="*{atk.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-atk-cs" min="-6" max="6" th:value="${pokemon.atk.cs}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-atk-cs" min="-6" max="6" th:field="*{atk.cs}" />
                                 </td>
                                 <td class="form-group">
                                     <input class="form-control border-none" type="number" id="char-stat-atk-total"
@@ -268,16 +268,16 @@
                             <tr>
                                 <td>Defense</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-def-base" th:value="${pokemon.def.base}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-def-base" th:field="*{def.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-def-bonus" th:value="${pokemon.def.add}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-def-bonus" th:field="*{def.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-def-lvlup" th:value="${pokemon.def.lvlUp}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-def-lvlup" th:field="*{def.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-def-cs" min="-6" max="6" th:value="${pokemon.def.cs}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-def-cs" min="-6" max="6" th:field="*{def.cs}" />
                                 </td>
                                 <td class="form-group">
                                     <input class="form-control border-none" type="number" id="char-stat-def-total"
@@ -290,16 +290,16 @@
                             <tr>
                                 <td>Sp. Atk.</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-base" th:value="${pokemon.spatk.base}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-satk-base" th:field="*{spatk.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-bonus" th:value="${pokemon.spatk.add}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-satk-bonus" th:field="*{spatk.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-lvlup" th:value="${pokemon.spatk.lvlUp}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-satk-lvlup" th:field="*{spatk.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-cs" min="-6" max="6" th:value="${pokemon.spatk.cs}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-satk-cs" min="-6" max="6" th:field="*{spatk.cs}" />
                                 </td>
                                 <td class="form-group">
                                     <input class="form-control border-none" type="number" id="char-stat-satk-total"
@@ -312,16 +312,16 @@
                             <tr>
                                 <td>Sp. Def.</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-base" th:value="${pokemon.spdef.base}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-sdef-base" th:field="*{spdef.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-bonus" th:value="${pokemon.spdef.add}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-sdef-bonus" th:field="*{spdef.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-lvlup" th:value="${pokemon.spdef.lvlUp}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-sdef-lvlup" th:field="*{spdef.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-cs" min="-6" max="6" th:value="${pokemon.spdef.cs}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-sdef-cs" min="-6" max="6" th:field="*{spdef.cs}" />
                                 </td>
                                 <td class="form-group">
                                     <input class="form-control border-none" type="number" id="char-stat-sdef-total"
@@ -334,16 +334,16 @@
                             <tr>
                                 <td>Speed</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-spd-base" th:value="${pokemon.spd.base}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spd-base" th:field="*{spd.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-spd-bonus" th:value="${pokemon.spd.add}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spd-bonus" th:field="*{spd.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-spd-lvlup" th:value="${pokemon.spd.lvlUp}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spd-lvlup" th:field="*{spd.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-spd-cs" min="-6" max="6" th:value="${pokemon.spd.cs}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spd-cs" min="-6" max="6" th:field="*{spd.cs}" />
                                 </td>
                                 <td class="form-group">
                                     <input class="form-control border-none" type="number" id="char-stat-spd-total"
@@ -365,7 +365,7 @@
                         </div>
                         <div class="col-sm-1 text-center"> + </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-physical-add" alt="Add" max="9" th:value="${pokemon.evasionPhysicalBonus}" />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-physical-add" alt="Add" max="9" th:field="*{evasionPhysicalBonus}" />
                         </div>
                         <div class="col-sm-1 text-center"> = </div>
                         <div class="col-sm-2">
@@ -385,7 +385,7 @@
                         </div>
                         <div class="col-sm-1 text-center"> + </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-special-add" alt="Add" max="9" th:value="${pokemon.evasionSpecialBonus}" />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-special-add" alt="Add" max="9" th:field="*{evasionSpecialBonus}" />
                         </div>
                         <div class="col-sm-1 text-center"> = </div>
                         <div class="col-sm-2">
@@ -405,7 +405,7 @@
                         </div>
                         <div class="col-sm-1 text-center"> + </div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-evd-speed-add" alt="Add" max="9" th:value="${pokemon.evasionSpeedBonus}" />
+                            <input class="form-control form-control-sm" type="number" id="char-evd-speed-add" alt="Add" max="9" th:field="*{evasionSpeedBonus}" />
                         </div>
                         <div class="col-sm-1 text-center"> = </div>
                         <div class="col-sm-2">
@@ -422,9 +422,9 @@
                         <hr/>
                     </div>
                     <div class="row row-slim">
-                        <div class="form-table form-move col-sm-12 mt-3 border-t-normal" th:each="move, iStat: ${pokemon.moves}" th:id="'move-' + ${iStat.index}">
+                        <div class="form-table form-move col-sm-12 mt-3 border-t-normal" th:each="move, iStat: *{moves}" th:id="'move-' + ${iStat.index}">
                             <label class="control-label control-label-title">
-                                <input class="form-control form-control-sm" type="text" th:id="'move-' + ${iStat.index} + '-name'" th:value="${move.name}" />
+                                <input class="form-control form-control-sm" type="text" th:id="'move-' + ${iStat.index} + '-name'" th:field="*{moves[__${iStat.index}__].name}" />
                             </label>
                             <span class="control-action">
                                     <button type="button" class="btn">
@@ -441,28 +441,28 @@
                                 <div class="form-group label-floating col-sm-4">
                                     <label class="control-label" th:for="'move-' + ${iStat.index} + '-type'">Type</label>
                                     <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-type'"
-                                           data-autocomplete="type" onchange="changeMoveTypeColor(this)" th:value="${move.type}" />
+                                           data-autocomplete="type" onchange="changeMoveTypeColor(this)" th:field="*{moves[__${iStat.index}__].type}" />
                                 </div>
                                 <div class="form-group label-floating col-sm-4">
                                     <label class="control-label" th:for="'move-' + ${iStat.index} + '-class'">Class</label>
-                                    <select class="form-control" th:id="'move-' + ${iStat.index} + '-class'" th:value="${move.damageClass}">
-                                        <option>Physical</option>
-                                        <option>Special</option>
-                                        <option>Status</option>
+                                    <select class="form-control" th:id="'move-' + ${iStat.index} + '-class'" th:field="*{moves[__${iStat.index}__].damageClass}">
+                                        <option th:value="'Physical'">Physical</option>
+                                        <option th:value="'Special'">Special</option>
+                                        <option th:value="'Status'">Status</option>
                                     </select>
                                 </div>
                                 <div class="form-group label-floating col-sm-4">
                                     <label class="control-label" th:for="'move-' + ${iStat.index} + '-freq'">Frequency</label>
-                                    <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-freq'" th:value="${move.frequency}" />
+                                    <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-freq'" th:field="*{moves[__${iStat.index}__].frequency}" />
                                 </div>
 
                                 <div class="form-group label-floating col-sm-6">
                                     <label class="control-label" th:for="'move-' + ${iStat.index} + '-range'">Range</label>
-                                    <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-range'" th:value="${move.range}" />
+                                    <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-range'" th:field="*{moves[__${iStat.index}__].range}" />
                                 </div>
                                 <div class="form-group label-floating col-sm-3">
                                     <label class="control-label" th:for="'move-' + ${iStat.index} + '-ac'">AC</label>
-                                    <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-ac'" th:value="${move.accuracyCheck}" />
+                                    <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-ac'" th:field="*{moves[__${iStat.index}__].accuracyCheck}" />
                                 </div>
                                 <div class="form-group label-floating col-sm-3">
                                     <label class="control-label" th:for="'move-' + ${iStat.index} + '-db'">DB</label>
@@ -471,17 +471,17 @@
                                             data-subscribe="move-1-db,move-1-class,char-stat-satk-total,char-stat-atk-total" data-subscribe-callback="buildDBTooltip">
                                         <img src="/img/icons/help-rhombus-outline.png" alt="View Die Formula" />
                                     </button>
-                                    <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-db'" data-db-tooltip th:value="${move.damageBase}" />
+                                    <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-db'" data-db-tooltip th:field="*{moves[__${iStat.index}__].damageBase}" />
                                 </div>
 
                                 <div class="row row-slim collapse move-collapse show" th:id="'move-' + ${iStat.index} + '-collapse'">
                                     <div class="form-group label-floating col-sm-3">
                                         <label class="control-label" th:for="'move-' + ${iStat.index} + '-crit'">Crits On</label>
-                                        <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-crit'" th:value="${move.critsOn}" />
+                                        <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-crit'" th:field="*{moves[__${iStat.index}__].critsOn}" />
                                     </div>
                                     <div class="form-group label-floating custom-checkbox col-sm-3">
                                         <label class="control-label" th:for="'move-' + ${iStat.index} + '-stab'">Has STAB?</label>
-                                        <input class="form-control custom-control-input" type="checkbox" th:id="'move-' + ${iStat.index} + '-stab'" th:value="${move.stab}" />
+                                        <input class="form-control custom-control-input" type="checkbox" th:id="'move-' + ${iStat.index} + '-stab'" th:field="*{moves[__${iStat.index}__].stab}" />
                                         <span class="custom-control-label"></span>
                                     </div>
                                     <div class="form-group label-floating col-sm-6">
@@ -491,7 +491,7 @@
 
                                     <div class="form-group label-floating col-sm-12">
                                         <label class="control-label" th:for="'move-' + ${iStat.index} + '-effect'">Effect</label>
-                                        <textarea class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-effect'"></textarea>
+                                        <textarea class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-effect'" th:field="*{moves[__${iStat.index}__].effects}"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -513,41 +513,41 @@
                     <div class="row row-slim">
                         <div class="col-sm-4"><label for="char-capble-overland"><strong>Overland:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-overland" th:value="${pokemon.pokedexEntry.capabilities.get('Overland')}" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-overland" th:field="*{pokedexEntry.capabilities['Overland']}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-burrow"><strong>Burrow:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-burrow" th:value="${pokemon.pokedexEntry.capabilities.get('Burrow')}" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-burrow" th:field="*{pokedexEntry.capabilities['Burrow']}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-swim"><strong>Swim:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-swim" th:value="${pokemon.pokedexEntry.capabilities.get('Swim')}" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-swim" th:field="*{pokedexEntry.capabilities['Swim']}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-high"><strong>High Jump:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-high" th:value="${pokemon.pokedexEntry.capabilities.get('High Jump')}" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-high" th:field="*{pokedexEntry.capabilities['High Jump']}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-sky"><strong>Sky:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-sky" th:value="${pokemon.pokedexEntry.capabilities.get('Sky')}" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-sky" th:field="*{pokedexEntry.capabilities['Sky']}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-long"><strong>Long Jump:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-long" th:value="${pokemon.pokedexEntry.capabilities.get('Long Jump')}" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-long" th:field="*{pokedexEntry.capabilities['Long Jump']}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-levitate"><strong>Levitate:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-levitate" th:value="${pokemon.pokedexEntry.capabilities.get('Levitate')}" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-levitate" th:field="*{pokedexEntry.capabilities['Levitate']}" />
                         </div>
                         <div class="col-sm-4"><label for="char-capble-power"><strong>Power:</strong></label></div>
                         <div class="col-sm-2">
-                            <input class="form-control form-control-sm" type="number" id="char-capble-power" th:value="${pokemon.pokedexEntry.capabilities.get('Power')}" />
+                            <input class="form-control form-control-sm" type="number" id="char-capble-power" th:field="*{pokedexEntry.capabilities['Power']}" />
                         </div>
                     </div>
                     <div class="row row-slim">
                         <div class="form-group label-floating col-sm-12">
                             <label class="control-label" for="char-capble-other">Other Capabilities</label>
-                            <input class="form-control" type="text" id="char-capble-other" th:value="${pokemon.pokedexEntry.getOtherCapabilities()}" />
+                            <input class="form-control" type="text" id="char-capble-other" th:field="*{pokedexEntry.otherCapabilities}" />
                         </div>
                     </div>
                 </section>
@@ -569,61 +569,55 @@
                                     <tr>
                                         <td>Acrobatics</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-acro-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-acro-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-acrobatics" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['acrobatics']}"
+                                                   th:value="*{pokedexEntry.skills['acrobatics']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Athletics</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-athl-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-athl-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-athletics" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['athletics']}"
+                                                   th:value="*{pokedexEntry.skills['athletics']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Combat</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-comb-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-comb-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-combat" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['combat']}"
+                                                   th:value="*{pokedexEntry.skills['combat']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Intimidate</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-intim-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-intim-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-intimidate" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['intimidate']}"
+                                                   th:value="*{pokedexEntry.skills['intimidate']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Stealth</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-stealth-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-stealth-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-stealth" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['stealth']}"
+                                                   th:value="*{pokedexEntry.skills['stealth']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Survival</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-surv-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-surv-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-survival" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['survival']}"
+                                                   th:value="*{pokedexEntry.skills['survival']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     </tbody>
@@ -642,61 +636,55 @@
                                     <tr>
                                         <td>Gen. Ed</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-gened-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-gened-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-generalEdu" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['generalEdu']}"
+                                                   th:value="*{pokedexEntry.skills['generalEdu']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Med. Ed</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-meded-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-meded-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-medicineEdu" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['medicineEdu']}"
+                                                   th:value="*{pokedexEntry.skills['medicineEdu']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Occult Ed</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-occed-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-occed-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-occultEdu" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['occultEdu']}"
+                                                   th:value="*{pokedexEntry.skills['occultEdu']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Poke. Ed</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-poked-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-poked-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-pokemonEdu" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['pokemonEdu']}"
+                                                   th:value="*{pokedexEntry.skills['pokemonEdu']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Tech Ed</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-teched-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-teched-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-techEdu" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['techEdu']}"
+                                                   th:value="*{pokedexEntry.skills['techEdu']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Perception</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-perc-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-perc-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-perception" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['perception']}"
+                                                   th:value="*{pokedexEntry.skills['perception']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     </tbody>
@@ -715,41 +703,37 @@
                                     <tr>
                                         <td>Charm</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-charm-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-charm-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-charm" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['charm']}"
+                                                   th:value="*{pokedexEntry.skills['charm']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Command</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-command-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-command-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-command" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['command']}"
+                                                   th:value="*{pokedexEntry.skills['command']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Focus</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-focus-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-focus-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-focus" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['focus']}"
+                                                   th:value="*{pokedexEntry.skills['focus']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Intuition</td>
                                         <td>
-                                            <input class="form-control form-control-sm form-skill-die" type="number"
-                                                   id="char-intuit-die" alt="Number of Die" min="1" max="6" value="2" />
-                                            <small> d6 + </small>
-                                            <input class="form-control form-control-sm form-skill-bonus" type="number"
-                                                   id="char-intuit-bonus" alt="Bonus" value="0" />
+                                            <input class="form-control form-control-sm" type="text"
+                                                   id="char-intuition" alt="Number of Die" min="1" max="6"
+                                                   th:field="*{pokedexEntry.skills['intuition']}"
+                                                   th:value="*{pokedexEntry.skills['intuition']} ?: '2d6+0'" />
                                         </td>
                                     </tr>
                                     </tbody>
@@ -876,6 +860,4 @@
         </div>
     </div>
 </div>
-
-<script src="/js/character.js"></script>
 </html>

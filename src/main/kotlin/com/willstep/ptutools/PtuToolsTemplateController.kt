@@ -9,17 +9,26 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.servlet.support.RequestContext
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import org.thymeleaf.spring5.SpringTemplateEngine
+import org.thymeleaf.spring5.context.webmvc.SpringWebMvcThymeleafRequestContext
 import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import org.thymeleaf.templateresolver.ITemplateResolver
+import javax.servlet.ServletContext
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
 
 @Controller
 class PtuToolsTemplateController {
     @Autowired
     lateinit var htmlTemplateEngine: TemplateEngine
+
+    @Autowired
+    lateinit var servletContext: ServletContext
 
     @GetMapping("/index")
     fun index(model: Model): String? {
@@ -38,16 +47,24 @@ class PtuToolsTemplateController {
         return "uploadCharacter"
     }
     @PostMapping("/pokemonFragment")
-    fun pokemonFragment(@RequestBody pokemon: Pokemon, model: Model): ResponseEntity<String>? {
+    fun pokemonFragment(@RequestBody pokemon: Pokemon, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String>? {
+        val variables = mapOf<String, Any>("pokemon" to pokemon)
         val context = Context()
-        context.setVariable("pokemon", pokemon)
+        context.setVariables(variables)
+        val requestContext = RequestContext(request, response, servletContext, variables)
+        val thymeleafRequestContext = SpringWebMvcThymeleafRequestContext(requestContext, request)
+        context.setVariable("thymeleafRequestContext", thymeleafRequestContext)
 
         return ResponseEntity.ok(htmlTemplateEngine.process("fragment-characterPokemon", context))
     }
     @PostMapping("/pokemon")
-    fun pokemon(@RequestBody pokemon: Pokemon, model: Model): ResponseEntity<String>? {
+    fun pokemon(@RequestBody pokemon: Pokemon, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String>? {
+        val variables = mapOf<String, Any>("pokemon" to pokemon)
         val context = Context()
-        context.setVariable("pokemon", pokemon)
+        context.setVariables(variables)
+        val requestContext = RequestContext(request, response, servletContext, variables)
+        val thymeleafRequestContext = SpringWebMvcThymeleafRequestContext(requestContext, request)
+        context.setVariable("thymeleafRequestContext", thymeleafRequestContext)
 
         return ResponseEntity.ok(htmlTemplateEngine.process("pokemon", context))
     }

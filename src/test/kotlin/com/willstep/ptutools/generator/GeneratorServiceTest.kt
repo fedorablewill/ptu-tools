@@ -17,7 +17,7 @@ internal class GeneratorServiceTest {
     @Test
     fun generatePokemon() {
         val dexEntry = PokedexEntry("",
-            baseStats = mapOf(
+            baseStats = mutableMapOf(
                 "hp" to 10,
                 "atk" to 5,
                 "def" to 5,

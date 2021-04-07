@@ -15,8 +15,8 @@ data class PokedexEntry(
     var imageFileUrl: String? = null,
     var cryFileUrl: String? = null,
 
-    var baseStats: Map<String, Int> = HashMap(),
-    var capabilities: Map<String, Int> = HashMap(),
+    var baseStats: MutableMap<String, Int> = HashMap(),
+    var capabilities: MutableMap<String, Int> = HashMap(),
     var size: String? = null,
     var weight: String? = null,
     var genderless: Boolean = true,
@@ -52,5 +52,18 @@ data class PokedexEntry(
 
     fun getOtherCapabilities(): String {
         return capabilities.filter { entry -> entry.value == -1 } .keys.joinToString(",")
+    }
+
+    fun setOtherCapabilities(capabilitiesString: String) {
+        val items = capabilitiesString.split(Regex(", ?"))
+        for (capability in items) {
+            this.capabilities[capability] = -1
+        }
+
+        for (entry in capabilities.entries) {
+            if (entry.value == -1 && !items.contains(entry.key)) {
+                this.capabilities.remove(entry.value)
+            }
+        }
     }
 }

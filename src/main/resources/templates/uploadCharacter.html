@@ -258,6 +258,7 @@
 
 <!-- Custom JS -->
 <script src="/js/script.js"></script>
+<script src="/js/character.js"></script>
 <script>
     function uploadCharacter() {
         let fileElem = $('#upload-file')
@@ -279,6 +280,8 @@
             data: json
         }).done(function(response) {
             $("#top").html(response)
+            initializeWidgets()
+            initialize()
         }).fail(function(jqxhr, textStatus, errorThrown)  {
             alert("Error building character sheet: " + textStatus + " : " + errorThrown)
         })

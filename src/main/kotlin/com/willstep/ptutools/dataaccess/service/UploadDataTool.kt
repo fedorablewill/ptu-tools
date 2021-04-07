@@ -3,7 +3,6 @@ package com.willstep.ptutools.dataaccess.service
 import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import java.util.*
-import kotlin.collections.HashMap
 
 class UploadDataTool {
     var firestoreService: FirestoreService = FirestoreService();
@@ -39,7 +38,7 @@ class UploadDataTool {
 
     fun uploadPokedexEntries(objects: List<Map<String, Any>>) {
         val skillPrefixes = listOf<String>("acrobatics", "athletics", "charm", "combat", "command", "generalEdu", "pokemonEdu",
-            "occultEdu", "techEdu", "focus", "guile", "intimidate", "intuition", "perception", "stealth", "survival")
+            "medicineEdu", "occultEdu", "techEdu", "focus", "guile", "intimidate", "intuition", "perception", "stealth", "survival")
         for (entry in objects) {
             var form: String? = null
             var species: String = entry["species"] as String
@@ -149,7 +148,7 @@ class UploadDataTool {
                 entryText = entry["entry"] as String?,
                 imageFileUrl = entry["image"] as String + ".png",
                 cryFileUrl = entry["image"] as String + ".ogg",
-                baseStats = mapOf(
+                baseStats = mutableMapOf(
                     "hp" to entry["hp"] as Int,
                     "atk" to entry["atk"] as Int,
                     "def" to entry["def"] as Int,
