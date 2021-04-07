@@ -53,8 +53,8 @@ class GeneratorController {
     @GetMapping("/speciesOptions")
     fun speciesOptions(@RequestParam q: String, @RequestParam lol: Int): Map<String, String> {
         val results = FirestoreService().getCollection("pokedexEntries")
-            .whereGreaterThanOrEqualTo("species", q)
-            .whereLessThanOrEqualTo("species", q + '\uf8ff')
+            .whereGreaterThanOrEqualTo("species", q.capitalize())
+            .whereLessThanOrEqualTo("species", q.capitalize() + '\uf8ff')
             .orderBy("species").orderBy("form")
             .limit(lol).get().get()
 

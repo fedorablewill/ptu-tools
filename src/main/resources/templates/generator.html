@@ -287,7 +287,11 @@
             data: TYPES
         },
         freeInput: false,
-        freeEdit: true
+        freeEdit: false,
+        onDelete: function(data) {
+            let field = $("#filter-type")
+            field.val(field.val().replace(data.text + ",", "").replace("," + data.text, "").replace(data.text, ""))
+        }
     })
 
     $("#filter-species").tagComplete({
@@ -300,7 +304,11 @@
             }
         },
         freeInput: false,
-        freeEdit: true
+        freeEdit: false,
+        onDelete: function(data) {
+            let field = $("#filter-species")
+            field.val(field.val().replace(data.id + ",", "").replace("," + data.id, "").replace(data.id, ""))
+        }
     })
 
     $("#filter-habitat").tagComplete({
@@ -308,7 +316,11 @@
             data: HABITATS
         },
         freeInput: false,
-        freeEdit: false
+        freeEdit: false,
+        onDelete: function(data) {
+            let field = $("#filter-habitat")
+            field.val(field.val().replace(data.text + ",", "").replace("," + data.text, "").replace(data.text, ""))
+        }
     })
 
     $("#filter-region").tagComplete({
@@ -316,7 +328,11 @@
             data: REGIONS
         },
         freeInput: false,
-        freeEdit: false
+        freeEdit: false,
+        onDelete: function(data) {
+            let field = $("#filter-region")
+            field.val(field.val().replace(data.text + ",", "").replace("," + data.text, "").replace(data.text, ""))
+        }
     })
 
     $("#filter-stage").tagComplete({
@@ -324,7 +340,11 @@
             data: ["1", "2", "3"]
         },
         freeInput: false,
-        freeEdit: false
+        freeEdit: false,
+        onDelete: function(data) {
+            let field = $("#filter-stage")
+            field.val(field.val().replace(data.text + ",", "").replace("," + data.text, "").replace(data.text, ""))
+        }
     })
 
 
