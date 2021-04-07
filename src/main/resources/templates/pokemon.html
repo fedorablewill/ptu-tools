@@ -249,7 +249,8 @@
 <script src="/js/argon.min.js"></script>
 
 <!-- Custom JS -->
-<script src="/js/script.js"></script>
+<script th:src="${'/js/script.js?v=' + jsVersion}"></script>
+<script th:src="${'/js/character.js?v=' + jsVersion}"></script>
 <script>
     function uploadCharacter() {
         let fileElem = $('#upload-file')

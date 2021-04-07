@@ -1,5 +1,6 @@
 package com.willstep.ptutools.dataaccess.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.util.*
 
 data class Pokemon(
@@ -39,6 +40,7 @@ data class Pokemon(
     var abilities: MutableList<Ability> = ArrayList()
 
 ) {
+    @JsonIgnoreProperties(ignoreUnknown = true)
     data class Stat(
         var base: Int = 0,
         var lvlUp: Int = 0,

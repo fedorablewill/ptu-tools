@@ -195,10 +195,6 @@ const DB = {
 // INITIALIZE WIDGETS
 //
 
-$(function () {
-    initializeWidgets()
-})
-
 function initializeWidgets() {
     $('.collapse').collapse()
     $('[data-toggle="tooltip"]').tooltip()

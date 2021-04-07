@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="requestBody" type="com.willstep.ptutools.JsonAsString"*/-->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -221,7 +222,8 @@
 <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="/pokemon" target="_blank">
+            <form method="post" action="#" th:action="@{/pokemon}" th:object="${requestBody}" target="_blank">
+                <input id="result-json" type="hidden" th:field="*{myData}">
                 <div class="modal-header">
                     <h5 class="modal-title" id="resultsModalLabel">A wild <strong id="result-name">MissingNo</strong> appeared!</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -229,11 +231,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <textarea id="result-body" disabled style="width: 100%; min-height: 100px" name="pokemon"></textarea>
+                    <textarea id="result-body" disabled style="width: 100%; min-height: 100px"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="result-view">View</button>
+                    <button type="submit" class="btn btn-primary" id="result-view">View</button>
                 </div>
             </form>
         </div>
@@ -259,7 +261,7 @@
 <script src="/js/argon.min.js"></script>
 
 <!-- Custom JS -->
-<script src="/js/script.js"></script>
+<script th:src="${'/js/script.js?v=' + @environment.getProperty('js.version')}"></script>
 
 <script>
     var generatedPokemonId
@@ -407,6 +409,7 @@
         }).done(function(response) {
             $("#result-name").html(response["name"])
             $("#result-body").val(JSON.stringify(response, null, 4))
+            $("#result-json").val(JSON.stringify(response))
             $("#result-view").attr("href", "/pokemon/" + response["pokemonDocumentId"])
 
             $('#resultsModal').modal('show')
@@ -416,20 +419,20 @@
         })
     })
 
-    $("#result-view").click(function () {
-        $.ajax("/pokemon", {
-            method: "POST",
-            contentType: "application/json",
-            data: $("#result-body").val()
-        }).done(function(response) {
-            let w = window.open('about:blank');
-            w.document.open();
-            w.document.write(response);
-            w.document.close();
-        }).fail(function(jqxhr, textStatus, errorThrown)  {
-            alert("Error: " + textStatus + " : " + errorThrown)
-        })
-    })
+    // $("#result-view").click(function () {
+    //     $.ajax("/pokemon", {
+    //         method: "POST",
+    //         contentType: "application/json",
+    //         data: $("#result-body").val()
+    //     }).done(function(response) {
+    //         let w = window.open('about:blank');
+    //         w.document.open();
+    //         w.document.write(response);
+    //         w.document.close();
+    //     }).fail(function(jqxhr, textStatus, errorThrown)  {
+    //         alert("Error: " + textStatus + " : " + errorThrown)
+    //     })
+    // })
 </script>
 </body>
 </html>
