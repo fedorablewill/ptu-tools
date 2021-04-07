@@ -231,7 +231,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <textarea id="result-body" disabled style="width: 100%; min-height: 100px"></textarea>
+                    <textarea id="result-body" style="width: 100%; min-height: 100px"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -418,21 +418,6 @@
             alert("Error: " + textStatus + " : " + errorThrown)
         })
     })
-
-    // $("#result-view").click(function () {
-    //     $.ajax("/pokemon", {
-    //         method: "POST",
-    //         contentType: "application/json",
-    //         data: $("#result-body").val()
-    //     }).done(function(response) {
-    //         let w = window.open('about:blank');
-    //         w.document.open();
-    //         w.document.write(response);
-    //         w.document.close();
-    //     }).fail(function(jqxhr, textStatus, errorThrown)  {
-    //         alert("Error: " + textStatus + " : " + errorThrown)
-    //     })
-    // })
 </script>
 </body>
 </html>
