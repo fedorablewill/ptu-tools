@@ -80,7 +80,7 @@ class UploadDataTool {
 
             val capabilities = HashMap<String, Int>()
             for (capability in entry["capabilities"] as List<String>) {
-                if (capability.matches(Regex(".* \\d$"))) {
+                if (capability.matches(Regex(".* \\d$")) || capability.startsWith("Jump ")) {
                     val splitIndex = capability.lastIndexOf(' ')
                     val name = capability.substring(0, splitIndex)
                     val value = capability.substring(splitIndex + 1, capability.length)

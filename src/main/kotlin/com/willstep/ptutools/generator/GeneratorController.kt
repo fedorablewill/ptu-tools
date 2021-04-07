@@ -1,18 +1,12 @@
 package com.willstep.ptutools.generator
 
+import com.google.cloud.firestore.QueryDocumentSnapshot
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Pokemon
 import com.willstep.ptutools.dataaccess.service.FirestoreService
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.random.Random
-import java.util.LinkedHashMap
-import java.util.function.BinaryOperator
-
-import java.util.stream.Collectors
-
-
 
 
 @RestController
@@ -39,19 +33,15 @@ class GeneratorController {
         var query = FirestoreService().getCollection("pokedexEntries").offset(0)
 
         for (requestParam in requestBody.params) {
-            query = when {
-                RequestMethod.EQUALS == requestParam.method -> query.whereEqualTo(requestParam.field!!, requestParam.value)
-                RequestMethod.EQUALS_LIST == requestParam.method -> query.whereIn(requestParam.field!!, requestParam.value as List<Any>)
-                RequestMethod.ARRAY_CONTAINS == requestParam.method -> query.whereArrayContains(requestParam.field!!, requestParam.value!!)
-                RequestMethod.ARRAY_CONTAINS_LIST == requestParam.method -> query.whereArrayContainsAny(requestParam.field!!, requestParam.value as List<Any>)
-                else -> query
+            if (RequestMethod.EQUALS == requestParam.method) {
+                query = query.whereEqualTo(requestParam.field!!, parseValue(requestParam.value!!))
             }
         }
 
-        val results = query.get().get()
-        if (results.size() != 0) {
+        val results = query.get().get().filter { doFilter(it, requestBody.params) }
+        if (results.isNotEmpty()) {
             return GeneratorService().generatePokemon(
-                results.documents[Random.nextInt(0,results.size())].toObject(PokedexEntry::class.java),
+                results[Random.nextInt(0, results.size)].toObject(PokedexEntry::class.java),
                 requestBody.minLevel,
                 requestBody.maxLevel
             )
@@ -80,5 +70,34 @@ class GeneratorController {
         }
 
         return options
+    }
+
+    fun parseList(list: List<Any>) : List<Any> {
+        if (list[0] is String && (list[0] as String).toLongOrNull() != null) {
+            return list.map { (it as String).toLongOrNull() ?: 0 }
+        }
+
+        return list
+    }
+
+    fun parseValue(value: Any) : Any {
+        if (value is String) {
+            return value.toLongOrNull() ?: value
+        }
+        return value
+    }
+
+    fun doFilter(obj: QueryDocumentSnapshot, filters: List<GeneratorRequestParam>): Boolean {
+        for (requestParam in filters) {
+            when (requestParam.method) {
+                RequestMethod.EQUALS_LIST ->
+                    if (!parseList(requestParam.value as List<Any>).contains(obj[requestParam.field!!])) return false
+                RequestMethod.ARRAY_CONTAINS ->
+                    if (!(obj[requestParam.field!!] as List<Any>).contains(requestParam.value)) return false
+                RequestMethod.ARRAY_CONTAINS_LIST ->
+                    if (!(obj[requestParam.field!!] as List<Any>).containsAll(parseList(requestParam.value as List<Any>))) return false
+            }
+        }
+        return true
     }
 }
