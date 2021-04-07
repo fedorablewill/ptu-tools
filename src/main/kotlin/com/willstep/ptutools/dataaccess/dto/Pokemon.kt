@@ -1,7 +1,6 @@
 package com.willstep.ptutools.dataaccess.dto
 
 import java.util.*
-import kotlin.collections.ArrayList
 
 data class Pokemon(
     val pokemonDocumentId: String = UUID.randomUUID().toString(),
@@ -37,7 +36,7 @@ data class Pokemon(
     var heldItem: String? = null,
 
     var moves: MutableList<Move> = ArrayList(),
-    var abilities: MutableList<String> = ArrayList()
+    var abilities: MutableList<Ability> = ArrayList()
 
 ) {
     data class Stat(

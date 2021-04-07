@@ -750,26 +750,31 @@
                         <hr/>
                     </div>
                     <div class="row row-slim">
-                        <div class="form-table col-sm-12 mt-3">
+                        <div class="form-table col-sm-12 mt-3" th:each="ability, iStat: *{abilities}" th:id="'ability-' + ${iStat.index}">
                             <label class="control-label control-label-title">
-                                <input class="form-control form-control-sm" type="text" id="ability-1-name" />
+                                <input class="form-control form-control-sm" type="text" th:id="'ability-' + ${iStat.index} + '-name'"
+                                       th:field="*{abilities[__${iStat.index}__].name}" />
                             </label>
                             <div class="row row-slim mt-4">
                                 <div class="form-group label-floating col-sm-6">
-                                    <label class="control-label" for="ability-1-freq">Frequency</label>
-                                    <input class="form-control" type="text" id="ability-1-freq" />
+                                    <label class="control-label" th:for="'ability-' + ${iStat.index} + '-freq'">Frequency</label>
+                                    <input class="form-control" type="text" th:id="'ability-' + ${iStat.index} + '-freq'"
+                                           th:field="*{abilities[__${iStat.index}__].frequency}" />
                                 </div>
                                 <div class="form-group label-floating col-sm-6">
-                                    <label class="control-label" for="ability-1-target">Target</label>
-                                    <input class="form-control" type="text" id="ability-1-target" />
+                                    <label class="control-label" th:for="'ability-' + ${iStat.index} + '-target'">Target</label>
+                                    <input class="form-control" type="text" th:id="'ability-' + ${iStat.index} + '-target'"
+                                           th:field="*{abilities[__${iStat.index}__].target}" />
                                 </div>
                                 <div class="form-group label-floating col-sm-12">
-                                    <label class="control-label" for="ability-1-trigger">Trigger</label>
-                                    <input class="form-control" type="text" id="ability-1-trigger" />
+                                    <label class="control-label" th:for="'ability-' + ${iStat.index} + '-trigger'">Trigger</label>
+                                    <input class="form-control" type="text" th:id="'ability-' + ${iStat.index} + '-trigger'"
+                                           th:field="*{abilities[__${iStat.index}__].trigger}" />
                                 </div>
                                 <div class="form-group label-floating col-sm-12">
-                                    <label class="control-label" for="ability-1-effect">Effect</label>
-                                    <textarea class="form-control" id="ability-1-effect"></textarea>
+                                    <label class="control-label" th:for="'ability-' + ${iStat.index} + '-effect'">Effect</label>
+                                    <textarea class="form-control" th:id="'ability-' + ${iStat.index} + '-effect'"
+                                              th:field="*{abilities[__${iStat.index}__].effect}"></textarea>
                                 </div>
                             </div>
                         </div>

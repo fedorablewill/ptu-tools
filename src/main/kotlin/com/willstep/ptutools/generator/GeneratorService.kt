@@ -2,11 +2,11 @@ package com.willstep.ptutools.generator
 
 import com.willstep.ptutools.core.EXPERIENCE_CHART
 import com.willstep.ptutools.core.Nature
+import com.willstep.ptutools.dataaccess.dto.Ability
 import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Pokemon
 import com.willstep.ptutools.dataaccess.service.FirestoreService
-import java.util.*
 import kotlin.random.Random
 
 
@@ -54,15 +54,20 @@ class GeneratorService(
     }
 
     fun randomizeAbilities(pokemon: Pokemon) {
-        pokemon.abilities.add(pokemon.pokedexEntry.basicAbilities[Random.nextInt(pokemon.pokedexEntry.basicAbilities.size)])
+        var name = pokemon.pokedexEntry.basicAbilities[Random.nextInt(pokemon.pokedexEntry.basicAbilities.size)]
+        pokemon.abilities.add(
+            firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
+        )
 
         if (pokemon.level >= 20) {
             val secondAbilities = pokemon.pokedexEntry.basicAbilities + pokemon.pokedexEntry.advancedAbilities
-            pokemon.abilities.add(secondAbilities[Random.nextInt(secondAbilities.size)])
+            name = secondAbilities[Random.nextInt(secondAbilities.size)]
+            firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
         }
         if (pokemon.level >= 40) {
             val thirdAbilities = pokemon.pokedexEntry.basicAbilities + pokemon.pokedexEntry.advancedAbilities + pokemon.pokedexEntry.highAbilities
-            pokemon.abilities.add(thirdAbilities[Random.nextInt(thirdAbilities.size)])
+            name = thirdAbilities[Random.nextInt(thirdAbilities.size)]
+            firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
         }
     }
 

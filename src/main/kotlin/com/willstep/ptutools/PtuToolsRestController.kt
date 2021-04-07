@@ -1,6 +1,7 @@
 package com.willstep.ptutools
 
 import com.willstep.ptutools.core.PTUCoreInfoService
+import com.willstep.ptutools.dataaccess.dto.Ability
 import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Type
@@ -17,6 +18,13 @@ class PtuToolsRestController {
     @PostMapping("/uploadMoves")
     fun uploadMoves(@RequestBody movesList: List<Map<String, Any>>, model: Model) {
         UploadDataTool().uploadMoveArray(movesList)
+    }
+
+    @PostMapping("/uploadAbilities")
+    fun uploadAbilities(@RequestBody abilities: List<Ability>, model: Model) {
+        for (ability in abilities) {
+            FirestoreService().saveAsDocument("abilities", ability.name!!, ability)
+        }
     }
 
     @PostMapping("/uploadPokedex")
