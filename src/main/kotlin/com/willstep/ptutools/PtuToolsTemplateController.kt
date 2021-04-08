@@ -67,7 +67,8 @@ class PtuToolsTemplateController {
     fun pokemon(@ModelAttribute requestBody: JsonAsString, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String>? {
         val variables = mapOf<String, Any>(
             "pokemon" to ObjectMapper().readValue(requestBody.myData, Pokemon::class.java),
-            "jsValue" to environment.getProperty("js.version")!!
+            "jsVersion" to environment.getProperty("js.version")!!,
+            "cssVersion" to environment.getProperty("css.version")!!
         )
         val context = Context()
         context.setVariables(variables)

@@ -1,0 +1,203 @@
+body {
+    background-color: #434343;
+    color: white;
+    padding-bottom: 2rem;
+}
+
+.bg-dark {
+    background-color: #434343 !important;
+}
+
+h2, h3, h4 {
+    color: #e9ecef;
+}
+
+hr {
+    border-top: .0625rem solid rgba(255, 255, 255, 0.1);
+}
+
+.char-section-title hr {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.modal-body hr {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    max-width: 220px;
+}
+
+.navbar {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    background: none;
+    color: #cad1d7;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    opacity: 1;
+    background: none;
+    border-color: rgba(50,151,211,.25);
+}
+
+.focused .form-control {
+    border-color: #cad1d7;
+}
+
+.form-group {
+    position: relative;
+    margin-top: 0.5rem;
+}
+
+.form-inline.form-group {
+    margin: 0;
+}
+
+.form-skill-die {
+    width: 2.5rem;
+    display: inline-block;
+}
+
+.form-skill-bonus {
+    width: 3rem;
+    display: inline-block;
+}
+
+.custom-checkbox label {
+    padding-bottom: 50px;
+    z-index: 50;
+    background: none;
+}
+
+.custom-checkbox .custom-control-label {
+    margin-bottom: 0;
+    position: relative;
+    left: 40px;
+    top: 0.75rem;
+}
+
+.control-label {
+    position: absolute;
+    text-transform: uppercase;
+    font-size: .7rem;
+    background-color: #434343;
+    left: 12px;
+    top: -0.5rem;
+    padding: 0 4px;
+    margin-bottom: 0;
+}
+
+.control-label-title {
+    font-size: 1rem;
+    top: -0.75rem;
+}
+
+.control-label-title input {
+    font-weight: bold;
+}
+
+.navbar .control-label {
+    background-color: #f5365c;
+}
+
+.control-action {
+    border: none;
+    position: absolute;
+    font-size: .7rem;
+    background: #434343;
+    right: 12px;
+    top: -0.5rem;
+}
+
+button.control-action, .control-action button {
+    border: none;
+    background: #434343;
+    cursor: pointer;
+    font-size: .7rem;
+    padding: 0 4px;
+    margin: 0;
+}
+
+.control-action-bottom {
+    top: unset;
+    bottom: -0.5rem;
+}
+
+.control-action>button:not(:last-child) {
+    padding-right: 0;
+    margin: 0;
+}
+
+.control-action img {
+    height: 1rem;
+}
+
+.btn-form {
+    width: inherit;
+}
+
+.char-picture {
+    background: white;
+    position: absolute;
+    height: 85px;
+    left: 0;
+    width: 85px;
+    padding: 1rem;
+}
+
+.char-picture img {
+    width: 100%;
+    height: auto;
+}
+
+.navbar {
+    padding-left: 110px;
+}
+
+.form-table {
+    border: 2px solid #cad1d7;
+    border-radius: .25rem;
+}
+
+.form-table td:not(.form-group), .form-table th {
+    padding: 0.5rem;
+}
+
+.form-table td {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.row-slim {
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
+.row-slim>div {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.border-none {
+    border-color: transparent !important;
+}
+
+.tag_complete {
+    background: none;
+    height: 3.2rem;
+}
+
+ul.autocomplete {
+    color: #0a0c0d;
+}
+
+#stats input {
+    min-width: 3.5rem;
+}
+
+.btn-save {
+    width: 46px;
+    height: 46px;
+    padding: initial;
+}

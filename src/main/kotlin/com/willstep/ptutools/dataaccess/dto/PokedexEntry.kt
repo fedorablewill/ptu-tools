@@ -36,7 +36,7 @@ data class PokedexEntry(
 
     var evolutionFamilyDocumentId: String? = null,
     var evolutionStage: Int? = null,
-    var megaEvolution: MegaEvolution? = null
+    var megaEvolution: MegaEvolution? = null,
 ) {
     data class MegaEvolution(
         var name: String? = null,
@@ -50,18 +50,16 @@ data class PokedexEntry(
 
     constructor() : this(null)
 
-    fun getOtherCapabilities(): String {
-        return capabilities.filter { entry -> entry.value == -1 } .keys.joinToString(",")
-    }
+    var otherCapabilities: String? = capabilities.filter { entry -> entry.value == -1 } .keys.joinToString(",")
 
-    fun setOtherCapabilities(capabilitiesString: String) {
-        val items = capabilitiesString.split(Regex(", ?"))
+    fun saveOtherCapabilities() {
+        val items = otherCapabilities?.split(Regex(", ?")) ?: listOf()
         for (capability in items) {
             this.capabilities[capability] = -1
         }
 
         for (entry in capabilities.entries) {
-            if (entry.value == -1 && !items.contains(entry.key)) {
+            if (entry.value != null && entry.value == -1 && !items.contains(entry.key)) {
                 this.capabilities.remove(entry.value)
             }
         }

@@ -235,6 +235,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="result-save">Save</button>
                     <button type="submit" class="btn btn-primary" id="result-view">View</button>
                 </div>
             </form>
@@ -417,6 +418,14 @@
         }).fail(function(jqxhr, textStatus, errorThrown)  {
             alert("Error: " + textStatus + " : " + errorThrown)
         })
+    })
+
+    $("#result-save").click(function() {
+        var a = document.createElement("a");
+        var file = new Blob([$("#result-body").val()], {type: "text/json"});
+        a.href = URL.createObjectURL(file);
+        a.download = $("#result-name").text() + ".json";
+        a.click();
     })
 </script>
 </body>

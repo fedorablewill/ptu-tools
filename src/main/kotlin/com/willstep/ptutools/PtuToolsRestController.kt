@@ -1,16 +1,18 @@
 package com.willstep.ptutools
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.willstep.ptutools.core.PTUCoreInfoService
-import com.willstep.ptutools.dataaccess.dto.Ability
-import com.willstep.ptutools.dataaccess.dto.Move
-import com.willstep.ptutools.dataaccess.dto.PokedexEntry
-import com.willstep.ptutools.dataaccess.dto.Type
+import com.willstep.ptutools.dataaccess.dto.*
 import com.willstep.ptutools.dataaccess.service.FirestoreService
 import com.willstep.ptutools.dataaccess.service.UploadDataTool
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
+import java.io.ByteArrayInputStream
+
 
 @RestController
 class PtuToolsRestController {
@@ -86,5 +88,20 @@ class PtuToolsRestController {
         } catch (e: Exception) {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
+    }
+
+    @PostMapping("/savePokemonToFile")
+    fun savePokemonToFile(@ModelAttribute pokemon: Pokemon): ResponseEntity<InputStreamResource> {
+        pokemon.pokedexEntry.saveOtherCapabilities()
+        val buf: ByteArray = ObjectMapper().writeValueAsBytes(pokemon)
+
+        return ResponseEntity
+            .ok()
+            .contentLength(buf.size.toLong())
+            .contentType(
+                MediaType.parseMediaType("application/octet-stream")
+            )
+            .header("Content-Disposition", String.format("attachment; filename=\"%s.json\"", pokemon.name))
+            .body(InputStreamResource(ByteArrayInputStream(buf)))
     }
 }
