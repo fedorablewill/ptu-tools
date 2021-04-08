@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- START Move Fragment -->
+<div th:fragment="move(move, index)">
+    <!--/*@thymesVar id="move" type="com.willstep.ptutools.dataaccess.dto.Move"*/-->
+    <label class="control-label control-label-title">
+        <input class="form-control form-control-sm" type="text" th:id="'move-' + ${index} + '-name'"
+               th:name="'moves[' + ${index} + '].name'" th:value="${move.name}"/>
+    </label>
+    <span class="control-action">
+      <button type="button" class="btn" onclick="alert('Feature coming soon')">
+          <img src="/img/icons/dice-d20-outline.png" alt="Roll AC Only">
+      </button>
+      <button type="button" class="btn" onclick="alert('Feature coming soon')">
+          <img src="/img/icons/octagram-outline.png" alt="Roll Everything">
+      </button>
+      <button type="button" class="btn" onclick="onClickDeleteMove(this)">
+          <img src="/img/icons/delete-forever-outline.png" alt="Delete">
+      </button>
+    </span>
+    <div class="row row-slim mt-4">
+        <div class="form-group label-floating col-sm-4">
+            <label class="control-label" th:for="'move-' + ${index} + '-type'">Type</label>
+            <input class="form-control" type="text" th:id="'move-' + ${index} + '-type'"
+                   data-autocomplete="type" onchange="changeMoveTypeColor(this)"
+                   th:name="'moves[' + ${index} + '].type'" th:value="${move.type}" />
+        </div>
+        <div class="form-group label-floating col-sm-4">
+            <label class="control-label" th:for="'move-' + ${index} + '-class'">Class</label>
+            <select class="form-control" th:id="'move-' + ${index} + '-class'"
+                    th:name="'moves[' + ${index} + '].damageClass'" th:value="${move.damageClass}">
+                <option th:value="'Physical'">Physical</option>
+                <option th:value="'Special'">Special</option>
+                <option th:value="'Status'">Status</option>
+            </select>
+        </div>
+        <div class="form-group label-floating col-sm-4">
+            <label class="control-label" th:for="'move-' + ${index} + '-freq'">Frequency</label>
+            <input class="form-control" type="text" th:id="'move-' + ${index} + '-freq'"
+                   th:name="'moves[' + ${index} + '].frequency'" th:value="${move.frequency}" />
+        </div>
+
+        <div class="form-group label-floating col-sm-6">
+            <label class="control-label" th:for="'move-' + ${index} + '-range'">Range</label>
+            <input class="form-control" type="text" th:id="'move-' + ${index} + '-range'"
+                   th:name="'moves[' + ${index} + '].range'" th:value="${move.range}" />
+        </div>
+        <div class="form-group label-floating col-sm-3">
+            <label class="control-label" th:for="'move-' + ${index} + '-ac'">AC</label>
+            <input class="form-control" type="number" th:id="'move-' + ${index} + '-ac'"
+                   th:name="'moves[' + ${index} + '].accuracyCheck'" th:value="${move.accuracyCheck}" />
+        </div>
+        <div class="form-group label-floating col-sm-3">
+            <label class="control-label" th:for="'move-' + ${index} + '-db'">DB</label>
+            <button type="button" class="btn control-action" data-toggle="tooltip" data-placement="top" data-html="true"
+                    th:id="'move-' + ${index} + '-db-tooltip'" title="No DB entered"
+                    th:data-subscribe="'move-' + ${index} + '-db,move-' + ${index} + '-class,char-stat-satk-total,char-stat-atk-total'" data-subscribe-callback="buildDBTooltip">
+                <img src="/img/icons/help-rhombus-outline.png" alt="View Die Formula" />
+            </button>
+            <input class="form-control" type="number" th:id="'move-' + ${index} + '-db'" data-db-tooltip
+                   th:name="'moves[' + ${index} + '].damageBase'" th:value="${move.damageBase}" />
+        </div>
+
+        <div class="row row-slim collapse move-collapse show" th:id="'move-' + ${index} + '-collapse'">
+            <div class="form-group label-floating col-sm-3">
+                <label class="control-label" th:for="'move-' + ${index} + '-crit'">Crits On</label>
+                <input class="form-control" type="number" th:id="'move-' + ${index} + '-crit'"
+                       th:name="'moves[' + ${index} + '].critsOn'" th:value="${move.critsOn}" />
+            </div>
+            <div class="form-group label-floating custom-checkbox col-sm-3">
+                <label class="control-label" th:for="'move-' + ${index} + '-stab'">Has STAB?</label>
+                <input class="form-control custom-control-input" type="checkbox" th:id="'move-' + ${index} + '-stab'"
+                       th:name="'moves[' + ${index} + '].stab'" th:value="${move.stab}" />
+                <span class="custom-control-label"></span>
+            </div>
+            <div class="form-group label-floating col-sm-6">
+                <label class="control-label" th:for="'move-' + ${index} + '-contest'">Contest Type/Effect</label>
+                <input class="form-control" type="text" th:id="'move-' + ${index} + '-contest'" th:value="${move.contestType ?: ''} + ' / ' + ${move.contestEffect ?: ''}" />
+            </div>
+
+            <div class="form-group label-floating col-sm-12">
+                <label class="control-label" th:for="'move-' + ${index} + '-effect'">Effect</label>
+                <textarea class="form-control" type="text" th:id="'move-' + ${index} + '-effect'"
+                          th:name="'moves[' + ${index} + '].effects'" th:text="${move.effects}"></textarea>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn control-action control-action-bottom text-danger"
+            data-toggle="collapse" th:data-target="'#move-'+${index}+'-collapse'" aria-expanded="false" th:aria-controls="'move-'+${index}+'-collapse'">
+        Show More
+    </button>
+</div>
+
+<!-- START Ability Fragment -->
+<div th:fragment="ability(ability, index)">
+    <!--/*@thymesVar id="ability" type="com.willstep.ptutools.dataaccess.dto.Ability"*/-->
+    <label class="control-label control-label-title">
+        <input class="form-control form-control-sm" type="text" th:id="'ability-' + ${index} + '-name'"
+               th:name="'abilities[' + ${index} + '].name'" th:value="${ability.name}" />
+    </label>
+    <span class="control-action">
+      <button type="button" class="btn" onclick="onClickDeleteAbility(this)">
+          <img src="/img/icons/delete-forever-outline.png" alt="Delete">
+      </button>
+    </span>
+    <div class="row row-slim mt-4">
+        <div class="form-group label-floating col-sm-6">
+            <label class="control-label" th:for="'ability-' + ${index} + '-freq'">Frequency</label>
+            <input class="form-control" type="text" th:id="'ability-' + ${index} + '-freq'"
+                   th:name="'abilities[' + ${index} + '].frequency'" th:value="${ability.frequency}" />
+        </div>
+        <div class="form-group label-floating col-sm-6">
+            <label class="control-label" th:for="'ability-' + ${index} + '-target'">Target</label>
+            <input class="form-control" type="text" th:id="'ability-' + ${index} + '-target'"
+                   th:name="'abilities[' + ${index} + '].target'" th:value="${ability.target}" />
+        </div>
+        <div class="form-group label-floating col-sm-12">
+            <label class="control-label" th:for="'ability-' + ${index} + '-trigger'">Trigger</label>
+            <input class="form-control" type="text" th:id="'ability-' + ${index} + '-trigger'"
+                   th:name="'abilities[' + ${index} + '].trigger'" th:value="${ability.trigger}" />
+        </div>
+        <div class="form-group label-floating col-sm-12">
+            <label class="control-label" th:for="'ability-' + ${index} + '-effect'">Effect</label>
+            <textarea class="form-control" th:id="'ability-' + ${index} + '-effect'"
+                      th:name="'abilities[' + ${index} + '].effect'" th:text="${ability.effect}"></textarea>
+        </div>
+    </div>
+</div>
+
+</html>

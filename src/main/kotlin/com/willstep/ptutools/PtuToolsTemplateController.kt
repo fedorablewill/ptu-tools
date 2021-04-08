@@ -1,6 +1,8 @@
 package com.willstep.ptutools
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.willstep.ptutools.dataaccess.dto.Ability
+import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.Pokemon
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -8,10 +10,7 @@ import org.springframework.core.env.Environment
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.RequestContext
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
@@ -62,7 +61,7 @@ class PtuToolsTemplateController {
         val thymeleafRequestContext = SpringWebMvcThymeleafRequestContext(requestContext, request)
         context.setVariable("thymeleafRequestContext", thymeleafRequestContext)
 
-        return ResponseEntity.ok(htmlTemplateEngine.process("fragment-characterPokemon", context))
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterPokemon", context))
     }
     @PostMapping("/pokemon")
     fun pokemon(@ModelAttribute requestBody: JsonAsString, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String>? {
@@ -77,6 +76,24 @@ class PtuToolsTemplateController {
         context.setVariable("thymeleafRequestContext", thymeleafRequestContext)
 
         return ResponseEntity.ok(htmlTemplateEngine.process("pokemon", context))
+    }
+    @GetMapping("/pokemon/move")
+    fun getMoveFragment(@RequestParam move: Move?, @RequestParam index: Int): ResponseEntity<String> {
+        val context = Context()
+        context.setVariable("move", move ?: Move())
+        context.setVariable("index", index)
+        val fragmentsSelectors: Set<String> = setOf("move")
+
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
+    }
+    @GetMapping("/pokemon/ability")
+    fun getAbilityFragment(@RequestParam ability: Ability?, @RequestParam index: Int): ResponseEntity<String> {
+        val context = Context()
+        context.setVariable("ability", ability ?: Ability())
+        context.setVariable("index", index)
+        val fragmentsSelectors: Set<String> = setOf("ability")
+
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
     }
 }
 

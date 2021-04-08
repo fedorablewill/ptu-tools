@@ -421,87 +421,12 @@
                         <h2>Moves</h2>
                         <hr/>
                     </div>
-                    <div class="row row-slim">
-                        <div class="form-table form-move col-sm-12 mt-3 border-t-normal" th:each="move, iStat: *{moves}" th:id="'move-' + ${iStat.index}">
-                            <label class="control-label control-label-title">
-                                <input class="form-control form-control-sm" type="text" th:id="'move-' + ${iStat.index} + '-name'" th:field="*{moves[__${iStat.index}__].name}" />
-                            </label>
-                            <span class="control-action">
-                                    <button type="button" class="btn">
-                                        <img src="/img/icons/dice-d20-outline.png" alt="Roll AC Only">
-                                    </button>
-                                    <button type="button" class="btn">
-                                        <img src="/img/icons/octagram-outline.png" alt="Roll Everything">
-                                    </button>
-                                    <button type="button" class="btn">
-                                        <img src="/img/icons/delete-forever-outline.png" alt="Delete">
-                                    </button>
-                                </span>
-                            <div class="row row-slim mt-4">
-                                <div class="form-group label-floating col-sm-4">
-                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-type'">Type</label>
-                                    <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-type'"
-                                           data-autocomplete="type" onchange="changeMoveTypeColor(this)" th:field="*{moves[__${iStat.index}__].type}" />
-                                </div>
-                                <div class="form-group label-floating col-sm-4">
-                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-class'">Class</label>
-                                    <select class="form-control" th:id="'move-' + ${iStat.index} + '-class'" th:field="*{moves[__${iStat.index}__].damageClass}">
-                                        <option th:value="'Physical'">Physical</option>
-                                        <option th:value="'Special'">Special</option>
-                                        <option th:value="'Status'">Status</option>
-                                    </select>
-                                </div>
-                                <div class="form-group label-floating col-sm-4">
-                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-freq'">Frequency</label>
-                                    <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-freq'" th:field="*{moves[__${iStat.index}__].frequency}" />
-                                </div>
-
-                                <div class="form-group label-floating col-sm-6">
-                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-range'">Range</label>
-                                    <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-range'" th:field="*{moves[__${iStat.index}__].range}" />
-                                </div>
-                                <div class="form-group label-floating col-sm-3">
-                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-ac'">AC</label>
-                                    <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-ac'" th:field="*{moves[__${iStat.index}__].accuracyCheck}" />
-                                </div>
-                                <div class="form-group label-floating col-sm-3">
-                                    <label class="control-label" th:for="'move-' + ${iStat.index} + '-db'">DB</label>
-                                    <button type="button" class="btn control-action" data-toggle="tooltip" data-placement="top" data-html="true"
-                                            th:id="'move-' + ${iStat.index} + '-db-tooltip'" title="No DB entered"
-                                            data-subscribe="move-1-db,move-1-class,char-stat-satk-total,char-stat-atk-total" data-subscribe-callback="buildDBTooltip">
-                                        <img src="/img/icons/help-rhombus-outline.png" alt="View Die Formula" />
-                                    </button>
-                                    <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-db'" data-db-tooltip th:field="*{moves[__${iStat.index}__].damageBase}" />
-                                </div>
-
-                                <div class="row row-slim collapse move-collapse show" th:id="'move-' + ${iStat.index} + '-collapse'">
-                                    <div class="form-group label-floating col-sm-3">
-                                        <label class="control-label" th:for="'move-' + ${iStat.index} + '-crit'">Crits On</label>
-                                        <input class="form-control" type="number" th:id="'move-' + ${iStat.index} + '-crit'" th:field="*{moves[__${iStat.index}__].critsOn}" />
-                                    </div>
-                                    <div class="form-group label-floating custom-checkbox col-sm-3">
-                                        <label class="control-label" th:for="'move-' + ${iStat.index} + '-stab'">Has STAB?</label>
-                                        <input class="form-control custom-control-input" type="checkbox" th:id="'move-' + ${iStat.index} + '-stab'" th:field="*{moves[__${iStat.index}__].stab}" />
-                                        <span class="custom-control-label"></span>
-                                    </div>
-                                    <div class="form-group label-floating col-sm-6">
-                                        <label class="control-label" th:for="'move-' + ${iStat.index} + '-contest'">Contest Type/Effect</label>
-                                        <input class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-contest'" th:value="${move.contestType} + ' / ' + ${move.contestEffect}" />
-                                    </div>
-
-                                    <div class="form-group label-floating col-sm-12">
-                                        <label class="control-label" th:for="'move-' + ${iStat.index} + '-effect'">Effect</label>
-                                        <textarea class="form-control" type="text" th:id="'move-' + ${iStat.index} + '-effect'" th:field="*{moves[__${iStat.index}__].effects}"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" class="btn control-action control-action-bottom text-danger"
-                                    data-toggle="collapse" th:data-target="'#move-'+${iStat.index}+'-collapse'" aria-expanded="false" th:aria-controls="'move-'+${iStat.index}+'-collapse'">
-                                Show More
-                            </button>
+                    <div class="row row-slim" id="moves-list">
+                        <div class="form-table form-move col-sm-12 mt-3" th:each="move, iStat: *{moves}" th:id="'move-' + ${iStat.index}">
+                            <div th:replace="fragments/characterFormFragments :: move(move = ${move}, index = ${iStat.index})"></div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-outline-danger mt-3">Add Move</button>
+                    <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickAddMove()">Add Move</button>
                 </section>
             </div>
             <div class="col-xs-12 col-md-6">
@@ -749,37 +674,12 @@
                         <h2>Abilities</h2>
                         <hr/>
                     </div>
-                    <div class="row row-slim">
-                        <div class="form-table col-sm-12 mt-3" th:each="ability, iStat: *{abilities}" th:id="'ability-' + ${iStat.index}">
-                            <label class="control-label control-label-title">
-                                <input class="form-control form-control-sm" type="text" th:id="'ability-' + ${iStat.index} + '-name'"
-                                       th:field="*{abilities[__${iStat.index}__].name}" />
-                            </label>
-                            <div class="row row-slim mt-4">
-                                <div class="form-group label-floating col-sm-6">
-                                    <label class="control-label" th:for="'ability-' + ${iStat.index} + '-freq'">Frequency</label>
-                                    <input class="form-control" type="text" th:id="'ability-' + ${iStat.index} + '-freq'"
-                                           th:field="*{abilities[__${iStat.index}__].frequency}" />
-                                </div>
-                                <div class="form-group label-floating col-sm-6">
-                                    <label class="control-label" th:for="'ability-' + ${iStat.index} + '-target'">Target</label>
-                                    <input class="form-control" type="text" th:id="'ability-' + ${iStat.index} + '-target'"
-                                           th:field="*{abilities[__${iStat.index}__].target}" />
-                                </div>
-                                <div class="form-group label-floating col-sm-12">
-                                    <label class="control-label" th:for="'ability-' + ${iStat.index} + '-trigger'">Trigger</label>
-                                    <input class="form-control" type="text" th:id="'ability-' + ${iStat.index} + '-trigger'"
-                                           th:field="*{abilities[__${iStat.index}__].trigger}" />
-                                </div>
-                                <div class="form-group label-floating col-sm-12">
-                                    <label class="control-label" th:for="'ability-' + ${iStat.index} + '-effect'">Effect</label>
-                                    <textarea class="form-control" th:id="'ability-' + ${iStat.index} + '-effect'"
-                                              th:field="*{abilities[__${iStat.index}__].effect}"></textarea>
-                                </div>
-                            </div>
+                    <div class="row row-slim" id="abilities-list">
+                        <div class="form-table form-ability col-sm-12 mt-3" th:each="ability, iStat: *{abilities}" th:id="'ability-' + ${iStat.index}">
+                            <div th:replace="fragments/characterFormFragments :: ability(ability = ${ability}, index = ${iStat.index})"></div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-outline-danger mt-3">Add Ability</button>
+                    <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickAddAbility()">Add Ability</button>
                 </section>
             </div>
         </div>

@@ -178,3 +178,71 @@ function takeDamage(amount) {
 
     healthElem.val(health - amount)
 }
+
+function onClickAddMove() {
+    let rowsElem = $("#moves-list")
+    let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".form-move").last().attr("id").replace("move-", "")) + 1
+
+    $.ajax("/pokemon/move", {
+        method: "GET",
+        contentType: "application/json",
+        data: {
+            "index": index
+        }
+    }).done(function(response) {
+        let newElem = $(`<div class="form-table form-move col-sm-12 mt-3" id="move-${index}"></div>`).html(response)
+        rowsElem.append(newElem)
+
+        newElem.find('[data-autocomplete="type"]').autocomplete({
+            source: TYPES
+        })
+        newElem.find('.move-collapse').on('hide.bs.collapse', function () {
+            $("button[aria-controls='" + $(this).attr("id") + "']").html("Show More")
+        }).on('show.bs.collapse', function () {
+            $("button[aria-controls='" + $(this).attr("id") + "']").html("Show Less")
+        })
+        $("button[aria-controls='move-" + index + "-collapse']").html("Show Less")
+        newElem.find('[data-toggle="tooltip"]').tooltip()
+        newElem.find('[data-subscribe]').each(loadSubscriber)
+    }).fail(function(jqxhr, textStatus, errorThrown)  {
+        alert("Error getting move template: " + textStatus + " : " + errorThrown)
+    })
+}
+
+function onClickDeleteMove(elem) {
+    if (confirm("Are you sure you want to delete this move?")) {
+        $(elem).closest(".form-move").remove()
+
+        if ($("#moves-list").children().length === 0) {
+            onClickAddMove()
+        }
+    }
+}
+
+function onClickAddAbility() {
+    let rowsElem = $("#abilities-list")
+    let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".form-ability").last().attr("id").replace("ability-", "")) + 1
+
+    $.ajax("/pokemon/ability", {
+        method: "GET",
+        contentType: "application/json",
+        data: {
+            "index": index
+        }
+    }).done(function(response) {
+        let newElem = $(`<div class="form-table form-ability col-sm-12 mt-3" id="ability-${index}"></div>`).html(response)
+        rowsElem.append(newElem)
+    }).fail(function(jqxhr, textStatus, errorThrown)  {
+        alert("Error getting ability template: " + textStatus + " : " + errorThrown)
+    })
+}
+
+function onClickDeleteAbility(elem) {
+    if (confirm("Are you sure you want to delete this ability?")) {
+        $(elem).closest(".form-ability").remove()
+
+        if ($("#abilities-list").children().length === 0) {
+            onClickAddAbility()
+        }
+    }
+}
