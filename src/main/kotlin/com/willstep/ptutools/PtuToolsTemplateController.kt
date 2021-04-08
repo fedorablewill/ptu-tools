@@ -50,11 +50,22 @@ class PtuToolsTemplateController {
     }
     @GetMapping("/pokemon")
     fun uploadPokemon(model: Model): String? {
-        return "uploadCharacter"
+        return "index"
     }
     @PostMapping("/pokemonFragment")
     fun pokemonFragment(@RequestBody pokemon: Pokemon, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String>? {
         val variables = mapOf<String, Any>("pokemon" to pokemon)
+        val context = Context()
+        context.setVariables(variables)
+        val requestContext = RequestContext(request, response, servletContext, variables)
+        val thymeleafRequestContext = SpringWebMvcThymeleafRequestContext(requestContext, request)
+        context.setVariable("thymeleafRequestContext", thymeleafRequestContext)
+
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterPokemon", context))
+    }
+    @GetMapping("/pokemon/new")
+    fun newPokemon(request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String>? {
+        val variables = mapOf<String, Any>("pokemon" to Pokemon())
         val context = Context()
         context.setVariables(variables)
         val requestContext = RequestContext(request, response, servletContext, variables)

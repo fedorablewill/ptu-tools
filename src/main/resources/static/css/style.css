@@ -328,3 +328,18 @@
 .modal-header.bg-danger, .modal-header.bg-dark, .modal-footer.bg-danger, .modal-footer.bg-dark {
     border-color: rgba(255, 255, 255, 0.1);
 }
+
+.exodus-title img {
+    position: relative;
+    bottom: 25px;
+    margin-right: 1.5rem;
+}
+
+.exodus-title .exodus-title-text {
+    display: inline-block;
+    text-align: left;
+}
+
+.exodus-title h1 {
+    line-height: 1;
+}

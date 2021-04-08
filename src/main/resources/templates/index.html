@@ -1,11 +1,123 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<!--/*@thymesVar id="pokemon" type="com.willstep.ptutools.dataaccess.dto.Pokemon"*/-->
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>File!</title>
+
+    <title>PTU Pokemon Generator</title>
+
+    <!-- Favicon -->
+    <link href="/img/pokeball-ico.png" rel="icon" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="/vendor/nucleo/css/nucleo.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/3.0.39/css/materialdesignicons.min.css">
+
+    <!-- Libraries CSS -->
+    <link type="text/css" href="/css/argon.min.css" rel="stylesheet">
+    <link type="text/css" href="/vendor/tagcomplete/css/tagcomplete.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link type="text/css" th:href="${'/css/style.css?v=' + @environment.getProperty('css.version')}" rel="stylesheet">
+    <link type="text/css" th:href="${'/css/character.css?v=' + @environment.getProperty('css.version')}" rel="stylesheet">
 </head>
 <body>
-Testing, hey world
+
+<div class="container" id="top">
+    <div class="exodus-title text-center mt-5">
+        <img src="/img/ptu-exodus-logo.png" height="120" alt="d20">
+        <div class="exodus-title-text">
+            <h1 class="text-danger font-weight-bold">PTU Exodus</h1>
+            <small class="text-muted">A Pokemon Generator and Editor for Pokemon Tabletop United v1.05</small>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="text-center col-md-6 border-right">
+            <a class="btn btn-lg btn-danger btn-block mt-5" href="/generator">Generate Pokemon</a>
+            <small class="text-muted font-weight-bold">Let FATE Decide</small>
+            <br/>
+            <button type="button" class="btn btn-lg btn-danger btn-block mt-5" onclick="newCharacter()">New Pokemon</button>
+            <small class="text-muted font-weight-bold">Let MAN Decide</small>
+        </div>
+        <div class="text-center col-md-6">
+            <h2 class="text-danger">Upload Pokemon</h2>
+            <h4 class="text-capitalize text-muted">Upload File</h4>
+            <input type="file" class="form-control" id="upload-file" />
+            <h4 class="text-capitalize text-muted"><label for="upload-paste">Or Paste JSON</label></h4>
+            <textarea type="file" class="form-control" id="upload-paste"></textarea>
+            <button type="button" class="btn btn-danger mt-4" onclick="splash()">Submit</button>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Core -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+<script>
+    //Remove JQuery UI conflicts with Bootstrap
+    $.widget.bridge('uibutton', $.ui.button);
+    $.widget.bridge('uitooltip', $.ui.tooltip);
+</script>
+<script src="/vendor/popper/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/nouislider/js/nouislider.min.js"></script>
+<script src="/vendor/tagcomplete/js/tagcomplete.min.js"></script>
+
+<!-- Theme JS -->
+<script src="/js/argon.min.js"></script>
+
+<!-- Custom JS -->
+<script th:src="${'/js/script.js?v=' + @environment.getProperty('js.version')}"></script>
+<script th:src="${'/js/character.js?v=' + @environment.getProperty('js.version')}"></script>
+<script>
+    function uploadCharacter() {
+        let fileElem = $('#upload-file')
+        if (fileElem.prop('files').length !== 0) {
+            let fileReader = new FileReader()
+            fileReader.onload = function () {
+                buildCharacter(fileReader.result)
+            };
+            fileReader.readAsText(fileElem.prop('files')[0]);
+        } else {
+            buildCharacter($('#upload-paste').val())
+        }
+    }
+
+    function buildCharacter(json) {
+        $.ajax("/pokemonFragment", {
+            method: "POST",
+            contentType: "application/json",
+            data: json
+        }).done(function(response) {
+            $("#top").html(response)
+            initializeWidgets()
+            initialize()
+        }).fail(function(jqxhr, textStatus, errorThrown)  {
+            alert("Error building character sheet: " + textStatus + " : " + errorThrown)
+        })
+    }
+
+    function newCharacter() {
+        $.ajax("/pokemon/new", {
+            method: "GET",
+            contentType: "application/json"
+        }).done(function(response) {
+            $("#top").html(response)
+            initializeWidgets()
+            initialize()
+        }).fail(function(jqxhr, textStatus, errorThrown)  {
+            alert("Error building character sheet: " + textStatus + " : " + errorThrown)
+        })
+    }
+</script>
 </body>
 </html>
