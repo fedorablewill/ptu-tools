@@ -78,7 +78,7 @@ class UploadDataTool {
                             else if (entry["number"] as Int >= 810) "Galar"
                             else null
 
-            val capabilities = HashMap<String, Int>()
+            val capabilities = HashMap<String, Int?>()
             for (capability in entry["capabilities"] as List<String>) {
                 if (capability.matches(Regex(".* \\d$")) || capability.startsWith("Jump ")) {
                     val splitIndex = capability.lastIndexOf(' ')

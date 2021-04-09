@@ -179,6 +179,14 @@ function takeDamage(amount) {
     healthElem.val(health - amount)
 }
 
+function onChangeMoveContest(elem) {
+    elem = $(elem)
+    let contestVals = elem.val().split(/ ?\/ ?/)
+
+    elem.parent().find("input[name$='contestType']").val(contestVals[0])
+    elem.parent().find("input[name$='contestEffect']").val(contestVals[1])
+}
+
 function onClickAddMove() {
     let rowsElem = $("#moves-list")
     let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".form-move").last().attr("id").replace("move-", "")) + 1

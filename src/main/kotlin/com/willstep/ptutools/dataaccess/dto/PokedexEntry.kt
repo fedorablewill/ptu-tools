@@ -16,7 +16,7 @@ data class PokedexEntry(
     var cryFileUrl: String? = null,
 
     var baseStats: MutableMap<String, Int> = HashMap(),
-    var capabilities: MutableMap<String, Int> = HashMap(),
+    var capabilities: MutableMap<String, Int?> = HashMap(),
     var size: String? = null,
     var weight: String? = null,
     var genderless: Boolean = true,
