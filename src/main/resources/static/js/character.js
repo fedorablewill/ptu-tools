@@ -65,7 +65,7 @@ function buildDBTooltip(inputElem) {
     inputElem = $(inputElem)
     let moveId = inputElem.closest(".form-move").attr("id")
     let db = $('#' + moveId + "-db").val()
-    let atk = $('#' + moveId + "-class").val() === "Special" ? $('#char-stat-satk-total').val() : $('#char-stat-atk-total').val()
+    let atk = $('#' + moveId + "-class").val() === "Special" ? $('#char-stat-spatk-total').val() : $('#char-stat-atk-total').val()
     var text = ""
 
     if (!db) {
@@ -105,7 +105,7 @@ $('.move-collapse').on('hide.bs.collapse', function () {
 function onSubmitDamage() {
     let types = $("#char-types").val()
     let dmgClass = $('#quickDamage-class').val()
-    let def = dmgClass === "Special" ? parseInt($('#char-stat-sdef-total').val()) : parseInt($('#char-stat-def-total').val())
+    let def = dmgClass === "Special" ? parseInt($('#char-stat-spdef-total').val()) : parseInt($('#char-stat-def-total').val())
     let dmgType = $('#quickDamage-type').val()
     let dmgAmt = parseInt($('#quickDamage-damage').val())
 
@@ -177,6 +177,81 @@ function takeDamage(amount) {
     }
 
     healthElem.val(health - amount)
+}
+
+function onChangeNature(elem) {
+    elem = $(elem)
+    let prevVal = elem.attr("data-prev")
+    let val = elem.val()
+    let dexId = $('#char-pokedexId').val()
+
+    if (prevVal === val) return
+
+    // Since we can't tell if a lowered base stat was originally 1 or 2, look up the stats
+    if (dexId && prevVal) {
+        $.ajax("/pokedex/" + dexId, {
+            method: "GET",
+            contentType: "application/json"
+        }).done(function (response) {
+            if (response[0]) {
+                // Reset old values
+                $(`#char-stat-${NATURES[prevVal].up}-base`).val(response[0]['baseStats'][NATURES[prevVal].up]).change()
+                $(`#char-stat-${NATURES[prevVal].down}-base`).val(response[0]['baseStats'][NATURES[prevVal].down]).change()
+
+                // Set new values
+                applyNewNature(val)
+            } else {
+                adjustNatureWithoutDex(prevVal, val)
+            }
+        }).fail(function (jqxhr, textStatus, errorThrown) {
+            adjustNatureWithoutDex(prevVal, val)
+        })
+    } else {
+        adjustNatureWithoutDex(prevVal, val)
+    }
+
+}
+
+function adjustNatureWithoutDex(prevVal, val) {
+    if (prevVal) {
+        let statElem = $(`#char-stat-${NATURES[prevVal].up}-base`)
+        let amt = NATURES[prevVal].up === "hp" ? 1 : 2
+        if (statElem.val()) {
+            statElem.val(Math.max(parseInt(statElem.val()) - amt, 1))
+            statElem.change()
+        }
+        statElem = $(`#char-stat-${NATURES[prevVal].down}-base`)
+        amt = NATURES[prevVal].down === "hp" ? 1 : 2
+        if (statElem.val()) {
+            statElem.val(parseInt(statElem.val()) + amt)
+            statElem.change()
+        }
+    }
+    applyNewNature(val)
+}
+
+function applyNewNature(val) {
+    let statElem = $(`#char-stat-${NATURES[val].up}-base`)
+    let amt = NATURES[val].up === "hp" ? 1 : 2
+    if (statElem.val()) {
+        statElem.val(Math.max(parseInt(statElem.val()) + amt, 1))
+        statElem.change()
+    } else {
+        statElem.val(amt)
+        statElem.change()
+    }
+    statElem = $(`#char-stat-${NATURES[val].down}-base`)
+    amt = NATURES[val].down === "hp" ? 1 : 2
+    if (statElem.val()) {
+        statElem.val(parseInt(statElem.val()) - amt)
+        if (parseInt(statElem.val()) < 1) {
+            statElem.val(1)
+        }
+        statElem.change()
+    } else {
+        statElem.val(1)
+        statElem.change()
+    }
 }
 
 function onChangeMoveContest(elem) {

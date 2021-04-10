@@ -55,7 +55,7 @@
             <label class="control-label" th:for="'move-' + ${index} + '-db'">DB</label>
             <button type="button" class="btn control-action" data-toggle="tooltip" data-placement="top" data-html="true"
                     th:id="'move-' + ${index} + '-db-tooltip'" title="No DB entered"
-                    th:data-subscribe="'move-' + ${index} + '-db,move-' + ${index} + '-class,char-stat-satk-total,char-stat-atk-total'" data-subscribe-callback="buildDBTooltip">
+                    th:data-subscribe="'move-' + ${index} + '-db,move-' + ${index} + '-class,char-stat-spatk-total,char-stat-atk-total'" data-subscribe-callback="buildDBTooltip">
                 <img src="/img/icons/help-rhombus-outline.png" alt="View Die Formula" />
             </button>
             <input class="form-control" type="number" th:id="'move-' + ${index} + '-db'" data-db-tooltip

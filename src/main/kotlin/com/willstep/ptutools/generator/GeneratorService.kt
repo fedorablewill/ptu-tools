@@ -77,19 +77,39 @@ class GeneratorService(
         pokemon.nature = nature.label
         when (nature.raise) {
             "hp" -> pokemon.hp.base++
-            "atk" -> pokemon.atk.base++
-            "def" -> pokemon.def.base++
-            "spatk" -> pokemon.spatk.base++
-            "spdef" -> pokemon.spdef.base++
-            "spd" -> pokemon.spd.base++
+            "atk" -> pokemon.atk.base+=2
+            "def" -> pokemon.def.base+=2
+            "spatk" -> pokemon.spatk.base+=2
+            "spdef" -> pokemon.spdef.base+=2
+            "spd" -> pokemon.spd.base+=2
         }
         when (nature.lower) {
             "hp" -> pokemon.hp.base--
-            "atk" -> pokemon.atk.base--
-            "def" -> pokemon.def.base--
-            "spatk" -> pokemon.spatk.base--
-            "spdef" -> pokemon.spdef.base--
-            "spd" -> pokemon.spd.base--
+            "atk" -> pokemon.atk.base-=2
+            "def" -> pokemon.def.base-=2
+            "spatk" -> pokemon.spatk.base-=2
+            "spdef" -> pokemon.spdef.base-=2
+            "spd" -> pokemon.spd.base-=2
+        }
+
+        // All base stats must be minimum of 1
+        if (pokemon.hp.base < 1) {
+            pokemon.hp.base = 1
+        }
+        if (pokemon.atk.base < 1) {
+            pokemon.atk.base = 1
+        }
+        if (pokemon.def.base < 1) {
+            pokemon.def.base = 1
+        }
+        if (pokemon.spatk.base < 1) {
+            pokemon.spatk.base = 1
+        }
+        if (pokemon.spdef.base < 1) {
+            pokemon.spdef.base = 1
+        }
+        if (pokemon.spd.base < 1) {
+            pokemon.spd.base = 1
         }
     }
 

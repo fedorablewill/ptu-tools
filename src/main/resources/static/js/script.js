@@ -47,6 +47,153 @@ const REGIONS = [
     "Galar"
 ]
 
+const NATURES = {
+    "Cuddly": {
+        "up": "hp",
+        "down": "atk"
+    },
+    "Distracted": {
+        "up": "hp",
+        "down": "def"
+    },
+    "Proud": {
+        "up": "hp",
+        "down": "spatk"
+    },
+    "Decisive": {
+        "up": "hp",
+        "down": "spdef"
+    },
+    "Patient": {
+        "up": "hp",
+        "down": "spd"
+    },
+    "Desperate": {
+        "up": "atk",
+        "down": "hp"
+    },
+    "Lonely": {
+        "up": "atk",
+        "down": "def"
+    },
+    "Adamant": {
+        "up": "atk",
+        "down": "spatk"
+    },
+    "Naughty": {
+        "up": "atk",
+        "down": "spdef"
+    },
+    "Brave": {
+        "up": "atk",
+        "down": "spd"
+    },
+    "Stark": {
+        "up": "def",
+        "down": "hp"
+    },
+    "Bold": {
+        "up": "def",
+        "down": "atk"
+    },
+    "Impish": {
+        "up": "def",
+        "down": "spatk"
+    },
+    "Lax": {
+        "up": "def",
+        "down": "spdef"
+    },
+    "Relaxed": {
+        "up": "def",
+        "down": "spd"
+    },
+    "Curious": {
+        "up": "spatk",
+        "down": "hp"
+    },
+    "Modest": {
+        "up": "spatk",
+        "down": "atk"
+    },
+    "Mild": {
+        "up": "spatk",
+        "down": "def"
+    },
+    "Rash": {
+        "up": "spatk",
+        "down": "spdef"
+    },
+    "Quiet": {
+        "up": "spatk",
+        "down": "spd"
+    },
+    "Dreamy": {
+        "up": "spdef",
+        "down": "hp"
+    },
+    "Calm": {
+        "up": "spdef",
+        "down": "atk"
+    },
+    "Gentle": {
+        "up": "spdef",
+        "down": "def"
+    },
+    "Careful": {
+        "up": "spdef",
+        "down": "spatk"
+    },
+    "Sassy": {
+        "up": "spdef",
+        "down": "spd"
+    },
+    "Skittish": {
+        "up": "spd",
+        "down": "hp"
+    },
+    "Timid": {
+        "up": "spd",
+        "down": "atk"
+    },
+    "Hasty": {
+        "up": "spd",
+        "down": "def"
+    },
+    "Jolly": {
+        "up": "spd",
+        "down": "spatk"
+    },
+    "Naive": {
+        "up": "spd",
+        "down": "spdef"
+    },
+    "Composed": {
+        "up": "hp",
+        "down": "hp"
+    },
+    "Hardy": {
+        "up": "atk",
+        "down": "atk"
+    },
+    "Docile": {
+        "up": "def",
+        "down": "def"
+    },
+    "Bashful": {
+        "up": "spatk",
+        "down": "spatk"
+    },
+    "Quirky": {
+        "up": "spdef",
+        "down": "spdef"
+    },
+    "Serious": {
+        "up": "spd",
+        "down": "spd"
+    }
+}
+
 const DB = {
     1: {
         diceCount: 1,

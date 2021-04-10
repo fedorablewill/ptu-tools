@@ -42,6 +42,7 @@
             <div class="form-group label-floating col-md-3 col-xs-12">
                 <label class="control-label" for="char-species">Species</label>
                 <input class="form-control" type="text" id="char-species" th:field="*{pokedexEntry.species}" />
+                <input type="hidden" id="char-pokedexId" th:field="*{pokedexEntry.pokedexEntryDocumentId}">
             </div>
             <div class="form-group label-floating col-md-3 col-xs-12">
                 <label class="control-label" for="char-form">Form</label>
@@ -79,7 +80,46 @@
                     </div>
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-nature">Nature</label>
-                        <input class="form-control" type="text" id="char-nature" th:field="*{nature}" />
+                        <select class="form-control" type="text" id="char-nature" onchange="onChangeNature(this)"
+                                th:field="*{nature}" th:data-prev="*{nature}">
+                            <option th:value="null"></option>
+                            <option th:value="'Cuddly'">Cuddly</option>
+                            <option th:value="'Distracted'">Distracted</option>
+                            <option th:value="'Proud'">Proud</option>
+                            <option th:value="'Decisive'">Decisive</option>
+                            <option th:value="'Patient'">Patient</option>
+                            <option th:value="'Desperate'">Desperate</option>
+                            <option th:value="'Lonely'">Lonely</option>
+                            <option th:value="'Adamant'">Adamant</option>
+                            <option th:value="'Naughty'">Naughty</option>
+                            <option th:value="'Brave'">Brave</option>
+                            <option th:value="'Stark'">Stark</option>
+                            <option th:value="'Bold'">Bold</option>
+                            <option th:value="'Impish'">Impish</option>
+                            <option th:value="'Lax'">Lax</option>
+                            <option th:value="'Relaxed'">Relaxed</option>
+                            <option th:value="'Curious'">Curious</option>
+                            <option th:value="'Modest'">Modest</option>
+                            <option th:value="'Mild'">Mild</option>
+                            <option th:value="'Rash'">Rash</option>
+                            <option th:value="'Quiet'">Quiet</option>
+                            <option th:value="'Dreamy'">Dreamy</option>
+                            <option th:value="'Calm'">Calm</option>
+                            <option th:value="'Gentle'">Gentle</option>
+                            <option th:value="'Careful'">Careful</option>
+                            <option th:value="'Sassy'">Sassy</option>
+                            <option th:value="'Skittish'">Skittish</option>
+                            <option th:value="'Timid'">Timid</option>
+                            <option th:value="'Hasty'">Hasty</option>
+                            <option th:value="'Jolly'">Jolly</option>
+                            <option th:value="'Naive'">Naive</option>
+                            <option th:value="'Composed'">Composed</option>
+                            <option th:value="'Hardy'">Hardy</option>
+                            <option th:value="'Docile'">Docile</option>
+                            <option th:value="'Bashful'">Bashful</option>
+                            <option th:value="'Quirky'">Quirky</option>
+                            <option th:value="'Serious'">Serious</option>
+                        </select>
                     </div>
                     <div class="form-group label-floating col-md-3 col-xs-6">
                         <label class="control-label" for="char-size">Size</label>
@@ -292,20 +332,20 @@
                             <tr>
                                 <td>Sp. Atk.</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-base" th:field="*{spatk.base}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spatk-base" th:field="*{spatk.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-bonus" th:field="*{spatk.add}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spatk-bonus" th:field="*{spatk.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-lvlup" th:field="*{spatk.lvlUp}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spatk-lvlup" th:field="*{spatk.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-cs" min="-6" max="6" th:field="*{spatk.cs}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spatk-cs" min="-6" max="6" th:field="*{spatk.cs}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-satk-total"
-                                           data-subscribe="char-stat-satk-base,char-stat-satk-bonus,char-stat-satk-lvlup,char-stat-satk-cs"
+                                    <input class="form-control border-none" type="number" id="char-stat-spatk-total"
+                                           data-subscribe="char-stat-spatk-base,char-stat-spatk-bonus,char-stat-spatk-lvlup,char-stat-spatk-cs"
                                            data-subscribe-callback="buildValueFromSubscribedFields"
                                            data-formula="Math.floor((#0 + #1 + #2) * getCsModifier(#3))"
                                            disabled />
@@ -314,20 +354,20 @@
                             <tr>
                                 <td>Sp. Def.</td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-base" th:field="*{spdef.base}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spdef-base" th:field="*{spdef.base}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-bonus" th:field="*{spdef.add}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spdef-bonus" th:field="*{spdef.add}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-lvlup" th:field="*{spdef.lvlUp}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spdef-lvlup" th:field="*{spdef.lvlUp}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-cs" min="-6" max="6" th:field="*{spdef.cs}" />
+                                    <input class="form-control border-none" type="number" id="char-stat-spdef-cs" min="-6" max="6" th:field="*{spdef.cs}" />
                                 </td>
                                 <td class="form-group">
-                                    <input class="form-control border-none" type="number" id="char-stat-sdef-total"
-                                           data-subscribe="char-stat-sdef-base,char-stat-sdef-bonus,char-stat-sdef-lvlup,char-stat-sdef-cs"
+                                    <input class="form-control border-none" type="number" id="char-stat-spdef-total"
+                                           data-subscribe="char-stat-spdef-base,char-stat-spdef-bonus,char-stat-spdef-lvlup,char-stat-spdef-cs"
                                            data-subscribe-callback="buildValueFromSubscribedFields"
                                            data-formula="Math.floor((#0 + #1 + #2) * getCsModifier(#3))"
                                            disabled />
@@ -381,7 +421,7 @@
                         <div class="col-sm-4"><label for="char-evd-special-total"><strong>Special Evasion:</strong></label></div>
                         <div class="col-sm-2">
                             <input class="form-control form-control-sm" type="number" id="char-evd-special-base" alt="Base" value="3" disabled
-                                   data-subscribe="char-stat-sdef-total"
+                                   data-subscribe="char-stat-spdef-total"
                                    data-subscribe-callback="buildValueFromSubscribedFields"
                                    data-formula="Math.max(-6, Math.min(6, Math.floor(#0 / 5)))" />
                         </div>
