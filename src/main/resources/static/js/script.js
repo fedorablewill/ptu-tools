@@ -412,3 +412,29 @@ function getCsModifier(cs) {
         return 1 - (0.1 * cs)
     }
 }
+
+function clipboardText(str) {
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+}
+
+function buildToast(message) {
+    let toast = $('<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="4000">\n' +
+        '  <div class="toast-body p-2 rounded bg-danger">\n' +
+        '    '+ message +'\n' +
+        '    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">\n' +
+        '      <span aria-hidden="true">&times;</span>\n' +
+        '    </button>\n' +
+        '  </div>\n' +
+        '</div>')
+
+    $(".toast-container").append(toast)
+    toast.toast('show')
+}

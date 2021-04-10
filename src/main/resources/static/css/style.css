@@ -350,6 +350,17 @@ input[disabled] {
     -moz-appearance:textfield;
 }
 
+.toast-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+}
+
+.toast-container .toast {
+    padding-bottom: 1rem;
+}
+
 
 /*
     Responsive Utilities

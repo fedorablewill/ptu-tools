@@ -73,6 +73,7 @@ function buildDBTooltip(inputElem) {
     let db = $('#' + moveId + "-db").val()
     let atk = $('#' + moveId + "-class").val() === "Special" ? $('#char-stat-spatk-total').val() : $('#char-stat-atk-total').val()
     var text = ""
+    var formula = ""
 
     if (!db) {
         text = "No DB Entered"
@@ -80,9 +81,10 @@ function buildDBTooltip(inputElem) {
         text = "Invalid DB"
     } else {
         text = `${DB[db].diceCount}<img src=/img/icons/dice-d${DB[db].dice}-outline-white.png alt=&quot;d${DB[db].dice}&quot; /> + ${DB[db].modifier} (+ ${atk})`
+        formula = `${DB[db].diceCount}d${DB[db].dice}+${DB[db].modifier}+${atk}`
     }
 
-    $('#' + moveId + "-db-tooltip").attr("data-original-title", text).tooltip()
+    $('#' + moveId + "-db-tooltip").attr("data-original-title", text).attr("data-db-formula", formula).tooltip()
 }
 
 function changeMoveTypeColor(elem) {
@@ -342,4 +344,9 @@ function onChangeShiny(elem) {
     } else {
         $('#char-picture-shiny').addClass("d-none")
     }
+}
+
+function onClickDbTooltip(elem) {
+    clipboardText($(elem).attr("data-db-formula"))
+    buildToast("Copied damage formula to clipboard.")
 }
