@@ -335,3 +335,11 @@ function onClickDeleteAbility(elem) {
         }
     }
 }
+
+function onChangeShiny(elem) {
+    if ($(elem).is(':checked')) {
+        $('#char-picture-shiny').removeClass("d-none")
+    } else {
+        $('#char-picture-shiny').addClass("d-none")
+    }
+}

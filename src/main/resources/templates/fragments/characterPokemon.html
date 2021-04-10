@@ -7,6 +7,7 @@
             <div class="char-picture navbar-brand">
                 <img th:src="'/img/pokemon/'+${pokemon.pokedexEntry.imageFileUrl}"
                      onerror="this.onerror=null; this.src='/img/ptu-exodus-logo-black.png'" />
+                <span id="char-picture-shiny" th:class="'material-icons-outlined' + (*{shiny} ? '' : ' d-none')">auto_awesome</span>
             </div>
             <div class="form-inline form-group label-floating">
                 <label class="control-label" for="char-name">Name</label>
@@ -176,7 +177,8 @@
                     </div>
                     <div class="form-group label-floating custom-checkbox col-3">
                         <label class="control-label text-nowrap" for="char-shiny">Is Shiny?</label>
-                        <input class="form-control custom-control-input" type="checkbox" id="char-shiny" th:field="*{shiny}" />
+                        <input class="form-control custom-control-input" type="checkbox" id="char-shiny"
+                               th:field="*{shiny}" onchange="onChangeShiny(this)" />
                         <span class="custom-control-label"></span>
                     </div>
                 </div>

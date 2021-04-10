@@ -14,7 +14,7 @@ class GeneratorService(
     val firestoreService: FirestoreService = FirestoreService()
 ) {
 
-    fun generatePokemon(pokedexEntry: PokedexEntry, minLevel: Int, maxLevel: Int): Pokemon {
+    fun generatePokemon(pokedexEntry: PokedexEntry, minLevel: Int, maxLevel: Int, nature: Nature?, shinyOdds: Double): Pokemon {
         val level = Random.nextInt(minLevel, maxLevel + 1)
         val pokemon = Pokemon(
             pokedexEntry = pokedexEntry,
@@ -24,9 +24,11 @@ class GeneratorService(
             gender = if (pokedexEntry.genderless) "No Gender" else if (Random.nextDouble(100.0) <= pokedexEntry.malePercent ?: 0.0) "Male" else "Female"
         )
 
-        randomizeNature(pokemon)
+        applyNature(pokemon, nature ?: Nature.values()[Random.nextInt(Nature.values().size)])
         randomizeStats(pokemon)
         randomizeAbilities(pokemon)
+
+        pokemon.shiny = Random.nextDouble(100.0) <= shinyOdds
 
         return pokemon
     }
@@ -71,9 +73,7 @@ class GeneratorService(
         }
     }
 
-    fun randomizeNature(pokemon: Pokemon) {
-        val nature = Nature.values()[Random.nextInt(Nature.values().size)]
-
+    fun applyNature(pokemon: Pokemon, nature: Nature) {
         pokemon.nature = nature.label
         when (nature.raise) {
             "hp" -> pokemon.hp.base++
@@ -114,8 +114,14 @@ class GeneratorService(
     }
 
     fun randomizeStats(pokemon: Pokemon) {
-        // TODO account for nature change to base stats
-        val sortedBaseStats = pokemon.pokedexEntry.baseStats.toList().sortedBy { (_, value) -> value }
+        val sortedBaseStats = mapOf(
+            "hp" to pokemon.hp.base,
+            "atk" to pokemon.atk.base,
+            "def" to pokemon.def.base,
+            "spatk" to pokemon.spatk.base,
+            "spdef" to pokemon.spdef.base,
+            "spd" to pokemon.spd.base,
+        ).toList().sortedBy { (_, value) -> value }
         for (points in 1..10 + pokemon.level) {
             val canAddTo = ArrayList<String>()
 

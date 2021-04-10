@@ -371,11 +371,23 @@
     })
 
     $('#genmon-lvlmin').change(function() {
+        if (!$(this).val()) {
+            $(this).val(1)
+        }
         sliderElem.noUiSlider.set([$(this).val(), null])
     })
 
     $('#genmon-lvlmax').change(function() {
+        if (!$(this).val()) {
+            $(this).val(100)
+        }
         sliderElem.noUiSlider.set([null, $(this).val()])
+    })
+
+    $('#genmon-shiny-odds').change(function () {
+        if (!$(this).val()) {
+            $(this).val(0)
+        }
     })
 
     // Submit and send AJAX request
@@ -383,6 +395,7 @@
         var requestBody = {
             minLevel: $("#genmon-lvlmin").val(),
             maxLevel: $("#genmon-lvlmax").val(),
+            shinyOdds: $("#genmon-shiny-odds").val(),
             params: []
         }
 
@@ -404,6 +417,11 @@
                 method: "EQUALS",
                 value: false
             })
+        }
+
+        let nature = $("#genmon-nature").val()
+        if ("Any" !== nature) {
+            requestBody["nature"] = nature
         }
 
         $.ajax("/generatePokemon", {

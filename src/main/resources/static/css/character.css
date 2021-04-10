@@ -152,6 +152,14 @@ button.control-action, .control-action button {
     height: auto;
 }
 
+#char-picture-shiny {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    font-size: 16px;
+    color: #ffeb3a;
+}
+
 .navbar {
     padding-left: 110px;
 }

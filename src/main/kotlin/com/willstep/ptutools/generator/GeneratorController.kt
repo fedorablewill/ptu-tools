@@ -1,6 +1,7 @@
 package com.willstep.ptutools.generator
 
 import com.google.cloud.firestore.QueryDocumentSnapshot
+import com.willstep.ptutools.core.Nature
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Pokemon
 import com.willstep.ptutools.dataaccess.service.FirestoreService
@@ -15,7 +16,9 @@ class GeneratorController {
     data class GeneratorRequest(
         val params: List<GeneratorRequestParam> = ArrayList(),
         val minLevel: Int = 0,
-        val maxLevel: Int = 100
+        val maxLevel: Int = 100,
+        val nature: String?,
+        val shinyOdds: Double = 0.0
     )
 
     data class GeneratorRequestParam(
@@ -38,12 +41,19 @@ class GeneratorController {
             }
         }
 
+        var nature: Nature? = null
+        if (requestBody.nature != null && enumValues<Nature>().any { it.name == requestBody.nature.toUpperCase()}) {
+            nature = Nature.valueOf(requestBody.nature.toUpperCase())
+        }
+
         val results = query.get().get().filter { doFilter(it, requestBody.params) }
         if (results.isNotEmpty()) {
             return GeneratorService().generatePokemon(
                 results[Random.nextInt(0, results.size)].toObject(PokedexEntry::class.java),
                 requestBody.minLevel,
-                requestBody.maxLevel
+                requestBody.maxLevel,
+                nature,
+                requestBody.shinyOdds
             )
         }
 
