@@ -73,8 +73,8 @@ hr {
 
 .custom-checkbox .custom-control-label {
     margin-bottom: 0;
-    position: relative;
-    left: 40px;
+    position: absolute;
+    left: 44px;
     top: 0.75rem;
 }
 
@@ -200,4 +200,10 @@ ul.autocomplete {
     width: 46px;
     height: 46px;
     padding: initial;
+}
+
+@media (max-width: 575px) {
+    #stats table input[type=number] {
+        -moz-appearance:textfield;
+    }
 }

@@ -16,11 +16,14 @@
 
     <!-- Icons -->
     <link href="/vendor/nucleo/css/nucleo.css" rel="stylesheet">
-    <link rel="stylesheet" href="//cdn.materialdesignicons.com/3.0.39/css/materialdesignicons.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
 
     <!-- Libraries CSS -->
     <link type="text/css" href="/css/argon.min.css" rel="stylesheet">
     <link type="text/css" href="/vendor/tagcomplete/css/tagcomplete.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link type="text/css" th:href="${'/css/style.css?v=' + @environment.getProperty('css.version')}" rel="stylesheet">
 
     <style>
         body {
@@ -73,41 +76,40 @@
     <section>
         <h2>Filters</h2>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Species</label>
                     <input class="form-control tags_input" type="text" id="filter-species" data-filter="pokedexEntryDocumentId" data-filter-method="EQUALS" />
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Type</label>
                     <input class="form-control tags_input" type="text" id="filter-type" data-filter="types" data-filter-method="ARRAY_CONTAINS" />
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Habitat</label>
                     <input class="form-control tags_input" type="text" id="filter-habitat" data-filter="habitats" data-filter-method="ARRAY_CONTAINS" />
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Region of Origin</label>
                     <input class="form-control tags_input" type="text" id="filter-region" data-filter="regionOfOrigin" data-filter-method="EQUALS" />
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Evolution Stage</label>
                     <input class="form-control tags_input" type="text" id="filter-stage" data-filter="evolutionStage" data-filter-method="EQUALS" />
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="togglebutton">
-                    <label>
-                        <input type="checkbox" id="genmon-legend" checked> Include Legendaries
-                    </label>
+            <div class="col-sm-6">
+                <div class="form-group label-floating custom-checkbox custom-checkbox-lone mt-sm-4">
+                    <label class="control-label custom-control-label" for="genmon-legend">Include Legendaries</label>
+                    <input class="form-control custom-control-input" type="checkbox" id="genmon-legend" checked />
                 </div>
             </div>
         </div>
@@ -115,17 +117,17 @@
     <section>
         <h2>Stats & Settings</h2>
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-6 col-sm-2 order-1">
                 <div class="form-group label-floating">
                     <label class="control-label" for="genmon-lvlmin">Min Level</label>
                     <input class="form-control" type="number" id="genmon-lvlmin" min="1" max="100" value="1" required />
                 </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-8 order-3 order-sm-2">
                 <label class="control-label" for="genmon-lvl-slider">Level Range</label>
                 <div class="slider slider-danger" id="genmon-lvl-slider"></div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-6 col-sm-2 order-2 order-sm-3">
                 <div class="form-group label-floating">
                     <label class="control-label" for="genmon-lvlmax">Max Level</label>
                     <input class="form-control" type="number" id="genmon-lvlmax" min="1" max="100" value="100" required />
@@ -133,37 +135,38 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="form-group label-floating">
-                    <label class="control-label" for="genmon-tmmin">Min Leanred TMs</label>
-                    <input class="form-control" type="number" id="genmon-tmmin" min="0" max="9" value="0" required />
-                    <p class="help-block">Includes TMs, HMs, and Tutor Moves</p>
-                </div>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="form-group label-floating">
-                    <label class="control-label" for="genmon-tmmax">Max Learned TMs</label>
-                    <input class="form-control" type="number" id="genmon-tmmax" min="0" max="9" value="0" required />
-                    <p class="help-block">Includes TMs, HMs, and Tutor Moves</p>
-                </div>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="form-group label-floating">
-                    <label class="control-label" for="genmon-emmin">Min Egg Moves</label>
-                    <input class="form-control" type="number" id="genmon-emmin" min="0" max="9" value="0" required />
-                </div>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="form-group label-floating">
-                    <label class="control-label" for="genmon-emmax">Max Egg Moves</label>
-                    <input class="form-control" type="number" id="genmon-emmax" min="0" max="9" value="0" required />
-                </div>
-            </div>
-        </div>
+        <!-- SAVE FOR FUTURE ENHANCEMENT -->
+<!--        <div class="row">-->
+<!--            <div class="col-6 col-sm-6 col-md-3">-->
+<!--                <div class="form-group label-floating">-->
+<!--                    <label class="control-label" for="genmon-tmmin">Min Leanred TMs</label>-->
+<!--                    <input class="form-control" type="number" id="genmon-tmmin" min="0" max="9" value="0" required />-->
+<!--                    <p class="help-block">Includes TMs, HMs, and Tutor Moves</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-6 col-sm-6 col-md-3">-->
+<!--                <div class="form-group label-floating">-->
+<!--                    <label class="control-label" for="genmon-tmmax">Max Learned TMs</label>-->
+<!--                    <input class="form-control" type="number" id="genmon-tmmax" min="0" max="9" value="0" required />-->
+<!--                    <p class="help-block">Includes TMs, HMs, and Tutor Moves</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-6 col-sm-6 col-md-3">-->
+<!--                <div class="form-group label-floating">-->
+<!--                    <label class="control-label" for="genmon-emmin">Min Egg Moves</label>-->
+<!--                    <input class="form-control" type="number" id="genmon-emmin" min="0" max="9" value="0" required />-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-6 col-sm-6 col-md-3">-->
+<!--                <div class="form-group label-floating">-->
+<!--                    <label class="control-label" for="genmon-emmax">Max Egg Moves</label>-->
+<!--                    <input class="form-control" type="number" id="genmon-emmax" min="0" max="9" value="0" required />-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-3">
+            <div class="col-6 col-sm-6 col-md-3">
                 <div class="form-group label-floating">
                     <label class="control-label" for="genmon-shiny-odds">Nature</label>
                     <select class="form-control" id="genmon-nature">
@@ -207,7 +210,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-xs-6 col-sm-6 col-md-3">
+            <div class="col-6 col-sm-6 col-md-3">
                 <div class="form-group label-floating">
                     <label class="control-label" for="genmon-shiny-odds">Shiny Odds (%)</label>
                     <input class="form-control" type="number" id="genmon-shiny-odds" min="0" max="100" value="0.01220703125" required />

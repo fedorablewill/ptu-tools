@@ -46,12 +46,12 @@
             <input class="form-control" type="text" th:id="'move-' + ${index} + '-range'"
                    th:name="'moves[' + ${index} + '].range'" th:value="${move.range}" />
         </div>
-        <div class="form-group label-floating col-sm-3">
+        <div class="form-group label-floating col-sm-3 col-6">
             <label class="control-label" th:for="'move-' + ${index} + '-ac'">AC</label>
             <input class="form-control" type="number" th:id="'move-' + ${index} + '-ac'"
                    th:name="'moves[' + ${index} + '].accuracyCheck'" th:value="${move.accuracyCheck}" />
         </div>
-        <div class="form-group label-floating col-sm-3">
+        <div class="form-group label-floating col-sm-3 col-6">
             <label class="control-label" th:for="'move-' + ${index} + '-db'">DB</label>
             <button type="button" class="btn control-action" data-toggle="tooltip" data-placement="top" data-html="true"
                     th:id="'move-' + ${index} + '-db-tooltip'" title="No DB entered"
@@ -62,13 +62,13 @@
                    th:name="'moves[' + ${index} + '].damageBase'" th:value="${move.damageBase}" />
         </div>
 
-        <div class="row row-slim collapse move-collapse show" th:id="'move-' + ${index} + '-collapse'">
-            <div class="form-group label-floating col-sm-3">
+        <div class="row row-slim col-12 collapse move-collapse show" th:id="'move-' + ${index} + '-collapse'">
+            <div class="form-group label-floating col-sm-3 col-6">
                 <label class="control-label" th:for="'move-' + ${index} + '-crit'">Crits On</label>
                 <input class="form-control" type="number" th:id="'move-' + ${index} + '-crit'"
                        th:name="'moves[' + ${index} + '].critsOn'" th:value="${move.critsOn}" />
             </div>
-            <div class="form-group label-floating custom-checkbox col-sm-3">
+            <div class="form-group label-floating custom-checkbox col-sm-3 col-6">
                 <label class="control-label" th:for="'move-' + ${index} + '-stab'">Has STAB?</label>
                 <input class="form-control custom-control-input" type="checkbox" th:id="'move-' + ${index} + '-stab'"
                        th:name="'moves[' + ${index} + '].stab'" th:value="${move.stab}" />

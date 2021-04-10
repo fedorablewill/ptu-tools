@@ -22,6 +22,12 @@ function initialize() {
     })
 
     $(".form-move [data-autocomplete=\"type\"]").each(function() {changeMoveTypeColor(this)})
+
+    $(".nav-link").click(function () {
+        $("#navbarNav").collapse('hide')
+    })
+
+    $("#navbarNav").collapse('hide')
 }
 
 //
