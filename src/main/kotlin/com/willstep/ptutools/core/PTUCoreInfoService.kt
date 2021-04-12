@@ -37,7 +37,7 @@ class PTUCoreInfoService {
             return 0
         }
 
-        val damage = (attackAmount * effectivity).roundToInt() - targetDefense
+        val damage = ((attackAmount - targetDefense) * effectivity).roundToInt()
 
         return if (damage <= 1) 1 else damage
     }

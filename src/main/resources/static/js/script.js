@@ -348,6 +348,15 @@ function initializeWidgets() {
     $('[data-subscribe]').each(loadSubscriber)
 }
 
+$(document).ready(function() {
+    $(window).keydown(function(event){
+        if(event.keyCode === 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+});
+
 
 
 //
@@ -362,6 +371,7 @@ function loadSubscriber() {
 function subscribe(elem, targetIds, callback) {
     targetIds.forEach(targetId => $('#' + targetId).change(function () {callback(elem); $(elem).change();}))
     callback(elem)
+    $(elem).change();
 }
 
 // Sum Subscriber Callback

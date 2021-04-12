@@ -189,21 +189,21 @@
                     <hr/>
                 </div>
                 <div class="row row-slim">
-                    <div class="form-group label-floating col-md-4 col-6">
+                    <div class="form-group label-floating col-md-4 col-6 order-0">
                         <label class="control-label" for="char-hp-current">Current</label>
                         <button type="button" class="btn control-action" onclick="$('#quickDamageModal').modal('show')">
                             <img src="/img/icons/octagram-outline.png">
                         </button>
                         <input class="form-control" type="number" id="char-hp-current" th:field="*{health}" />
                     </div>
-                    <div class="form-group label-floating col-md-2 col-3">
+                    <div class="form-group label-floating col-md-2 col-3 order-1">
                         <label class="control-label" for="char-hp-max-inj">Inj. Max</label>
                         <input class="form-control" type="number" id="char-hp-max-inj" disabled
                                data-subscribe="char-hp-max,char-injuries"
                                data-subscribe-callback="buildValueFromSubscribedFields"
                                data-formula="Math.floor(#0 * (1 - (#1 * 0.1)))" />
                     </div>
-                    <div class="form-group label-floating col-md-2 col-3">
+                    <div class="form-group label-floating col-md-2 col-3 order-2">
                         <label class="control-label" for="char-hp-max">Max</label>
                         <input class="form-control" type="number" id="char-hp-max" disabled
                                data-subscribe="char-level,char-stat-hp-total"
@@ -218,32 +218,32 @@
                         <label class="control-label" for="char-hp-temp">Temp</label>
                         <input class="form-control" type="number" id="char-hp-temp" th:field="*{thp}" />
                     </div>
-                    <div class="form-group label-floating col-md-4 col-6 order-4 order-md-6">
+                    <div class="form-group label-floating col-md-4 col-6 order-4 order-md-5">
                         <label class="control-label" for="char-injuries">Injuries</label>
                         <input class="form-control" type="number" id="char-injuries" th:field="*{injuries}" />
                     </div>
-                    <div class="form-group label-floating col-md-2 col-3">
+                    <div class="form-group label-floating col-md-2 col-3 order-6">
                         <label class="control-label" for="char-hp-max-half">1/2</label>
                         <input class="form-control" type="number" id="char-hp-max-half" disabled
                                data-subscribe="char-hp-max"
                                data-subscribe-callback="buildValueFromSubscribedFields"
                                data-formula="Math.round(#0 / 2)" />
                     </div>
-                    <div class="form-group label-floating col-md-2 col-3">
+                    <div class="form-group label-floating col-md-2 col-3 order-7">
                         <label class="control-label" for="char-hp-max-third">1/3</label>
                         <input class="form-control" type="number" id="char-hp-max-third" disabled
                                data-subscribe="char-hp-max"
                                data-subscribe-callback="buildValueFromSubscribedFields"
                                data-formula="Math.round(#0 / 3)" />
                     </div>
-                    <div class="form-group label-floating col-md-2 col-3">
+                    <div class="form-group label-floating col-md-2 col-3 order-8">
                         <label class="control-label" for="char-max-quarter">1/4</label>
                         <input class="form-control" type="number" id="char-max-quarter" disabled
                                data-subscribe="char-hp-max"
                                data-subscribe-callback="buildValueFromSubscribedFields"
                                data-formula="Math.round(#0 / 4)" />
                     </div>
-                    <div class="form-group label-floating col-md-2 col-3">
+                    <div class="form-group label-floating col-md-2 col-3 order-9">
                         <label class="control-label" for="char-hp-tick">Tick</label>
                         <input class="form-control" type="number" id="char-hp-tick" disabled
                                data-subscribe="char-hp-max"
