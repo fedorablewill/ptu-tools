@@ -193,6 +193,8 @@ function onChangeNature(elem) {
     let val = elem.val()
     let dexId = $('#char-pokedexId').val()
 
+    elem.attr("data-prev", val)
+
     if (prevVal === val) return
 
     // Since we can't tell if a lowered base stat was originally 1 or 2, look up the stats
