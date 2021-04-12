@@ -419,7 +419,7 @@ function getCsModifier(cs) {
     } else if (cs > 0) {
         return 1 + (0.2 * cs)
     } else {
-        return 1 - (0.1 * cs)
+        return 1 + (0.1 * cs)
     }
 }
 
