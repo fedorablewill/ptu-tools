@@ -102,6 +102,22 @@ function changeMoveTypeColor(elem) {
 // Actions & Handlers
 //
 
+// Submit Form for saving!!!
+$("form").submit(function() {
+    let hiddenContainer = $("#generatedHiddenFields").empty()
+    var i;
+
+    let types = $("#char-types").val().split(/ ?, ?/)
+    for (i = 0; i < types.length; i++) {
+        hiddenContainer.append(`<input type="hidden" name="pokedexEntry.types[${i}]" value="${types[i]}" />`)
+    }
+
+    let eggGroups = $("#char-egg-group").val().split(/ ?, ?/)
+    for (i = 0; i < eggGroups.length; i++) {
+        hiddenContainer.append(`<input type="hidden" name="pokedexEntry.eggGroups[${i}]" value="${eggGroups[i]}" />`)
+    }
+})
+
 // Change label of "Show More" and "Show Less" on toggle
 $('.move-collapse').on('hide.bs.collapse', function () {
     $("button[aria-controls='" + $(this).attr("id") + "']").html("Show More")

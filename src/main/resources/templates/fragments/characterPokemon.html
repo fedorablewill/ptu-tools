@@ -57,6 +57,16 @@
                 </ul>
             </div>
         </nav>
+
+        <!-- Hidden fields to keep data for save, if present -->
+        <input type="hidden" th:field="*{pokemonDocumentId}" />
+        <input type="hidden" th:field="*{pokedexEntry.pokedexEntryDocumentId}" />
+        <input type="hidden" th:field="*{pokedexEntry.evolutionFamilyDocumentId}" />
+        <span id="generatedHiddenFields">
+            <!-- Array fields, such as Type and Egg Group, will be tossed here before submitting -->
+        </span>
+
+        <!-- Basic info fields -->
         <div class="row row-slim">
             <div class="form-group label-floating col-md-3 col-sm-6 col-12">
                 <label class="control-label" for="char-species">Species</label>
