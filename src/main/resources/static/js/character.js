@@ -9,6 +9,17 @@ $(function () {
 })
 
 function initialize() {
+    let afflictions = AFFLICTIONS_VOLATILE.concat(AFFLICTIONS_PERSISTENT).concat(AFFLICTIONS_OTHER)
+    afflictions.sort()
+
+    $("#char-afflict").tagComplete({
+        autocomplete: {
+            data: afflictions
+        },
+        freeInput: true,
+        freeEdit: true
+    })
+
     $('[data-tagcomplete="type"]').tagComplete({
         autocomplete: {
             data: TYPES
@@ -96,6 +107,74 @@ function changeMoveTypeColor(elem) {
     } else {
         elem.closest(".form-move").attr("class", "form-table form-move col-sm-12 mt-3")
     }
+}
+
+function buildCaptureRate(elem) {
+    let level = parseInt($('#char-level').val())
+    let hpCurrent = parseInt($('#char-hp-current').val())
+    let hpMax = parseInt($('#char-hp-max').val())
+    let injuries = parseInt($('#char-injuries').val())
+    let afflictions = $('#char-afflict').val()
+    let evStageRemain = parseInt($('#char-evolution-remaining').val())
+    let isShiny = $('#char-shiny').is(':checked')
+    let isLegendary = $('#char-legendary').is(':checked')
+
+    var captureRate = 100
+
+    if (level) {
+        captureRate -= level * 2
+    }
+
+    if (hpCurrent && hpMax && hpMax > 0) {
+        let hpPcnt = hpCurrent / hpMax
+        if (hpCurrent === 1) {
+            captureRate += 30
+        } else if (hpPcnt > 0.75) {
+            captureRate -= 30
+        } else if (hpPcnt > 0.5) {
+            captureRate -= 15
+        } else if (hpPcnt < 0.25) {
+            captureRate += 15
+        }
+    }
+
+    if (evStageRemain != NaN) {
+        if (evStageRemain >= 2) {
+            captureRate += 10
+        } else if (evStageRemain === 0) {
+            captureRate -= 10
+        }
+    } else {
+        captureRate -= 10
+    }
+
+    if (isShiny) {
+        captureRate -= 10
+    }
+
+    if (isLegendary) {
+        captureRate -= 30
+    }
+
+    if (afflictions) {
+        for (var affliction of afflictions.split(/, ?/)) {
+            if ("Stuck" === affliction) {
+                captureRate += 10
+            } else if ("Slow" === affliction) {
+                captureRate += 5
+            } else if (AFFLICTIONS_PERSISTENT.includes(affliction)) {
+                captureRate += 10
+            } else if (AFFLICTIONS_VOLATILE.includes(affliction)) {
+                captureRate += 5
+            }
+        }
+    }
+
+    if (injuries) {
+        captureRate += 5 * injuries
+    }
+
+    $(elem).val(captureRate)
 }
 
 //

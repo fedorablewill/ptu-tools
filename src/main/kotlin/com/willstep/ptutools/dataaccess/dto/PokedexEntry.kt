@@ -36,6 +36,9 @@ data class PokedexEntry(
 
     var evolutionFamilyDocumentId: String? = null,
     var evolutionStage: Int? = null,
+    var evolutionsRemainingMale: Int? = null,
+    var evolutionsRemainingFemale: Int? = null,
+    var evolutionsRemainingGenderless: Int? = null,
     var megaEvolution: MegaEvolution? = null,
 ) {
     data class MegaEvolution(

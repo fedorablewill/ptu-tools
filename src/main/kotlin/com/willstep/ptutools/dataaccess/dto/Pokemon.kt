@@ -37,7 +37,14 @@ data class Pokemon(
     var heldItem: String? = null,
 
     var moves: MutableList<Move> = ArrayList(),
-    var abilities: MutableList<Ability> = ArrayList()
+    var abilities: MutableList<Ability> = ArrayList(),
+
+    var evolutionsRemaining: Int? =
+        when (gender?.toLowerCase()) {
+            "male", "m" -> pokedexEntry.evolutionsRemainingMale?: pokedexEntry.evolutionsRemainingGenderless
+            "female", "f" -> pokedexEntry.evolutionsRemainingFemale?: pokedexEntry.evolutionsRemainingGenderless
+            else -> null
+        }
 
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)

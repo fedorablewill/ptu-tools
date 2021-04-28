@@ -337,6 +337,10 @@ const DB = {
     },
 }
 
+const AFFLICTIONS_PERSISTENT = ["Burned","Frozen","Paralysis","Poisoned","Badly Poisoned"]
+const AFFLICTIONS_VOLATILE = ["Bad Sleep","Confused","Cursed","Disabled","Rage","Flinch","Infatuation","Sleep","Suppressed","Temporary Hit Points"]
+const AFFLICTIONS_OTHER = ["Fainted","Blindness","Total Blindness","Slowed","Stuck","Trapped","Tripped","Vulnerable"]
+
 
 //
 // INITIALIZE WIDGETS

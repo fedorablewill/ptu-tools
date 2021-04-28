@@ -1,13 +1,16 @@
 package com.willstep.ptutools.dataaccess.dto
 
+import java.util.*
+
 data class EvolutionFamily(
-    val evolutionFamilyDocumentId: String,
-    val familyName: String,
-    val entries: List<EvolutionFamilyEntry> = ArrayList(),
+    var evolutionFamilyDocumentId: String = UUID.randomUUID().toString(),
+    var familyName: String?,
+    var entries: List<EvolutionFamilyEntry> = ArrayList(),
 ) {
     data class EvolutionFamilyEntry(
-        val pokedexEntryDocumentId: String,
-        val stage: Int,
-        val prerequisites: String?
+        var pokedexEntryDocumentId: String  = UUID.randomUUID().toString(),
+        var displayName: String?,
+        var stage: Int?,
+        var prerequisites: String?
     )
 }
