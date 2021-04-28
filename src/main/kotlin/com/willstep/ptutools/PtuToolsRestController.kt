@@ -50,6 +50,11 @@ class PtuToolsRestController {
         return ResponseEntity.ok(FirestoreService().getDocument("moves", moveName).get().get().toObject(Move::class.java))
     }
 
+    @GetMapping("/ability/{abilityName}")
+    fun getAbilityByName(@PathVariable abilityName: String, model: Model): ResponseEntity<Ability> {
+        return ResponseEntity.ok(FirestoreService().getDocument("abilities", abilityName).get().get().toObject(Ability::class.java))
+    }
+
     @DeleteMapping("/pokemon/{pokemonId}")
     fun deletePokemon(@PathVariable pokemonId: String, model: Model): ResponseEntity<String> {
         val pokemon = FirestoreService().getDocument("pokemon", pokemonId).delete()
