@@ -91,7 +91,8 @@ function buildDBTooltip(inputElem) {
     } else if (!DB.hasOwnProperty(db)) {
         text = "Invalid DB"
     } else {
-        text = `${DB[db].diceCount}<img src=/img/icons/dice-d${DB[db].dice}-outline-white.png alt=&quot;d${DB[db].dice}&quot; /> + ${DB[db].modifier} (+ ${atk})`
+        text = `${DB[db].diceCount}<img src=/img/icons/dice-d${DB[db].dice}-outline-white.png alt=&quot;d${DB[db].dice}&quot; /> + ${DB[db].modifier} (+ ${atk})` +
+            `<br/><small class="text-muted">CLICK TO COPY</small>`
         formula = `${DB[db].diceCount}d${DB[db].dice}+${DB[db].modifier}+${atk}`
     }
 
