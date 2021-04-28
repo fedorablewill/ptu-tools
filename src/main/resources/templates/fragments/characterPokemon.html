@@ -114,42 +114,42 @@
                         <select class="form-control" type="text" id="char-nature" onchange="onChangeNature(this)"
                                 th:field="*{nature}" th:data-prev="*{nature}">
                             <option th:value="null"></option>
-                            <option th:value="'Cuddly'">Cuddly</option>
-                            <option th:value="'Distracted'">Distracted</option>
-                            <option th:value="'Proud'">Proud</option>
-                            <option th:value="'Decisive'">Decisive</option>
-                            <option th:value="'Patient'">Patient</option>
-                            <option th:value="'Desperate'">Desperate</option>
-                            <option th:value="'Lonely'">Lonely</option>
-                            <option th:value="'Adamant'">Adamant</option>
-                            <option th:value="'Naughty'">Naughty</option>
-                            <option th:value="'Brave'">Brave</option>
-                            <option th:value="'Stark'">Stark</option>
-                            <option th:value="'Bold'">Bold</option>
-                            <option th:value="'Impish'">Impish</option>
-                            <option th:value="'Lax'">Lax</option>
-                            <option th:value="'Relaxed'">Relaxed</option>
-                            <option th:value="'Curious'">Curious</option>
-                            <option th:value="'Modest'">Modest</option>
-                            <option th:value="'Mild'">Mild</option>
-                            <option th:value="'Rash'">Rash</option>
-                            <option th:value="'Quiet'">Quiet</option>
-                            <option th:value="'Dreamy'">Dreamy</option>
-                            <option th:value="'Calm'">Calm</option>
-                            <option th:value="'Gentle'">Gentle</option>
-                            <option th:value="'Careful'">Careful</option>
-                            <option th:value="'Sassy'">Sassy</option>
-                            <option th:value="'Skittish'">Skittish</option>
-                            <option th:value="'Timid'">Timid</option>
-                            <option th:value="'Hasty'">Hasty</option>
-                            <option th:value="'Jolly'">Jolly</option>
-                            <option th:value="'Naive'">Naive</option>
-                            <option th:value="'Composed'">Composed</option>
-                            <option th:value="'Hardy'">Hardy</option>
-                            <option th:value="'Docile'">Docile</option>
-                            <option th:value="'Bashful'">Bashful</option>
-                            <option th:value="'Quirky'">Quirky</option>
-                            <option th:value="'Serious'">Serious</option>
+                            <option th:value="'Cuddly'" th:selected="${pokemon.nature} == 'Cuddly'">Cuddly</option>
+                            <option th:value="'Distracted'" th:selected="${pokemon.nature} == 'Distracted'">Distracted</option>
+                            <option th:value="'Proud'" th:selected="${pokemon.nature} == 'Proud'">Proud</option>
+                            <option th:value="'Decisive'" th:selected="${pokemon.nature} == 'Decisive'">Decisive</option>
+                            <option th:value="'Patient'" th:selected="${pokemon.nature} == 'Patient'">Patient</option>
+                            <option th:value="'Desperate'" th:selected="${pokemon.nature} == 'Desperate'">Desperate</option>
+                            <option th:value="'Lonely'" th:selected="${pokemon.nature} == 'Lonely'">Lonely</option>
+                            <option th:value="'Adamant'" th:selected="${pokemon.nature} == 'Adamant'">Adamant</option>
+                            <option th:value="'Naughty'" th:selected="${pokemon.nature} == 'Naughty'">Naughty</option>
+                            <option th:value="'Brave'" th:selected="${pokemon.nature} == 'Brave'">Brave</option>
+                            <option th:value="'Stark'" th:selected="${pokemon.nature} == 'Stark'">Stark</option>
+                            <option th:value="'Bold'" th:selected="${pokemon.nature} == 'Bold'">Bold</option>
+                            <option th:value="'Impish'" th:selected="${pokemon.nature} == 'Impish'">Impish</option>
+                            <option th:value="'Lax'" th:selected="${pokemon.nature} == 'Lax'">Lax</option>
+                            <option th:value="'Relaxed'" th:selected="${pokemon.nature} == 'Relaxed'">Relaxed</option>
+                            <option th:value="'Curious'" th:selected="${pokemon.nature} == 'Curious'">Curious</option>
+                            <option th:value="'Modest'" th:selected="${pokemon.nature} == 'Modest'">Modest</option>
+                            <option th:value="'Mild'" th:selected="${pokemon.nature} == 'Mild'">Mild</option>
+                            <option th:value="'Rash'" th:selected="${pokemon.nature} == 'Rash'">Rash</option>
+                            <option th:value="'Quiet'" th:selected="${pokemon.nature} == 'Quiet'">Quiet</option>
+                            <option th:value="'Dreamy'" th:selected="${pokemon.nature} == 'Dreamy'">Dreamy</option>
+                            <option th:value="'Calm'" th:selected="${pokemon.nature} == 'Calm'">Calm</option>
+                            <option th:value="'Gentle'" th:selected="${pokemon.nature} == 'Gentle'">Gentle</option>
+                            <option th:value="'Careful'" th:selected="${pokemon.nature} == 'Careful'">Careful</option>
+                            <option th:value="'Sassy'" th:selected="${pokemon.nature} == 'Sassy'">Sassy</option>
+                            <option th:value="'Skittish'" th:selected="${pokemon.nature} == 'Skittish'">Skittish</option>
+                            <option th:value="'Timid'" th:selected="${pokemon.nature} == 'Timid'">Timid</option>
+                            <option th:value="'Hasty'" th:selected="${pokemon.nature} == 'Hasty'">Hasty</option>
+                            <option th:value="'Jolly'" th:selected="${pokemon.nature} == 'Jolly'">Jolly</option>
+                            <option th:value="'Naive'" th:selected="${pokemon.nature} == 'Naive'">Naive</option>
+                            <option th:value="'Composed'" th:selected="${pokemon.nature} == 'Composed'">Composed</option>
+                            <option th:value="'Hardy'" th:selected="${pokemon.nature} == 'Hardy'">Hardy</option>
+                            <option th:value="'Docile'" th:selected="${pokemon.nature} == 'Docile'">Docile</option>
+                            <option th:value="'Bashful'" th:selected="${pokemon.nature} == 'Bashful'">Bashful</option>
+                            <option th:value="'Quirky'" th:selected="${pokemon.nature} == 'Quirky'">Quirky</option>
+                            <option th:value="'Serious'" th:selected="${pokemon.nature} == 'Serious'">Serious</option>
                         </select>
                     </div>
                     <div class="form-group label-floating col-md-3 col-6">

@@ -30,9 +30,9 @@
             <label class="control-label" th:for="'move-' + ${index} + '-class'">Class</label>
             <select class="form-control" th:id="'move-' + ${index} + '-class'"
                     th:name="'moves[' + ${index} + '].damageClass'" th:value="${move.damageClass}">
-                <option th:value="'Physical'">Physical</option>
-                <option th:value="'Special'">Special</option>
-                <option th:value="'Status'">Status</option>
+                <option th:value="'Physical'" th:selected="${move.damageClass} == 'Physical'">Physical</option>
+                <option th:value="'Special'" th:selected="${move.damageClass} == 'Special'">Special</option>
+                <option th:value="'Status'" th:selected="${move.damageClass} == 'Status'">Status</option>
             </select>
         </div>
         <div class="form-group label-floating col-sm-4">
