@@ -264,11 +264,11 @@ function takeDamage(amount) {
 
     if (!isNaN(tempHp) && tempHp > 0) {
         if (tempHp - amount > 0) {
-            thpElem.val(tempHp - amount)
+            thpElem.val(tempHp - amount).change()
             return
         } else {
             amount -= tempHp
-            thpElem.val("")
+            thpElem.val("").change()
         }
     }
 
@@ -280,7 +280,7 @@ function takeDamage(amount) {
         health = 0
     }
 
-    healthElem.val(health - amount)
+    healthElem.val(health - amount).change()
 }
 
 function onChangeNature(elem) {
@@ -405,6 +405,10 @@ function addMoveByName(moveName) {
             alert("Move not found: " + moveName)
             return
         }
+        if ($("#char-types").val().split(",").includes(moveJson["type"]) && moveJson["damageBase"]) {
+            moveJson["damageBase"] += 2
+            moveJson["stab"] = true
+        }
         $.ajax("/pokemon/move", {
             method: "GET",
             contentType: "application/json",
@@ -525,4 +529,20 @@ function onChangeShiny(elem) {
 function onClickDbTooltip(elem) {
     clipboardText($(elem).attr("data-db-formula"))
     buildToast("Copied damage formula to clipboard.")
+}
+
+function onClickToggleStab(elem) {
+    elem = $(elem)
+    let dbElem = elem.closest(".form-move").find("[id$='-db']")
+    let db = dbElem.val()
+
+    if (!db) {
+        return
+    }
+
+    if (elem.is(':checked')) {
+        dbElem.val(parseInt(db) + 2).change()
+    } else {
+        dbElem.val(parseInt(db) - 2).change()
+    }
 }

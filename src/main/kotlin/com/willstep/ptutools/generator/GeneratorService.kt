@@ -49,7 +49,13 @@ class GeneratorService(
         val moves = ArrayList<Move>()
 
         for (name in results) {
-            firestoreService.getDocument("moves", name).get().get().toObject(Move::class.java)?.let { moves.add(it) }
+            firestoreService.getDocument("moves", name).get().get().toObject(Move::class.java)?.let {
+                if (pokedexEntry.types.contains(it.type)) {
+                    it.stab = true
+                    it.damageBase = it.damageBase?.plus(2)
+                }
+                moves.add(it)
+            }
         }
 
         return moves

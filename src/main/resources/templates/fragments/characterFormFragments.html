@@ -72,7 +72,8 @@
             <div class="form-group label-floating custom-checkbox col-sm-3 col-6">
                 <label class="control-label" th:for="'move-' + ${index} + '-stab'">Has STAB?</label>
                 <input class="form-control custom-control-input" type="checkbox" th:id="'move-' + ${index} + '-stab'"
-                       th:name="'moves[' + ${index} + '].stab'" th:value="${move.stab}" />
+                       th:name="'moves[' + ${index} + '].stab'" th:value="${move.stab}" th:checked="${move.stab}"
+                       onclick="onClickToggleStab(this)" />
                 <span class="custom-control-label"></span>
             </div>
             <div class="form-group label-floating col-sm-6">
