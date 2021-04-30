@@ -95,6 +95,11 @@ class PtuToolsRestController {
         }
     }
 
+    @GetMapping("/levelUpPokemon")
+    fun checkPokemonForLevelUp(@RequestParam pokedexEntryDocumentId: String?, @RequestParam currentLevel: Int, @RequestParam exp: Int): LevelUpChanges {
+        return PTUCoreInfoService().levelUpPokemon(pokedexEntryDocumentId, currentLevel, exp)
+    }
+
     @PostMapping("/savePokemonToFile")
     fun savePokemonToFile(@ModelAttribute pokemon: Pokemon): ResponseEntity<InputStreamResource> {
         pokemon.pokedexEntry.saveOtherCapabilities()

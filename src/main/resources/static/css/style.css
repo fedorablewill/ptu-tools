@@ -361,6 +361,14 @@ input[disabled] {
     padding-bottom: 1rem;
 }
 
+.toast .close {
+    margin-top: 2px;
+}
+
+.toast.hide {
+    display: none;
+}
+
 
 /*
     Responsive Utilities

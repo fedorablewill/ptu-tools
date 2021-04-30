@@ -546,3 +546,54 @@ function onClickToggleStab(elem) {
         dbElem.val(parseInt(db) - 2).change()
     }
 }
+
+function onChangeExp(elem) {
+    let exp = parseInt($(elem).val())
+    let level = parseInt($("#char-level").val()) || 0
+
+    if (exp) {
+        $.ajax("/levelUpPokemon", {
+            method: "GET",
+            contentType: "application/json",
+            data: {
+                "pokedexEntryDocumentId": $("[id='pokedexEntry.pokedexEntryDocumentId']").val(),
+                "currentLevel": level,
+                "exp": exp
+            }
+        }).done(function(response) {
+            if (level !== response["level"]) {
+                let name = $("#char-name").val() || "You"
+                if (level < response["level"]) {
+                    buildToast(name + " Leveled up!")
+                }
+                $("#char-level").val(response["level"])
+
+                if (response["moves"].length > 0) {
+                    for (var move of response["moves"]) {
+                        buildToast(`${name} wants to learn <strong>${move['name']}</strong>!<br/>` +
+                        `<button type="button" class="btn btn-sm btn-outline-white" onclick="learnToastMove('${move['name']}', this)">Learn</button> ` +
+                        `<button type="button" class="btn btn-sm btn-outline-white" data-dismiss="toast" aria-label="Close">Don't Learn</button>`, false)
+                    }
+                }
+            }
+        }).fail(function(jqxhr, textStatus, errorThrown)  {
+            alert("Error checking for level up: " + textStatus + " : " + errorThrown)
+        })
+    }
+}
+
+function learnToastMove(moveName, elem) {
+    let parent = $(elem).parent()
+    addMoveByName(moveName)
+    parent.html("1, 2 and...")
+    setTimeout(function () {
+        parent.html("1, 2 and... Poof!")
+        setTimeout(function () {
+            let name = $("#char-name").val() || "You"
+            parent.html(name + " learned " + moveName + "!")
+            setTimeout(function () {
+                parent.closest(".toast").toast('hide')
+            }, 2000)
+        }, 1000)
+    }, 1000)
+}

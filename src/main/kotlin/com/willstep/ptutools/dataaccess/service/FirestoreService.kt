@@ -14,15 +14,15 @@ var firestoreOptions: FirestoreOptions = FirestoreOptions.getDefaultInstance().t
 var db: Firestore = firestoreOptions.service
 
 open class FirestoreService {
-    fun saveAsDocument(collectionName: String, documentName: String, obj: Any) {
+    open fun saveAsDocument(collectionName: String, documentName: String, obj: Any) {
         db.collection(collectionName).document(documentName).set(obj)
     }
 
-    fun getCollection(collectionName: String): CollectionReference {
+    open fun getCollection(collectionName: String): CollectionReference {
         return db.collection(collectionName)
     }
 
-    fun getDocument(collectionName: String, documentName: String): DocumentReference {
+    open fun getDocument(collectionName: String, documentName: String): DocumentReference {
         return db.collection(collectionName).document(documentName)
     }
 }

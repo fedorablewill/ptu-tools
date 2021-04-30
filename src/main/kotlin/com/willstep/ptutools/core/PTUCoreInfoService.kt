@@ -1,10 +1,16 @@
 package com.willstep.ptutools.core
 
+import com.willstep.ptutools.dataaccess.dto.LevelUpChanges
+import com.willstep.ptutools.dataaccess.dto.Move
+import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Type
+import com.willstep.ptutools.dataaccess.service.FirestoreService
 import kotlin.math.log2
 import kotlin.math.roundToInt
 
-class PTUCoreInfoService {
+class PTUCoreInfoService (
+    val firestoreService: FirestoreService = FirestoreService()
+) {
     fun getTypeEffectivity(types: List<Type>): Map<Type, Double> {
         val results = HashMap<Type, Double>()
 
@@ -40,5 +46,34 @@ class PTUCoreInfoService {
         val damage = ((attackAmount - targetDefense) * effectivity).roundToInt()
 
         return if (damage <= 1) 1 else damage
+    }
+
+    fun levelUpPokemon(pokedexEntryDocumentId: String?, currentLevel: Int, exp: Int) : LevelUpChanges {
+        var newLevel = 1
+        val newMoves = ArrayList<Move>()
+
+        while(newLevel < EXPERIENCE_CHART.size && EXPERIENCE_CHART[newLevel - 1] < exp) {
+            newLevel++
+        }
+
+        if (pokedexEntryDocumentId != null) {
+            val pokedexEntry = firestoreService.getDocument("pokedexEntries", pokedexEntryDocumentId)
+                .get().get().toObject(PokedexEntry::class.java)
+
+            if (pokedexEntry != null) {
+                for (entry in pokedexEntry.levelUpMoves.entries) {
+                    if (entry.value in (currentLevel + 1)..newLevel) {
+                        val move = firestoreService.getDocument("moves", entry.key)
+                            .get().get().toObject(Move::class.java)
+
+                        if (move != null) {
+                            newMoves.add(move)
+                        }
+                    }
+                }
+            }
+        }
+
+        return LevelUpChanges(newLevel, newMoves)
     }
 }
