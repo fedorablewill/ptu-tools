@@ -39,6 +39,20 @@ function initialize() {
     })
 
     $("#navbarNav").collapse('hide')
+
+    $('form').data('saved-state', $('form').serialize());
+
+    $(window).bind('beforeunload', function(e){
+        // If page is not dirty, don't give warning
+        if($('form').serialize() === $('form').data('saved-state')){
+            return undefined;
+        }
+
+        var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave and discard them?';
+
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
 }
 
 //
@@ -191,6 +205,8 @@ $("form").submit(function() {
     for (i = 0; i < eggGroups.length; i++) {
         hiddenContainer.append(`<input type="hidden" name="pokedexEntry.eggGroups[${i}]" value="${eggGroups[i]}" />`)
     }
+
+    $('form').data('saved-state', $('form').serialize());
 })
 
 // Change label of "Show More" and "Show Less" on toggle
