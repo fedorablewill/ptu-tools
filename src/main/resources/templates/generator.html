@@ -20,7 +20,7 @@
 
     <!-- Libraries CSS -->
     <link type="text/css" href="/css/argon.min.css" rel="stylesheet">
-    <link type="text/css" href="/vendor/tagcomplete/css/tagcomplete.min.css" rel="stylesheet">
+    <link type="text/css" href="/vendor/magicsuggest/magicsuggest.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link type="text/css" th:href="${'/css/style.css?v=' + @environment.getProperty('css.version')}" rel="stylesheet">
@@ -79,31 +79,31 @@
             <div class="col-sm-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Species</label>
-                    <input class="form-control tags_input" type="text" id="filter-species" data-filter="pokedexEntryDocumentId" data-filter-method="EQUALS" />
+                    <input class="form-control tags_input" type="text" id="filter-species" />
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Type</label>
-                    <input class="form-control tags_input" type="text" id="filter-type" data-filter="types" data-filter-method="ARRAY_CONTAINS" />
+                    <input class="form-control tags_input" type="text" id="filter-type" />
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Habitat</label>
-                    <input class="form-control tags_input" type="text" id="filter-habitat" data-filter="habitats" data-filter-method="ARRAY_CONTAINS" />
+                    <input class="form-control tags_input" type="text" id="filter-habitat" />
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-species">Region of Origin</label>
-                    <input class="form-control tags_input" type="text" id="filter-region" data-filter="regionOfOrigin" data-filter-method="EQUALS" />
+                    <input class="form-control tags_input" type="text" id="filter-region" />
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group label-floating">
                     <label class="control-label" for="filter-stage">Evolution Stage</label>
-                    <input class="form-control tags_input" type="text" id="filter-stage" data-filter="evolutionStage" data-filter-method="EQUALS" />
+                    <input class="form-control tags_input" type="text" id="filter-stage" />
                 </div>
             </div>
             <div class="col-sm-6">
@@ -259,7 +259,7 @@
 <script src="/vendor/popper/popper.min.js"></script>
 <script src="/vendor/bootstrap/bootstrap.min.js"></script>
 <script src="/vendor/nouislider/js/nouislider.min.js"></script>
-<script src="/vendor/tagcomplete/js/tagcomplete.min.js"></script>
+<script src="/vendor/magicsuggest/magicsuggest.min.js"></script>
 
 <!-- Theme JS -->
 <script src="/js/argon.min.js"></script>
@@ -288,70 +288,42 @@
 
     // Autocomplete
 
-    $("#filter-type").tagComplete({
-        autocomplete: {
-            data: TYPES
-        },
-        freeInput: false,
-        freeEdit: false,
-        onDelete: function(data) {
-            let field = $("#filter-type")
-            field.val(field.val().replace(data.text + ",", "").replace("," + data.text, "").replace(data.text, ""))
-        }
-    })
+    $($("#filter-type").magicSuggest({
+        data: TYPES,
+        allowDuplicates: false,
+        expandOnFocus: true
+    }).container).attr("data-filter", "types").attr("data-filter-method", "ARRAY_CONTAINS")
 
-    $("#filter-species").tagComplete({
-        autocomplete: {
-            ajaxOpts: {
-                url: "/speciesOptions",
-                method:'GET',
-                dataType:'json',
-                data: {}
-            }
-        },
-        freeInput: false,
-        freeEdit: false,
-        onDelete: function(data) {
-            let field = $("#filter-species")
-            field.val(field.val().replace(data.id + ",", "").replace("," + data.id, "").replace(data.id, ""))
-        }
-    })
+    $($("#filter-species").magicSuggest({
+        data: '/speciesOptions',
+        valueField: 'first',
+        displayField: 'second',
+        mode: 'remote',
+        hideTrigger: true,
+        allowFreeEntries: false,
+        allowDuplicates: false
+    }).container).attr("data-filter", "pokedexEntryDocumentId").attr("data-filter-method", "EQUALS")
 
-    $("#filter-habitat").tagComplete({
-        autocomplete: {
-            data: HABITATS
-        },
-        freeInput: false,
-        freeEdit: false,
-        onDelete: function(data) {
-            let field = $("#filter-habitat")
-            field.val(field.val().replace(data.text + ",", "").replace("," + data.text, "").replace(data.text, ""))
-        }
-    })
+    $($("#filter-habitat").magicSuggest({
+        data: HABITATS,
+        allowFreeEntries: false,
+        allowDuplicates: false,
+        expandOnFocus: true
+    }).container).attr("data-filter", "habitats").attr("data-filter-method", "ARRAY_CONTAINS")
 
-    $("#filter-region").tagComplete({
-        autocomplete: {
-            data: REGIONS
-        },
-        freeInput: false,
-        freeEdit: false,
-        onDelete: function(data) {
-            let field = $("#filter-region")
-            field.val(field.val().replace(data.text + ",", "").replace("," + data.text, "").replace(data.text, ""))
-        }
-    })
+    $($("#filter-region").magicSuggest({
+        data: REGIONS,
+        allowFreeEntries: false,
+        allowDuplicates: false,
+        expandOnFocus: true
+    }).container).attr("data-filter", "regionOfOrigin").attr("data-filter-method", "EQUALS")
 
-    $("#filter-stage").tagComplete({
-        autocomplete: {
-            data: ["1", "2", "3"]
-        },
-        freeInput: false,
-        freeEdit: false,
-        onDelete: function(data) {
-            let field = $("#filter-stage")
-            field.val(field.val().replace(data.text + ",", "").replace("," + data.text, "").replace(data.text, ""))
-        }
-    })
+    $($("#filter-stage").magicSuggest({
+        data: ["1", "2", "3"],
+        allowFreeEntries: false,
+        allowDuplicates: false,
+        expandOnFocus: true
+    }).container).attr("data-filter", "evolutionStage").attr("data-filter-method", "EQUALS")
 
 
     //
@@ -400,13 +372,14 @@
         }
 
 
-        $("input[data-filter]").each(function (i) {
+        $("div[data-filter]").each(function (i) {
             let elem = $(this)
-            if (elem.val()) {
+            let ms = elem.magicSuggest()
+            if (ms.getValue().length > 0) {
                 requestBody["params"].push({
                     field: elem.attr("data-filter"),
-                    method: elem.val().includes(",") ? elem.attr("data-filter-method") + "_LIST" : elem.attr("data-filter-method"),
-                    value: elem.val().includes(",") ? elem.val().split(",") : elem.val()
+                    method: ms.getValue().length > 1 ? elem.attr("data-filter-method") + "_LIST" : elem.attr("data-filter-method"),
+                    value: ms.getValue().length > 1 ? ms.getValue() : ms.getValue()[0]
                 })
             }
         })

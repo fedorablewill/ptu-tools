@@ -369,6 +369,18 @@ input[disabled] {
     display: none;
 }
 
+.ms-ctn {
+    padding: .625rem .75rem;
+}
+
+.ms-ctn input {
+    background: none;
+}
+
+.ms-ctn-focus {
+    background: white !important;
+}
+
 
 /*
     Responsive Utilities

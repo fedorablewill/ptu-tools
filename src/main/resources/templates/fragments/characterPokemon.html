@@ -98,7 +98,7 @@
                 <div class="row row-slim">
                     <div class="form-group label-floating col-sm-8">
                         <label class="control-label" for="char-types">Types</label>
-                        <input class="form-control" type="text" id="char-types" data-tagcomplete="type" th:value="${#strings.listJoin(pokemon.pokedexEntry.types,',')}" />
+                        <input class="form-control" type="text" id="char-types" th:value="${#strings.listJoin(pokemon.pokedexEntry.types,',')}" name="pokedexEntry.types" />
                     </div>
                     <div class="form-group col-sm-4">
                         <button type="button" class="btn btn-outline-danger btn-form" onclick="if (buildTypeEffectivity()) $('#typeEffectModal').modal('show')">Effectivity</button>

@@ -373,7 +373,17 @@ function loadSubscriber() {
 }
 
 function subscribe(elem, targetIds, callback) {
-    targetIds.forEach(targetId => $('#' + targetId).change(function () {callback(elem); $(elem).change();}))
+    targetIds.forEach(function (targetId) {
+        let elemTarget = $('#' + targetId)
+        if (elemTarget.hasClass("ms-ctn")) {
+            $(elemTarget.magicSuggest()).on('selectionchange', function(e,m){
+                callback(elem);
+                $(elem).change();
+            })
+        } else {
+            elemTarget.change(function () {callback(elem); $(elem).change();})
+        }
+    })
     callback(elem)
     $(elem).change();
 }

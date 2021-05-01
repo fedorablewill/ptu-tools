@@ -178,4 +178,30 @@ class UploadDataTool {
 
         }
     }
+
+    fun uploadEvolutionsRemaining(items: List<EvolutionsRemaining>) {
+        for (item in items) {
+            val result = firestoreService.getCollection("pokedexEntries")
+                .whereEqualTo("species", item.species)
+                .whereEqualTo("form", item.form).get().get()
+
+            if (!result.isEmpty) {
+                val entries = result.toObjects(PokedexEntry::class.java)
+                for (entry in entries) {
+                    entry.evolutionsRemainingGenderless = item.evolutionsRemaining
+                    entry.evolutionsRemainingMale = item.evolutionsRemainingMale
+                    entry.evolutionsRemainingFemale = item.evolutionsRemainingFemale
+                    firestoreService.saveAsDocument("pokedexEntries", entry.pokedexEntryDocumentId!!, entry)
+                }
+            }
+        }
+    }
 }
+
+data class EvolutionsRemaining(
+    var species: String = "",
+    var form: String? = null,
+    var evolutionsRemaining: Int? = null,
+    var evolutionsRemainingMale: Int? = null,
+    var evolutionsRemainingFemale: Int? = null
+)

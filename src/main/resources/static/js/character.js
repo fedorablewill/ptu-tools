@@ -4,28 +4,28 @@
 
 // Initialize
 $(function () {
-    initializeWidgets()
     initialize()
+    initializeWidgets()
 })
 
 function initialize() {
     let afflictions = AFFLICTIONS_VOLATILE.concat(AFFLICTIONS_PERSISTENT).concat(AFFLICTIONS_OTHER)
     afflictions.sort()
 
-    $("#char-afflict").tagComplete({
-        autocomplete: {
-            data: afflictions
-        },
-        freeInput: true,
-        freeEdit: true
+    var elem = $("#char-afflict")
+    var elemVal = elem.val()
+    elem.attr("value", null).magicSuggest({
+        data: afflictions,
+        value: elemVal ? elemVal.split(/, ?/) : null,
+        placeholder: null
     })
 
-    $('[data-tagcomplete="type"]').tagComplete({
-        autocomplete: {
-            data: TYPES
-        },
-        freeInput: true,
-        freeEdit: true
+    elem = $('#char-types')
+    elemVal = elem.val() || ""
+    elem.attr("value", null).magicSuggest({
+        data: TYPES,
+        value: elemVal ? elemVal.split(/, ?/) : null,
+        expandOnFocus: true
     })
 
     $('[data-autocomplete="type"]').autocomplete({
@@ -115,7 +115,7 @@ function buildCaptureRate(elem) {
     let hpCurrent = parseInt($('#char-hp-current').val())
     let hpMax = parseInt($('#char-hp-max').val())
     let injuries = parseInt($('#char-injuries').val())
-    let afflictions = $('#char-afflict').val()
+    let afflictions = $('#char-afflict').magicSuggest().getValue()
     let evStageRemain = parseInt($('#char-evolution-remaining').val())
     let isShiny = $('#char-shiny').is(':checked')
     let isLegendary = $('#char-legendary').is(':checked')
@@ -158,7 +158,7 @@ function buildCaptureRate(elem) {
     }
 
     if (afflictions) {
-        for (var affliction of afflictions.split(/, ?/)) {
+        for (var affliction of afflictions) {
             if ("Stuck" === affliction) {
                 captureRate += 10
             } else if ("Slow" === affliction) {
@@ -186,11 +186,6 @@ function buildCaptureRate(elem) {
 $("form").submit(function() {
     let hiddenContainer = $("#generatedHiddenFields").empty()
     var i;
-
-    let types = $("#char-types").val().split(/ ?, ?/)
-    for (i = 0; i < types.length; i++) {
-        hiddenContainer.append(`<input type="hidden" name="pokedexEntry.types[${i}]" value="${types[i]}" />`)
-    }
 
     let eggGroups = $("#char-egg-group").val().split(/ ?, ?/)
     for (i = 0; i < eggGroups.length; i++) {

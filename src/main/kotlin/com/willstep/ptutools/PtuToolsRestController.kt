@@ -3,6 +3,7 @@ package com.willstep.ptutools
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.willstep.ptutools.core.PTUCoreInfoService
 import com.willstep.ptutools.dataaccess.dto.*
+import com.willstep.ptutools.dataaccess.service.EvolutionsRemaining
 import com.willstep.ptutools.dataaccess.service.FirestoreService
 import com.willstep.ptutools.dataaccess.service.UploadDataTool
 import org.springframework.core.io.InputStreamResource
@@ -34,6 +35,13 @@ class PtuToolsRestController {
         UploadDataTool().uploadPokedexEntries(dexEntries)
 
         return dexEntries.size.toString() + " Entries Uploaded"
+    }
+
+    @PostMapping("/uploadEvolutionsRemaining")
+    fun uploadEvolutionsRemaining(@RequestBody entries: List<EvolutionsRemaining>, model: Model): String {
+        UploadDataTool().uploadEvolutionsRemaining(entries)
+
+        return entries.size.toString() + " Entries Uploaded"
     }
 
     @GetMapping("/pokedex/{dexNumber}")

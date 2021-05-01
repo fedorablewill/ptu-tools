@@ -6,7 +6,6 @@ import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Pokemon
 import com.willstep.ptutools.dataaccess.service.FirestoreService
 import org.springframework.web.bind.annotation.*
-import java.util.*
 import kotlin.random.Random
 
 
@@ -60,22 +59,22 @@ class GeneratorController {
         return null
     }
 
-    @GetMapping("/speciesOptions")
-    fun speciesOptions(@RequestParam q: String, @RequestParam lol: Int): Map<String, String> {
+    @PostMapping("/speciesOptions")
+    fun speciesOptions(@RequestParam query: String): List<Pair<String, String>> {
         val results = FirestoreService().getCollection("pokedexEntries")
-            .whereGreaterThanOrEqualTo("species", q.capitalize())
-            .whereLessThanOrEqualTo("species", q.capitalize() + '\uf8ff')
+            .whereGreaterThanOrEqualTo("species", query.capitalize())
+            .whereLessThanOrEqualTo("species", query.capitalize() + '\uf8ff')
             .orderBy("species").orderBy("form")
-            .limit(lol).get().get()
+            .limit(25).get().get()
 
-        val options = TreeMap<String, String>()
+        val options = ArrayList<Pair<String, String>>()
 
         for (result in results) {
             if (result["form"] != null) {
-                options[result["pokedexEntryDocumentId"] as String] =
-                    String.format("%s (%s)", result["species"] as String, result["form"] as String)
+                options.add(Pair(result["pokedexEntryDocumentId"] as String,
+                    String.format("%s (%s)", result["species"] as String, result["form"] as String)))
             } else {
-                options[result["pokedexEntryDocumentId"] as String] = result["species"] as String
+                options.add(Pair(result["pokedexEntryDocumentId"] as String, result["species"] as String))
             }
         }
 

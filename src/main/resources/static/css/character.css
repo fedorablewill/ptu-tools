@@ -87,6 +87,7 @@ hr {
     top: -0.5rem;
     padding: 0 4px;
     margin-bottom: 0;
+    z-index: 1;
 }
 
 .control-label-title {
