@@ -325,6 +325,65 @@
     Common Components
  */
 
+body {
+    background-color: #434343;
+    color: white;
+    padding-bottom: 2rem;
+}
+
+h2, h3, h4 {
+    color: #e9ecef;
+}
+
+hr {
+    border-top: .0625rem solid rgba(255, 255, 255, 0.1);
+}
+
+.form-control {
+    background: none;
+    color: #cad1d7;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    opacity: 1;
+    background: none;
+    border-color: rgba(50,151,211,.25);
+}
+
+.focused .form-control {
+    border-color: #cad1d7;
+}
+
+.form-group {
+    position: relative;
+    margin-top: 0.5rem;
+}
+
+.form-inline.form-group {
+    margin: 0;
+}
+
+.control-label {
+    position: absolute;
+    text-transform: uppercase;
+    font-size: .7rem;
+    background-color: #434343;
+    left: 12px;
+    top: -0.5rem;
+    padding: 0 4px;
+    margin-bottom: 0;
+    z-index: 1;
+}
+
+.control-label-title {
+    font-size: 1rem;
+    top: -0.75rem;
+}
+
+.control-label-title input {
+    font-weight: bold;
+}
+
 .modal-header.bg-danger, .modal-header.bg-dark, .modal-footer.bg-danger, .modal-footer.bg-dark {
     border-color: rgba(255, 255, 255, 0.1);
 }
@@ -355,6 +414,7 @@ input[disabled] {
     bottom: 0;
     left: 0;
     padding: 1rem;
+    z-index: 9999;
 }
 
 .toast-container .toast {

@@ -1,19 +1,5 @@
-body {
-    background-color: #434343;
-    color: white;
-    padding-bottom: 2rem;
-}
-
 .bg-dark {
     background-color: #434343 !important;
-}
-
-h2, h3, h4 {
-    color: #e9ecef;
-}
-
-hr {
-    border-top: .0625rem solid rgba(255, 255, 255, 0.1);
 }
 
 .char-section-title hr {
@@ -29,30 +15,6 @@ hr {
 
 .navbar {
     margin-bottom: 1rem;
-}
-
-.form-control {
-    background: none;
-    color: #cad1d7;
-}
-
-.form-control:disabled, .form-control[readonly] {
-    opacity: 1;
-    background: none;
-    border-color: rgba(50,151,211,.25);
-}
-
-.focused .form-control {
-    border-color: #cad1d7;
-}
-
-.form-group {
-    position: relative;
-    margin-top: 0.5rem;
-}
-
-.form-inline.form-group {
-    margin: 0;
 }
 
 .form-skill-die {
@@ -78,26 +40,6 @@ hr {
     top: 0.75rem;
 }
 
-.control-label {
-    position: absolute;
-    text-transform: uppercase;
-    font-size: .7rem;
-    background-color: #434343;
-    left: 12px;
-    top: -0.5rem;
-    padding: 0 4px;
-    margin-bottom: 0;
-    z-index: 1;
-}
-
-.control-label-title {
-    font-size: 1rem;
-    top: -0.75rem;
-}
-
-.control-label-title input {
-    font-weight: bold;
-}
 
 .navbar .control-label {
     background-color: #f5365c;
