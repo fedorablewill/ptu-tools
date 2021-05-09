@@ -101,8 +101,8 @@
             data: json
         }).done(function(response) {
             $("#top").html(response)
-            initializeWidgets()
             initialize()
+            initializeWidgets()
         }).fail(function(jqxhr, textStatus, errorThrown)  {
             alert("Error building character sheet: " + textStatus + " : " + errorThrown)
         })
@@ -114,8 +114,8 @@
             contentType: "application/json"
         }).done(function(response) {
             $("#top").html(response)
-            initializeWidgets()
             initialize()
+            initializeWidgets()
         }).fail(function(jqxhr, textStatus, errorThrown)  {
             alert("Error building character sheet: " + textStatus + " : " + errorThrown)
         })

@@ -61,16 +61,16 @@ function initialize() {
 
 
 function buildTypeEffectivity() {
-    let types = $("#char-types").val()
+    let types = $("#char-types").magicSuggest().getValue()
 
-    if (!validateTypes(types.split(","), "Cannot calculate effectivity for type: ")) {
+    if (!validateTypes(types, "Cannot calculate effectivity for type: ")) {
         return false
     }
 
     $.ajax("/typeEffectivity", {
         method: "GET",
         contentType: "application/json",
-        data: { "types": types }
+        data: { "types": types.join() }
     }).done(function(response) {
         let modalBody = $("#typeEffectModalBody").empty()
         var current = -1
@@ -218,7 +218,7 @@ $('.move-collapse').on('hide.bs.collapse', function () {
 
 // Submit handler for Quick Damage Modal
 function onSubmitDamage() {
-    let types = $("#char-types").val()
+    let types = $("#char-types").magicSuggest().getValue()
     let dmgClass = $('#quickDamage-class').val()
     let def = dmgClass === "Special" ? parseInt($('#char-stat-spdef-total').val()) : parseInt($('#char-stat-def-total').val())
     let dmgType = $('#quickDamage-type').val()
@@ -226,7 +226,7 @@ function onSubmitDamage() {
 
     if (dmgClass === "True") {
         takeDamage(dmgAmt)
-        return
+        return true
     } else if (isNaN(def)) {
         alert("Pokemon's defense value is not a number. Please enter defense under Stats and try again.")
         return false
@@ -234,9 +234,10 @@ function onSubmitDamage() {
 
     if (dmgType === "Typeless") {
         takeDamage(dmgAmt - def)
+        return true
     }
 
-    if (!validateTypes(types.split(","), "Cannot calculate damage for Pokemon's type: ")) {
+    if (!validateTypes(types, "Cannot calculate damage for Pokemon's type: ")) {
         return false
     }
 
@@ -244,7 +245,7 @@ function onSubmitDamage() {
         method: "GET",
         contentType: "application/json",
         data: {
-            targetTypes: types,
+            targetTypes: types.join(),
             targetDefense: def,
             attackType: dmgType,
             attackAmount: dmgAmt
@@ -416,7 +417,7 @@ function addMoveByName(moveName) {
             alert("Move not found: " + moveName)
             return
         }
-        if ($("#char-types").val().split(",").includes(moveJson["type"]) && moveJson["damageBase"]) {
+        if ($("#char-types").magicSuggest().getValue().includes(moveJson["type"]) && moveJson["damageBase"]) {
             moveJson["damageBase"] += 2
             moveJson["stab"] = true
         }
