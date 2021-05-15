@@ -4,8 +4,10 @@
 
 // Initialize
 $(function () {
-    initialize()
-    initializeWidgets()
+    if ($("#form").length > 0) {
+        initialize()
+        initializeWidgets()
+    }
 })
 
 function initialize() {
@@ -54,12 +56,23 @@ function initialize() {
         (e || window.event).returnValue = confirmationMessage; //Gecko + IE
         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
     });
+
+    buildPageTitle();
 }
 
 //
 // UI Builders & Templates
 //
 
+
+function buildPageTitle() {
+    let name = $('#char-name').val()
+    if (name) {
+        document.title = name + " - PTU Exodus Character Sheet"
+    } else {
+        document.title = "New Pokemon - PTU Exodus Character Sheet"
+    }
+}
 
 function buildTypeEffectivity() {
     let types = $("#char-types").magicSuggest().getValue()
