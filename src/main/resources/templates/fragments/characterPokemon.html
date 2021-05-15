@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="pokemon" type="com.willstep.ptutools.dataaccess.dto.Pokemon"*/-->
-<form action="#" th:action="'/savePokemonToFile'" th:object="${pokemon}" method="post">
+<form id="form" action="#" th:action="'/savePokemonToFile'" th:object="${pokemon}" method="post">
     <div class="char char-pokemon">
         <nav class="navbar navbar-expand-lg navbar-light bg-danger">
             <div class="char-picture navbar-brand">

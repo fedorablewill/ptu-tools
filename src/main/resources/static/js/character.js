@@ -40,11 +40,12 @@ function initialize() {
 
     $("#navbarNav").collapse('hide')
 
-    $('form').data('saved-state', $('form').serialize());
+    $('#form').data('saved-state', $('#form').serialize()).submit(onFormSubmit);
 
     $(window).bind('beforeunload', function(e){
+        let form = $('#form');
         // If page is not dirty, don't give warning
-        if($('form').serialize() === $('form').data('saved-state')){
+        if(form.length === 0 || form.serialize() === form.data('saved-state')){
             return undefined;
         }
 
@@ -197,7 +198,7 @@ function buildCaptureRate(elem) {
 //
 
 // Submit Form for saving!!!
-$("form").submit(function() {
+function onFormSubmit() {
     let hiddenContainer = $("#generatedHiddenFields").empty()
     var i;
 
@@ -207,7 +208,7 @@ $("form").submit(function() {
     }
 
     $('form').data('saved-state', $('form').serialize());
-})
+}
 
 // Change label of "Show More" and "Show Less" on toggle
 $('.move-collapse').on('hide.bs.collapse', function () {
