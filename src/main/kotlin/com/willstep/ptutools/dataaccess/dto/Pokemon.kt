@@ -5,6 +5,7 @@ import java.util.*
 
 data class Pokemon(
     val pokemonDocumentId: String = UUID.randomUUID().toString(),
+    var googleDriveFileId: String? = null,
 
     var pokedexEntry: PokedexEntry = PokedexEntry(),
 

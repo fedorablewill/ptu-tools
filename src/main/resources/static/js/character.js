@@ -220,7 +220,22 @@ function onFormSubmit() {
         hiddenContainer.append(`<input type="hidden" name="pokedexEntry.eggGroups[${i}]" value="${eggGroups[i]}" />`)
     }
 
-    $('form').data('saved-state', $('form').serialize());
+    let form = $("#form")
+
+    form.data('saved-state', form.serialize());
+
+    if ($("[name='googleDriveFileId']").val()) {
+        $.ajax("/savePokemonToGoogleDrive", {
+            method: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            data: form.serialize()
+        }).done(function(response) {
+            buildToast("Saved to Google Drive.")
+        }).fail(function(jqxhr, textStatus, errorThrown)  {
+            alert("Error saving Pokemon to Google Drive: " + textStatus + " : " + errorThrown)
+        })
+        return false
+    }
 }
 
 // Change label of "Show More" and "Show Less" on toggle
