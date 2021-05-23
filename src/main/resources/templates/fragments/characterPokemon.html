@@ -223,8 +223,8 @@
                     <div class="form-group label-floating col-md-2 col-3 order-2">
                         <label class="control-label" for="char-hp-max">Max</label>
                         <input class="form-control" type="number" id="char-hp-max" disabled
-                               data-subscribe="char-level,char-stat-hp-total"
-                               data-subscribe-callback="buildValueFromSubscribedFields"
+                               data-subscribe="char-level,char-stat-hp-total,char-species"
+                               data-subscribe-callback="buildMaxHealth"
                                data-formula="#0 + (#1 * 3) + 10" />
                     </div>
                     <div class="form-group label-floating col-md-2 col-3 order-5 order-md-3">

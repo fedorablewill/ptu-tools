@@ -206,6 +206,14 @@ function buildCaptureRate(elem) {
     $(elem).val(captureRate)
 }
 
+function buildMaxHealth(elem) {
+    if ($('#char-species').val() === "Shedinja") {
+        $(elem).val(1)
+    } else {
+        buildValueFromSubscribedFields(elem)
+    }
+}
+
 //
 // Actions & Handlers
 //
