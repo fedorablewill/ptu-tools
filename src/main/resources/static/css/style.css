@@ -446,6 +446,12 @@ input[disabled] {
     Responsive Utilities
  */
 
+@media (max-width: 575px) {
+    .control-label-xs-top-1 {
+        top: -1rem !important;
+    }
+}
+
 @media (min-width: 576px) {
     .border-sm-top {
         border-top: 1px solid #e3e7eb !important;
