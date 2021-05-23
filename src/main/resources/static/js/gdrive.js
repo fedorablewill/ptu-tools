@@ -14,11 +14,20 @@ var scope = ['https://www.googleapis.com/auth/drive.file'];
 
 var pickerApiLoaded = false;
 var oauthToken;
+var oauthCallback = createFilePicker;
 
-// Use the Google API Loader script to load the google.picker script.
-function loadPicker() {
-    gapi.load('auth', {'callback': onAuthApiLoad});
-    gapi.load('picker', {'callback': onPickerApiLoad});
+// Starting points
+function loadFilePicker() {
+    validateOAuthToken(function () {
+        oauthCallback = createFilePicker;
+        gapi.load('picker', {'callback': onPickerApiLoad});
+    })
+}
+function loadFolderPicker() {
+    validateOAuthToken(function () {
+        oauthCallback = createFolderPicker;
+        gapi.load('picker', {'callback': onPickerApiLoad});
+    })
 }
 
 function onAuthApiLoad() {
@@ -33,39 +42,84 @@ function onAuthApiLoad() {
 
 function onPickerApiLoad() {
     pickerApiLoaded = true;
-    createPicker();
+    oauthCallback();
 }
 
 function handleAuthResult(authResult) {
     if (authResult && !authResult.error) {
         oauthToken = authResult.access_token;
         document.cookie = "authToken="+oauthToken;
-        createPicker();
+        oauthCallback();
     }
 }
 
 // Create and render a Picker object for searching images.
-function createPicker() {
+function createFilePicker() {
     if (pickerApiLoaded && oauthToken) {
         var view = new google.picker.View(google.picker.ViewId.DOCS);
         view.setMimeTypes("application/json");
         var picker = new google.picker.PickerBuilder()
             .enableFeature(google.picker.Feature.NAV_HIDDEN)
-            .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
             .setAppId(appId)
             .setOAuthToken(oauthToken)
             .addView(view)
             .addView(new google.picker.DocsUploadView())
             .setDeveloperKey(developerKey)
-            .setCallback(pickerCallback)
+            .setCallback(filePickerCallback)
+            .build();
+        picker.setVisible(true);
+    }
+}
+
+// Create and render a Picker object for searching images.
+function createFolderPicker() {
+    if (pickerApiLoaded && oauthToken) {
+        var view = new google.picker.DocsView(google.picker.ViewId.FOLDER);
+        view.setIncludeFolders(true);
+        view.setSelectFolderEnabled(true);
+        view.setParent('root')
+        view.setMimeTypes("application/vnd.google-apps.folder");
+        var picker = new google.picker.PickerBuilder()
+            .enableFeature(google.picker.Feature.NAV_HIDDEN)
+            .enableFeature(google.picker.Feature.MINE_ONLY)
+            .setAppId(appId)
+            .setOAuthToken(oauthToken)
+            .setTitle("Select a folder")
+            .addView(view)
+            .setDeveloperKey(developerKey)
+            .setCallback(folderPickerCallback)
             .build();
         picker.setVisible(true);
     }
 }
 
 // A simple callback implementation.
-function pickerCallback(data) {
+function filePickerCallback(data) {
     if (data.action === google.picker.Action.PICKED) {
         window.location.href = '/pokemon/drive/' + data.docs[0].id;
+    }
+}
+
+function folderPickerCallback(data) {
+    if (data.action === google.picker.Action.PICKED) {
+        onFolderPicked(data.docs[0].id);
+    }
+}
+
+// Check if the token is valid
+function validateOAuthToken(callback) {
+    if (document.cookie.includes("authToken=")) {
+        oauthToken = getCookie("authToken")
+        $.get("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + oauthToken, function (result) {
+            if (!result['expires_in'] || result['expires_in'] <= 0) {
+                oauthCallback = callback
+                gapi.load('auth', {'callback': onDownloadAuthApiLoad});
+            } else {
+                callback()
+            }
+        })
+    } else {
+        oauthCallback = callback
+        gapi.load('auth', {'callback': onDownloadAuthApiLoad});
     }
 }

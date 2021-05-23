@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import java.io.ByteArrayInputStream
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -121,6 +122,7 @@ class PtuToolsRestController {
     @PostMapping("/savePokemonToFile")
     fun savePokemonToFile(@ModelAttribute pokemon: Pokemon): ResponseEntity<InputStreamResource> {
         pokemon.pokedexEntry.saveOtherCapabilities()
+        pokemon.googleDriveFileId = null
         val buf: ByteArray = ObjectMapper().writeValueAsBytes(pokemon)
 
         return ResponseEntity
@@ -134,7 +136,16 @@ class PtuToolsRestController {
     }
 
     @PostMapping("/savePokemonToGoogleDrive")
-    fun savePokemonToGoogleDrive(@ModelAttribute pokemon: Pokemon, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<InputStreamResource> {
+    fun savePokemonToGoogleDrive(@ModelAttribute pokemon: Pokemon, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String> {
+        return doSaveToGoogleDrive(pokemon, request, false)
+    }
+
+    @PostMapping("/uploadPokemonToGoogleDrive")
+    fun uploadPokemonToGoogleDrive(@ModelAttribute pokemon: Pokemon, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String> {
+        return doSaveToGoogleDrive(pokemon, request, true)
+    }
+
+    private fun doSaveToGoogleDrive(pokemon: Pokemon, request: HttpServletRequest, isNew: Boolean): ResponseEntity<String> {
         pokemon.pokedexEntry.saveOtherCapabilities()
         val buf: ByteArray = ObjectMapper().writeValueAsBytes(pokemon)
 
@@ -146,10 +157,12 @@ class PtuToolsRestController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         }
 
-        val driveService: Drive = Drive.Builder(HTTP_TRANSPORT, JacksonFactory.getDefaultInstance(), HttpCredentialsAdapter(
-            GoogleCredentials.create(
-                AccessToken(token, null)
-            ))
+        val driveService: Drive = Drive.Builder(
+            HTTP_TRANSPORT, JacksonFactory.getDefaultInstance(), HttpCredentialsAdapter(
+                GoogleCredentials.create(
+                    AccessToken(token, null)
+                )
+            )
         )
             .setApplicationName("PTU Exodus")
             .build()
@@ -159,7 +172,19 @@ class PtuToolsRestController {
         file.description = "PTU Exodus Pokemon"
         file.mimeType = "application/json"
 
-        driveService.files().update(pokemon.googleDriveFileId, file, InputStreamContent(null, ByteArrayInputStream(buf))).execute()
+        if (!isNew) {
+            driveService.files()
+                .update(pokemon.googleDriveFileId, file, InputStreamContent(null, ByteArrayInputStream(buf))).execute()
+        } else {
+            if (pokemon.googleDriveFileId != null) {
+                file.parents = Collections.singletonList(pokemon.googleDriveFileId)
+                pokemon.googleDriveFileId = null
+            }
+            val newFile = driveService.files().create(file, InputStreamContent(null, ByteArrayInputStream(buf)))
+                .setFields("id, parents")
+                .execute()
+            return ResponseEntity.ok(newFile.id)
+        }
 
         return ResponseEntity.ok().build()
     }

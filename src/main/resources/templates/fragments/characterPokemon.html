@@ -86,9 +86,17 @@
                 <label class="control-label" for="char-exp">EXP</label>
                 <input class="form-control" type="number" id="char-exp" th:field="*{exp}" onchange="onChangeExp(this)" />
             </div>
-            <button type="submit" class="btn btn-outline-danger btn-save ml-md-5 mt-md-2 d-none d-lg-inline-block">
-                <span class="material-icons-outlined">save</span>
-            </button>
+            <div class="dropdown">
+                <button type="button" class="btn btn-outline-danger btn-save ml-md-5 mt-md-2 d-none d-lg-inline-block dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="material-icons-outlined">save</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" onclick="$('#form').submit()">Save to Computer</a>
+                    <a class="dropdown-item" href="#" onclick="onClickSaveToGoogleDrive()">Upload to Google Drive</a>
+                </div>
+            </div>
+
         </div>
         <div class="row">
             <section id="geninfo" class="col-12 col-lg-6">

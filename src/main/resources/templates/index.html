@@ -45,13 +45,13 @@
             <small class="text-muted font-weight-bold">Let MAN Decide</small>
         </div>
         <div class="text-center col-md-6">
-            <h2 class="text-danger">Upload Pokemon</h2>
-            <h4 class="text-capitalize text-muted">Upload File</h4>
-            <input type="file" class="form-control" id="upload-file" />
-            <h4 class="text-capitalize text-muted">Upload from Google Drive</h4>
-            <button type="button" class="btn btn-outline-white" id="upload-gdrive" onclick="loadPicker()">
+            <h2 class="text-danger">Load a Pokemon</h2>
+            <h4 class="text-capitalize text-muted">Download from Google Drive</h4>
+            <button type="button" class="btn btn-outline-white" id="upload-gdrive" onclick="loadFilePicker()">
                 <span class="material-icons-outlined">cloud_download</span> Select File
             </button>
+            <h4 class="text-capitalize text-muted mt-3">Upload from Computer</h4>
+            <input type="file" class="form-control" id="upload-file" />
             <h4 class="text-capitalize text-muted"><label for="upload-paste">Or Paste JSON</label></h4>
             <textarea type="file" class="form-control" id="upload-paste"></textarea>
             <button type="button" class="btn btn-danger mt-4" onclick="uploadCharacter()">Submit</button>
