@@ -189,7 +189,7 @@ function buildCaptureRate(elem) {
         for (var affliction of afflictions) {
             if ("Stuck" === affliction) {
                 captureRate += 10
-            } else if ("Slow" === affliction) {
+            } else if ("Slowed" === affliction) {
                 captureRate += 5
             } else if (AFFLICTIONS_PERSISTENT.includes(affliction)) {
                 captureRate += 10
