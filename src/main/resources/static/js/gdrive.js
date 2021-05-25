@@ -110,16 +110,21 @@ function folderPickerCallback(data) {
 function validateOAuthToken(callback) {
     if (document.cookie.includes("authToken=")) {
         oauthToken = getCookie("authToken")
-        $.get("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + oauthToken, function (result) {
+        $.ajax("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + oauthToken, {
+            method: "GET"
+        }).done(function(response) {
             if (!result['expires_in'] || result['expires_in'] <= 0) {
-                oauthCallback = callback
-                gapi.load('auth', {'callback': onDownloadAuthApiLoad});
+                oauthCallback = callback;
+                gapi.load('auth', {'callback': onAuthApiLoad});
             } else {
-                callback()
+                callback();
             }
-        })
+        }).fail(function(jqxhr, textStatus, errorThrown)  {
+            oauthCallback = callback;
+            gapi.load('auth', {'callback': onAuthApiLoad});
+        });
     } else {
         oauthCallback = callback
-        gapi.load('auth', {'callback': onDownloadAuthApiLoad});
+        gapi.load('auth', {'callback': onAuthApiLoad});
     }
 }

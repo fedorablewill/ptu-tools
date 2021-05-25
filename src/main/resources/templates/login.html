@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <title>PTU Exodus - PTU Pokemon Generator &amp; Character Sheet</title>
+
+  <!-- Favicon -->
+  <link href="/img/pokeball-ico.png" rel="icon" type="image/png">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="/vendor/nucleo/css/nucleo.css" rel="stylesheet">
+
+  <!-- Libraries CSS -->
+  <link type="text/css" href="/css/argon.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link type="text/css" th:href="${'/css/style.css?v=' + cssVersion}" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" id="top">
+  <div class="exodus-title text-center mt-5">
+    <img src="/img/ptu-exodus-logo.png" class="mr-md-4" height="120" alt="d20">
+    <div class="exodus-title-text text-md-left">
+      <h1 class="text-danger font-weight-bold">PTU Exodus</h1>
+      <small class="text-muted">A Pokemon Generator and Editor for Pokemon Tabletop United v1.05</small>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="text-center col-12">
+      <h2 class="text-danger">Please Login</h2>
+      <p class="text-muted">This file requires a Google login</p>
+      <button type="button" class="btn btn-outline-white" id="upload-gdrive" onclick="login()">
+        Login with Google
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast-container"></div>
+
+
+<!-- Core -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+<script>
+  //Remove JQuery UI conflicts with Bootstrap
+  $.widget.bridge('uibutton', $.ui.button);
+  $.widget.bridge('uitooltip', $.ui.tooltip);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
+
+<!-- Theme JS -->
+<script src="/js/argon.min.js"></script>
+
+<!-- Custom JS -->
+<script th:src="${'/js/gdrive.js?v=' + jsVersion}"></script>
+<script>
+  $(function() {
+    login()
+  });
+  function login() {
+    oauthCallback = function() {
+      location.reload()
+    }
+    gapi.load('auth', {'callback': onAuthApiLoad});
+  }
+</script>
+</body>
+</html>

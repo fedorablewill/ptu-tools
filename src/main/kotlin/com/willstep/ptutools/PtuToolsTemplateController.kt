@@ -13,7 +13,6 @@ import com.willstep.ptutools.dataaccess.dto.Pokemon
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.core.env.Environment
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -101,11 +100,20 @@ class PtuToolsTemplateController {
     @GetMapping("/pokemon/drive/{fileId}")
     fun pokemonFromGoogleDrive(@PathVariable fileId: String, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String>? {
         val HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport()
-
         val token = request.cookies?.find { it.name == "authToken" }?.value
 
+        val context = Context()
+        val variables = mutableMapOf<String, Any>(
+            "jsVersion" to environment.getProperty("js.version")!!,
+            "cssVersion" to environment.getProperty("css.version")!!
+        )
+
         if (token == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+            context.setVariables(variables)
+            val requestContext = RequestContext(request, response, servletContext, variables)
+            val thymeleafRequestContext = SpringWebMvcThymeleafRequestContext(requestContext, request)
+            context.setVariable("thymeleafRequestContext", thymeleafRequestContext)
+            return ResponseEntity.ok(htmlTemplateEngine.process("login", context))
         }
 
         val outputStream: OutputStream = ByteArrayOutputStream()
@@ -116,18 +124,22 @@ class PtuToolsTemplateController {
         )
             .setApplicationName("PTU Exodus")
             .build()
-        driveService.files().get(fileId)
-            .executeMediaAndDownloadTo(outputStream)
+
+        try {
+            driveService.files().get(fileId)
+                .executeMediaAndDownloadTo(outputStream)
+        } catch (e: IllegalStateException) {
+            context.setVariables(variables)
+            val requestContext = RequestContext(request, response, servletContext, variables)
+            val thymeleafRequestContext = SpringWebMvcThymeleafRequestContext(requestContext, request)
+            context.setVariable("thymeleafRequestContext", thymeleafRequestContext)
+            return ResponseEntity.ok(htmlTemplateEngine.process("login", context))
+        }
 
         val pokemon = ObjectMapper().readValue(outputStream.toString(), Pokemon::class.java);
         pokemon.googleDriveFileId = fileId
 
-        val variables = mapOf<String, Any>(
-            "pokemon" to pokemon,
-            "jsVersion" to environment.getProperty("js.version")!!,
-            "cssVersion" to environment.getProperty("css.version")!!
-        )
-        val context = Context()
+        variables["pokemon"] = pokemon
         context.setVariables(variables)
         val requestContext = RequestContext(request, response, servletContext, variables)
         val thymeleafRequestContext = SpringWebMvcThymeleafRequestContext(requestContext, request)
