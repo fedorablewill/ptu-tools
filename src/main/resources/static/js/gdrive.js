@@ -113,7 +113,7 @@ function validateOAuthToken(callback) {
         $.ajax("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + oauthToken, {
             method: "GET"
         }).done(function(response) {
-            if (!result['expires_in'] || result['expires_in'] <= 0) {
+            if (!response['expires_in'] || response['expires_in'] <= 0) {
                 oauthCallback = callback;
                 gapi.load('auth', {'callback': onAuthApiLoad});
             } else {
