@@ -20,21 +20,21 @@ class GeneratorService(
             pokedexEntry = pokedexEntry,
             level = level,
             exp = EXPERIENCE_CHART[level-1],
-            moves = randomizeMoves(pokedexEntry, level, 6),
             gender = if (pokedexEntry.genderless) "No Gender" else if (Random.nextDouble(100.0) <= pokedexEntry.malePercent ?: 0.0) "Male" else "Female"
         )
 
         applyNature(pokemon, nature ?: Nature.values()[Random.nextInt(Nature.values().size)])
         randomizeStats(pokemon)
         randomizeAbilities(pokemon)
+        randomizeMoves(pokemon, level, if (pokemon.abilities.any { it.name == "Cluster Mind" }) 8 else 6)
 
         pokemon.shiny = Random.nextDouble(100.0) <= shinyOdds
 
         return pokemon
     }
 
-    fun randomizeMoves(pokedexEntry: PokedexEntry, level: Int, count: Int): ArrayList<Move> {
-        val filteredList = pokedexEntry.levelUpMoves.filterValues { i -> i <= level }.keys.toMutableList()
+    fun randomizeMoves(pokemon: Pokemon, level: Int, count: Int) {
+        val filteredList = pokemon.pokedexEntry.levelUpMoves.filterValues { i -> i <= level }.keys.toMutableList()
         val results = ArrayList<String>()
 
         for (i in 1..count) {
@@ -50,7 +50,7 @@ class GeneratorService(
 
         for (name in results) {
             firestoreService.getDocument("moves", name).get().get().toObject(Move::class.java)?.let {
-                if (pokedexEntry.types.contains(it.type)) {
+                if (pokemon.pokedexEntry.types.contains(it.type)) {
                     it.stab = true
                     it.damageBase = it.damageBase?.plus(2)
                 }
@@ -58,24 +58,35 @@ class GeneratorService(
             }
         }
 
-        return moves
+        pokemon.moves = moves
     }
 
     fun randomizeAbilities(pokemon: Pokemon) {
+        val usedNames = ArrayList<String>()
+
         var name = pokemon.pokedexEntry.basicAbilities[Random.nextInt(pokemon.pokedexEntry.basicAbilities.size)]
         pokemon.abilities.add(
             firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
         )
+        usedNames.add(name)
 
         if (pokemon.level >= 20) {
-            val secondAbilities = pokemon.pokedexEntry.basicAbilities + pokemon.pokedexEntry.advancedAbilities
+            val secondAbilities = (pokemon.pokedexEntry.basicAbilities + pokemon.pokedexEntry.advancedAbilities).toMutableList()
+            secondAbilities.removeAll(usedNames)
             name = secondAbilities[Random.nextInt(secondAbilities.size)]
-            firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
+            pokemon.abilities.add(
+                firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
+            )
+            usedNames.add(name)
         }
         if (pokemon.level >= 40) {
-            val thirdAbilities = pokemon.pokedexEntry.basicAbilities + pokemon.pokedexEntry.advancedAbilities + pokemon.pokedexEntry.highAbilities
+            val thirdAbilities = (pokemon.pokedexEntry.basicAbilities + pokemon.pokedexEntry.advancedAbilities + pokemon.pokedexEntry.highAbilities).toMutableList()
+            thirdAbilities.removeAll(usedNames)
             name = thirdAbilities[Random.nextInt(thirdAbilities.size)]
-            firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
+            pokemon.abilities.add(
+                firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
+            )
+            usedNames.add(name)
         }
     }
 
