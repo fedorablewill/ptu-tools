@@ -38,6 +38,7 @@
     </div>
     <div class="row mt-4">
         <div class="text-center col-md-6 border-md-right mb-5 mb-md-0">
+            <h2 class="text-danger">Make a Pokemon</h2>
             <a class="btn btn-lg btn-danger btn-block mt-5" href="/generator">Generate Pokemon</a>
             <small class="text-muted font-weight-bold">Let FATE Decide</small>
             <br/>
@@ -47,7 +48,7 @@
         <div class="text-center col-md-6">
             <h2 class="text-danger">Load a Pokemon</h2>
             <h4 class="text-capitalize text-muted">Download from Google Drive</h4>
-            <button type="button" class="btn btn-outline-white" id="upload-gdrive" onclick="loadFilePicker()">
+            <button type="button" class="btn btn-danger" id="upload-gdrive" onclick="loadFilePicker()">
                 <span class="material-icons-outlined">cloud_download</span> Select File
             </button>
             <h4 class="text-capitalize text-muted mt-3">Upload from Computer</h4>
@@ -57,6 +58,14 @@
             <button type="button" class="btn btn-danger mt-4" onclick="uploadCharacter()">Submit</button>
         </div>
     </div>
+    <footer class="text-center mt-5">
+        <small>
+            <a href="https://www.tapatalk.com/groups/pokemon_tabletop/ptu-exodus-new-pokemon-generator-and-pokemon-chara-t7329.html" target="_blank">About</a> |
+            <a href="#" onclick="alert('Your input is super valuable, I want to make this for you! You can leave feedback on the Pokemon Tabletop Forms (click the About link) or on GitHub (click the GitHub link and go to issues) or ping me on Discord (fedorablewill#9732)!')">
+                Request Feature/Report Bug</a> |
+            <a href="https://github.com/fedorablewill/ptu-tools" target="_blank">GitHub</a>
+        </small>
+    </footer>
 
 </div>
 
