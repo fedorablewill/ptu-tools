@@ -341,6 +341,32 @@ const AFFLICTIONS_PERSISTENT = ["Burned","Frozen","Paralysis","Poisoned","Badly 
 const AFFLICTIONS_VOLATILE = ["Bad Sleep","Confused","Cursed","Disabled","Rage","Flinch","Infatuation","Sleep","Suppressed","Temporary Hit Points"]
 const AFFLICTIONS_OTHER = ["Fainted","Blindness","Total Blindness","Slowed","Stuck","Trapped","Tripped","Vulnerable"]
 
+const LOADING_MESSAGES = [
+    "Polishing Porygons...",
+    "Rolling to open door...",
+    "Forgetting to deduct AP...",
+    "Taking a Hitmonchan...",
+    "Hardening...",
+    "Putting on comfy and easy to wear shorts...",
+    "Making eye contact with trainers...",
+    "Sneaking past boss fight...",
+    "Creating a distraction...",
+    "Singing a Perish Song...",
+    "Learning the Pokerap...",
+    "Sleeping in the path...",
+    "Committing tax fraud...",
+    "Spamming 'B'...",
+    "Stuck in a random encounter...",
+    "Grinding to 100 on Route 1...",
+    "Day 240 of shiny hunt...",
+    "Looking under the truck...",
+    "Surfing the Cinnabar...",
+    "Liberating Pokemon from their trainers...",
+    "Catching a Drifblim on Friday...",
+    "Clearing Psyducks off the road...",
+    "Buying lemonade from the vending machine...",
+    "Waking Snorlax..."
+]
 
 //
 // INITIALIZE WIDGETS
@@ -463,6 +489,16 @@ function buildToast(message, delay = 4000) {
 
     $(".toast-container").append(toast)
     toast.toast('show')
+}
+
+function showLoadingOverlay() {
+    $(".loading-container").removeClass("hide").addClass("show")
+    let text = LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)]
+    $(".loading-text").html(text)
+}
+
+function hideLoadingOverlay() {
+    $(".loading-container").removeClass("show").addClass("hide")
 }
 
 function getCookie(cname) {

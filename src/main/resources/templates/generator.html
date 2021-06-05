@@ -247,6 +247,10 @@
 </div>
 
 <div class="toast-container"></div>
+<div class="loading-container fade">
+    <img src="/img/loading-pokedie.gif" alt="Loading" style="height: 300px"/>
+    <div class="loading-text">Loading...</div>
+</div>
 
 <!-- Core -->
 <script src="/vendor/jquery/jquery.min.js"></script>
@@ -399,6 +403,8 @@
             requestBody["nature"] = nature
         }
 
+        showLoadingOverlay()
+
         $.ajax("/generatePokemon", {
             method: "POST",
             contentType: "application/json",
@@ -417,6 +423,8 @@
             }
         }).fail(function(jqxhr, textStatus, errorThrown)  {
             alert("Error: " + textStatus + " : " + errorThrown)
+        }).always(function () {
+            hideLoadingOverlay()
         })
     })
 
