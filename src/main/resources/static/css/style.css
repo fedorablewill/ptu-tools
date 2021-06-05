@@ -421,6 +421,7 @@ input[disabled] {
     left: 0;
     padding: 1rem;
     z-index: 9999;
+    max-width: 100%;
 }
 
 .toast-container .toast {

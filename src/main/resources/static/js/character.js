@@ -319,6 +319,7 @@ function onSubmitDamage() {
 
 // Subtract from Temporary Hit Points & Current Health using Damage Reduction
 function takeDamage(amount) {
+    let totalTaken = amount
     let dr = parseInt($('#char-dr').val())
     let thpElem = $('#char-hp-temp');
 
@@ -337,10 +338,11 @@ function takeDamage(amount) {
     if (!isNaN(tempHp) && tempHp > 0) {
         if (tempHp - amount > 0) {
             thpElem.val(tempHp - amount).change()
+            buildToast(`Took ${totalTaken} damage. <a href="#" onclick="healDamage(0, ${amount});$(this).closest('.toast').toast('hide')">UNDO</a>`, false)
             return
         } else {
             amount -= tempHp
-            thpElem.val("").change()
+            thpElem.val(0).change()
         }
     }
 
@@ -353,6 +355,30 @@ function takeDamage(amount) {
     }
 
     healthElem.val(health - amount).change()
+
+    buildToast(`Took ${totalTaken} damage. <a href="#" onclick="healDamage(${amount}, ${tempHp});$(this).closest('.toast').toast('hide')">UNDO</a>`, false)
+}
+
+function healDamage(amountToHealth, amountToTemp) {
+    if (amountToTemp) {
+        let thpElem = $('#char-hp-temp');
+        let tempHp = parseInt(thpElem.val())
+        if (isNaN(tempHp)) {
+            tempHp = 0
+        }
+        thpElem.val(tempHp + amountToTemp).change()
+    }
+
+    if (amountToHealth) {
+        let healthElem = $('#char-hp-current')
+        let health = parseInt(healthElem.val())
+        if (isNaN(health)) {
+            health = 0
+        }
+        healthElem.val(health + amountToHealth).change()
+    }
+
+    buildToast(`Healed ${amountToHealth + amountToTemp} damage.`, 10000)
 }
 
 function onChangeNature(elem) {
