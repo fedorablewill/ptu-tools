@@ -365,7 +365,10 @@ const LOADING_MESSAGES = [
     "Catching a Drifblim on Friday...",
     "Clearing Psyducks off the road...",
     "Buying lemonade from the vending machine...",
-    "Waking Snorlax..."
+    "Waking Snorlax...",
+    "Debating feature wording...",
+    "Banning Warper...",
+    "Praying for a crit..."
 ]
 
 //
