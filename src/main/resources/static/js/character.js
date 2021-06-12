@@ -338,7 +338,8 @@ function takeDamage(amount) {
     if (!isNaN(tempHp) && tempHp > 0) {
         if (tempHp - amount > 0) {
             thpElem.val(tempHp - amount).change()
-            buildToast(`Took ${totalTaken} damage. <a href="#" onclick="healDamage(0, ${amount});$(this).closest('.toast').toast('hide')">UNDO</a>`, false)
+            buildToast(`Took ${totalTaken} damage. <a href="#" onclick="healDamage(0, ${amount});$(this).closest('.toast').toast('hide')">UNDO</a>`,
+                false, "damage")
             return
         } else {
             amount -= tempHp
@@ -356,7 +357,8 @@ function takeDamage(amount) {
 
     healthElem.val(health - amount).change()
 
-    buildToast(`Took ${totalTaken} damage. <a href="#" onclick="healDamage(${amount}, ${tempHp});$(this).closest('.toast').toast('hide')">UNDO</a>`, false)
+    buildToast(`Took ${totalTaken} damage. <a href="#" onclick="healDamage(${amount}, ${tempHp});$(this).closest('.toast').toast('hide')">UNDO</a>`,
+        false, "damage")
 }
 
 function healDamage(amountToHealth, amountToTemp) {

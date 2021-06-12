@@ -478,8 +478,12 @@ function clipboardText(str) {
     document.body.removeChild(el);
 }
 
-function buildToast(message, delay = 4000) {
+function buildToast(message, delay = 4000, toastGroup) {
     let options = delay? 'data-delay="'+ delay +'"' : 'data-autohide="false"'
+    if (toastGroup) {
+        options += ' data-toast-group="' + toastGroup + '"'
+        $(`.toast[data-toast-group='${toastGroup}']`).toast('hide')
+    }
 
     let toast = $('<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" '+ options +'>\n' +
         '  <div class="toast-body p-2 rounded bg-danger">\n' +
