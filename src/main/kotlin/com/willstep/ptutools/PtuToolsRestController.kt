@@ -29,12 +29,6 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 class PtuToolsRestController {
 
-    @GetMapping("/policy")
-    fun method(httpServletResponse: HttpServletResponse) {
-        httpServletResponse.setHeader("Location", "https://www.privacypolicies.com/live/688f5890-bac0-4b44-b81a-f32b3fcab48e")
-        httpServletResponse.status = 302
-    }
-
     @PostMapping("/uploadMoves")
     fun uploadMoves(@RequestBody movesList: List<Map<String, Any>>, model: Model) {
         UploadDataTool().uploadMoveArray(movesList)

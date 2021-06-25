@@ -47,6 +47,10 @@ class PtuToolsTemplateController {
     fun index(model: Model): String? {
         return "index"
     }
+    @GetMapping("/policy")
+    fun policy(model: Model): String? {
+        return "policy"
+    }
     @GetMapping("/damageRoller")
     fun damageBaseRoller(model: Model): String? {
         return "damageRoller"
