@@ -479,6 +479,16 @@ input[disabled] {
         top: -1rem !important;
     }
 }
+@media (min-width: 992px) {
+    .control-label-lg-top-1 {
+        top: -1rem !important;
+    }
+}
+@media (min-width: 1200px) {
+    .control-label-lg-top-1 {
+        top: -0.5rem !important;
+    }
+}
 
 @media (min-width: 576px) {
     .border-sm-top {

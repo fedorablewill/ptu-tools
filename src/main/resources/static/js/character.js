@@ -36,7 +36,7 @@ function initialize() {
 
     $(".form-move [data-autocomplete=\"type\"]").each(function() {changeMoveTypeColor(this)})
 
-    $(".nav-link").click(function () {
+    $(".navbar-nav a").click(function () {
         $("#navbarNav").collapse('hide')
     })
 
@@ -254,6 +254,7 @@ function onClickSaveToGoogleDrive() {
             }).done(function(response) {
                 buildToast("Saved to Google Drive.")
                 $('#saveToGDrive').removeClass("d-none")
+                $('#saveToGDriveMobile').removeClass("d-none")
             }).fail(function(jqxhr, textStatus, errorThrown)  {
                 alert("Error saving Pokemon to Google Drive: " + textStatus + " : " + errorThrown)
             })
@@ -283,6 +284,7 @@ function onClickGDriveModalSave() {
             window.history.pushState(null, null, "/pokemon/drive/" + response);
             buildToast("Saved to Google Drive.")
             $('#saveToGDrive').removeClass("d-none")
+            $('#saveToGDriveMobile').removeClass("d-none")
         }).fail(function (jqxhr, textStatus, errorThrown) {
             alert("Error saving Pokemon to Google Drive: " + textStatus + " : " + errorThrown)
         })

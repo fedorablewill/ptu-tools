@@ -31,10 +31,17 @@
                     </div>
                 </div>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item d-lg-none">
-                        <button type="submit" class="nav-link btn btn-outline-danger" href="#">
-                            <strong><span class="material-icons-outlined">save</span> Save to File</strong>
+                    <li class="nav-item d-lg-none dropdown">
+                        <button type="button" class="nav-link btn btn-outline-danger dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="material-icons-outlined">save</span> Save
                         </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#" onclick="$('#form').submit()">Save to Computer</a>
+                            <a id="saveToGDriveMobile" th:class="'dropdown-item' + (*{googleDriveFileId} ? '' : ' d-none')" href="#"
+                               onclick="onClickSaveToGoogleDrive()">Save to Google Drive</a>
+                            <a class="dropdown-item" href="#" onclick="onClickSaveAsToGoogleDrive()">Save As to Google Drive</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#geninfo">General Info</a>
@@ -90,7 +97,7 @@
                 <input class="form-control" type="number" id="char-exp" th:field="*{exp}" onchange="onChangeExp(this)" />
             </div>
             <div class="dropdown">
-                <button type="button" class="btn btn-outline-danger btn-save ml-md-5 mt-md-2 d-none d-lg-inline-block dropdown-toggle"
+                <button type="button" class="btn btn-outline-danger btn-save ml-md-5 ml-lg-4 ml-xl-5 mt-md-2 d-none d-lg-inline-block dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="material-icons-outlined">save</span>
                 </button>
@@ -197,7 +204,7 @@
                                data-subscribe-callback="buildCaptureRate"/>
                     </div>
                     <div class="form-group label-floating col-3">
-                        <label class="control-label control-label-xs-top-1" for="char-evolution-remaining">Evolutions Left</label>
+                        <label class="control-label control-label-xs-top-1 control-label-lg-top-1" for="char-evolution-remaining">Evolutions Left</label>
                         <input class="form-control" type="number" id="char-evolution-remaining" th:field="*{evolutionsRemaining}" />
                     </div>
                     <div class="form-group label-floating custom-checkbox col-3">
