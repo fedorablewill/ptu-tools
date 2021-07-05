@@ -61,6 +61,8 @@
         <!-- Hidden fields to keep data for save, if present -->
         <input type="hidden" th:field="*{pokemonDocumentId}" />
         <input type="hidden" th:field="*{googleDriveFileId}" />
+        <input type="hidden" th:field="*{googleDriveFolderId}" />
+        <input type="hidden" th:field="*{fileName}" />
         <input type="hidden" th:field="*{pokedexEntry.pokedexEntryDocumentId}" />
         <input type="hidden" th:field="*{pokedexEntry.evolutionFamilyDocumentId}" />
         <span id="generatedHiddenFields">
@@ -93,7 +95,9 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="#" onclick="$('#form').submit()">Save to Computer</a>
-                    <a class="dropdown-item" href="#" onclick="onClickSaveToGoogleDrive()">Upload to Google Drive</a>
+                    <a id="saveToGDrive" th:class="'dropdown-item' + (*{googleDriveFileId} ? '' : ' d-none')" href="#"
+                       onclick="onClickSaveToGoogleDrive()">Save to Google Drive</a>
+                    <a class="dropdown-item" href="#" onclick="onClickSaveAsToGoogleDrive()">Save As to Google Drive</a>
                 </div>
             </div>
 
@@ -827,7 +831,7 @@
                 </button>
             </div>
             <div class="modal-body bg-dark">
-                <form onsubmit="onSubmitDamage(); return false">
+                <form onsubmit="onSubmitDamage(); $('#quickDamageModal').modal('hide'); return false">
                     <div class="row row-slim">
                         <div class="form-group label-floating col-sm-6 ml-auto mr-auto">
                             <label class="control-label" for="quickDamage-damage">Amount</label>
@@ -893,6 +897,45 @@
             <div class="modal-body bg-dark text-center" id="levelUpModal-body"></div>
             <div class="modal-footer bg-dark">
                 <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save to Google Drive Modal -->
+<div class="modal fade" id="gDriveSaveModal" tabindex="-1" aria-labelledby="gDriveSaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title" id="gDriveSaveModalLabel">Save As</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-dark">
+                <form onsubmit="onClickGDriveModalSave(); $('#gDriveSaveModal').modal('hide'); return false">
+                    <div class="row row-slim">
+                        <div class="form-group label-floating col-12">
+                            <label class="control-label" for="gDrive-fileName">File Name</label>
+                            <input class="form-control" type="text" id="gDrive-fileName" th:value="${pokemon.fileName}" required />
+                        </div>
+                    </div>
+                    <div class="row row-slim">
+                        <div class="form-group label-floating col-12">
+                            <label class="control-label" for="gDrive-folder">Folder</label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="gDrive-folder" required disabled>
+                                <div class="input-group-append" id="button-addon4">
+                                    <button type="button" class="btn btn-outline-danger" onclick="loadFolderPicker()">Change</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-dark">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger" data-dismiss="modal" onclick="onClickGDriveModalSave()">Save</button>
             </div>
         </div>
     </div>

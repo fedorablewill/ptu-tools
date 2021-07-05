@@ -465,6 +465,10 @@ input[disabled] {
     display: none;
 }
 
+.picker-dialog {
+    z-index: 1101 !important;
+}
+
 
 /*
     Responsive Utilities

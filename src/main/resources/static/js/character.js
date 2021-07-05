@@ -233,6 +233,16 @@ function onFormSubmit() {
     form.data('saved-state', form.serialize());
 }
 
+function onClickSaveAsToGoogleDrive() {
+    let fileNameElem = $('#gDrive-fileName')
+    if (!fileNameElem.val()) {
+        fileNameElem.val($('#char-name').val())
+    }
+    $('#gDrive-folder').val("My Drive")
+    $("[name='googleDriveFolderId']").val("")
+    $('#gDriveSaveModal').modal('show')
+}
+
 function onClickSaveToGoogleDrive() {
     onFormSubmit()
     if ($("[name='googleDriveFileId']").val()) {
@@ -243,6 +253,7 @@ function onClickSaveToGoogleDrive() {
                 data: $("#form").serialize()
             }).done(function(response) {
                 buildToast("Saved to Google Drive.")
+                $('#saveToGDrive').removeClass("d-none")
             }).fail(function(jqxhr, textStatus, errorThrown)  {
                 alert("Error saving Pokemon to Google Drive: " + textStatus + " : " + errorThrown)
             })
@@ -254,18 +265,27 @@ function onClickSaveToGoogleDrive() {
 }
 
 // Save file to Google Drive
-function onFolderPicked(folderId) {
-    $("[name='googleDriveFileId']").val(folderId)
-    $.ajax("/uploadPokemonToGoogleDrive", {
-        method: "POST",
-        contentType: "application/x-www-form-urlencoded",
-        data: $("#form").serialize()
-    }).done(function(response) {
-        $("[name='googleDriveFileId']").val(response);
-        window.history.pushState(null, null, "/pokemon/drive/" + response);
-        buildToast("Saved to Google Drive.")
-    }).fail(function(jqxhr, textStatus, errorThrown)  {
-        alert("Error saving Pokemon to Google Drive: " + textStatus + " : " + errorThrown)
+function onFolderPicked(folderId, folderName) {
+    $("[name='googleDriveFolderId']").val(folderId)
+    $("#gDrive-folder").val(folderName)
+}
+
+function onClickGDriveModalSave() {
+    onFormSubmit()
+    $('#fileName').val($('#gDrive-fileName').val())
+    validateOAuthToken(function () {
+        $.ajax("/uploadPokemonToGoogleDrive", {
+            method: "POST",
+            contentType: "application/x-www-form-urlencoded",
+            data: $("#form").serialize()
+        }).done(function (response) {
+            $("[name='googleDriveFileId']").val(response);
+            window.history.pushState(null, null, "/pokemon/drive/" + response);
+            buildToast("Saved to Google Drive.")
+            $('#saveToGDrive').removeClass("d-none")
+        }).fail(function (jqxhr, textStatus, errorThrown) {
+            alert("Error saving Pokemon to Google Drive: " + textStatus + " : " + errorThrown)
+        })
     })
 }
 

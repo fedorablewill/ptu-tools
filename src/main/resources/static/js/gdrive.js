@@ -103,7 +103,7 @@ function filePickerCallback(data) {
 
 function folderPickerCallback(data) {
     if (data.action === google.picker.Action.PICKED) {
-        onFolderPicked(data.docs[0].id);
+        onFolderPicked(data.docs[0].id, data.docs[0].name);
     }
 }
 

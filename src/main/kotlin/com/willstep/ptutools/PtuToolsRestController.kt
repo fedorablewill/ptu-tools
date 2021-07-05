@@ -20,6 +20,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
+import org.thymeleaf.util.StringUtils
 import java.io.ByteArrayInputStream
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -168,7 +169,7 @@ class PtuToolsRestController {
             .build()
 
         val file = File()
-        file.name = pokemon.name
+        file.name = pokemon.fileName ?: pokemon.name
         file.description = "PTU Exodus Pokemon"
         file.mimeType = "application/json"
 
@@ -176,13 +177,17 @@ class PtuToolsRestController {
             driveService.files()
                 .update(pokemon.googleDriveFileId, file, InputStreamContent(null, ByteArrayInputStream(buf))).execute()
         } else {
-            if (pokemon.googleDriveFileId != null) {
-                file.parents = Collections.singletonList(pokemon.googleDriveFileId)
+            val newFile: Any
+            if (!StringUtils.isEmpty(pokemon.googleDriveFolderId)) {
+                file.parents = Collections.singletonList(pokemon.googleDriveFolderId)
                 pokemon.googleDriveFileId = null
+                newFile = driveService.files().create(file, InputStreamContent(null, ByteArrayInputStream(buf)))
+                    .setFields("id, parents")
+                    .execute()
+            } else {
+                newFile = driveService.files().create(file, InputStreamContent(null, ByteArrayInputStream(buf)))
+                    .execute()
             }
-            val newFile = driveService.files().create(file, InputStreamContent(null, ByteArrayInputStream(buf)))
-                .setFields("id, parents")
-                .execute()
             return ResponseEntity.ok(newFile.id)
         }
 
