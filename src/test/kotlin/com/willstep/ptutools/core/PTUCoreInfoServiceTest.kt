@@ -131,6 +131,7 @@ internal class PTUCoreInfoServiceTest {
 
     @Test
     fun levelUpPokemon_newMoves() {
+        `when`(mockDocumentSnapshot.exists()).thenReturn(true)
         `when`(mockDocumentSnapshot.toObject(PokedexEntry::class.java)).thenReturn(PokedexEntry(
             "",
             levelUpMoves = mapOf(

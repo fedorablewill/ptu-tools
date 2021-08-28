@@ -5,6 +5,7 @@ import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Type
 import com.willstep.ptutools.dataaccess.service.FirestoreService
+import io.micrometer.core.instrument.util.StringUtils
 import kotlin.math.log2
 import kotlin.math.roundToInt
 
@@ -56,18 +57,20 @@ class PTUCoreInfoService (
             newLevel++
         }
 
-        if (pokedexEntryDocumentId != null) {
-            val pokedexEntry = firestoreService.getDocument("pokedexEntries", pokedexEntryDocumentId)
-                .get().get().toObject(PokedexEntry::class.java)
+        if (!StringUtils.isEmpty(pokedexEntryDocumentId)) {
+            val result = firestoreService.getDocument("pokedexEntries", pokedexEntryDocumentId!!).get().get()
+            if (result.exists()) {
+                val pokedexEntry = result.toObject(PokedexEntry::class.java)
 
-            if (pokedexEntry != null) {
-                for (entry in pokedexEntry.levelUpMoves.entries) {
-                    if (entry.value in (currentLevel + 1)..newLevel) {
-                        val move = firestoreService.getDocument("moves", entry.key)
-                            .get().get().toObject(Move::class.java)
+                if (pokedexEntry != null) {
+                    for (entry in pokedexEntry.levelUpMoves.entries) {
+                        if (entry.value in (currentLevel + 1)..newLevel) {
+                            val move = firestoreService.getDocument("moves", entry.key)
+                                .get().get().toObject(Move::class.java)
 
-                        if (move != null) {
-                            newMoves.add(move)
+                            if (move != null) {
+                                newMoves.add(move)
+                            }
                         }
                     }
                 }
