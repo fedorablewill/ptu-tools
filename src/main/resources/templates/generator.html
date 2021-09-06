@@ -302,8 +302,10 @@
 
     $($("#filter-species").magicSuggest({
         data: '/speciesOptions',
-        valueField: 'first',
-        displayField: 'second',
+        valueField: 'value',
+        displayField: 'label',
+        queryParam: 'term',
+        method: 'get',
         mode: 'remote',
         hideTrigger: true,
         allowFreeEntries: false,

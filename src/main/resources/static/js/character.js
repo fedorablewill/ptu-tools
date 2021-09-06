@@ -30,6 +30,57 @@ function initialize() {
         expandOnFocus: true
     })
 
+    $("#char-species").autocomplete({
+        source: "/speciesOptions",
+        minLength: 2,
+        appendTo: "#char-species-container",
+        select: function( event, ui ) {
+            $("#char-pokedexId").val(ui.item.value);
+            if (ui.item.value) {
+                $.ajax("/pokedex/" + ui.item.value, {
+                    method: "GET",
+                    contentType: "application/json"
+                }).done(function (pokedexEntries) {
+                    let pokedexEntry = pokedexEntries[0]
+                    $("[name*='pokedexEntry.']").each(function () {
+                        var propName = $(this).attr("name").substring(13)
+                        var val = null
+                        if (propName.includes("['")) {
+                            var childProps = propName.match(/\['(.*?)'\]/);
+                            propName = propName.substring(0, propName.indexOf("['"))
+                            val = pokedexEntry[propName][childProps[1]]
+                        } else {
+                            val = pokedexEntry[propName]
+                        }
+
+                        if ($(this).is("[type='checkbox']")) {
+                            $(this).prop("checked", val)
+                        } else {
+                            $(this).val(val)
+                        }
+                    })
+
+                    let typesMs = $("#char-types").magicSuggest()
+                    typesMs.clear()
+                    typesMs.setValue(pokedexEntry.types)
+                    typesMs.collapse()
+
+                    if (confirm("Use the base stats for " + ui.item.label + "?")) {
+                        $("#char-stat-hp-base").val(pokedexEntry.baseStats.hp)
+                        $("#char-stat-atk-base").val(pokedexEntry.baseStats.atk)
+                        $("#char-stat-def-base").val(pokedexEntry.baseStats.def)
+                        $("#char-stat-spatk-base").val(pokedexEntry.baseStats.spatk)
+                        $("#char-stat-spdef-base").val(pokedexEntry.baseStats.spdef)
+                        $("#char-stat-spd-base").val(pokedexEntry.baseStats.spd)
+                        onChangeNature($("#char-nature").attr('data-prev', null))
+                    }
+                }).fail(function (jqxhr, textStatus, errorThrown) {
+                    alert("Error getting Pokedex Entry: " + textStatus + " : " + errorThrown)
+                })
+            }
+        }
+    });
+
     $('[data-autocomplete="type"]').autocomplete({
         source: TYPES
     })
@@ -678,7 +729,7 @@ function onChangeExp(elem) {
             method: "GET",
             contentType: "application/json",
             data: {
-                "pokedexEntryDocumentId": $("[id='pokedexEntry.pokedexEntryDocumentId']").val(),
+                "pokedexEntryDocumentId": $("[name='pokedexEntry.pokedexEntryDocumentId']").val(),
                 "currentLevel": level,
                 "exp": exp
             }

@@ -71,7 +71,6 @@
         <input type="hidden" th:field="*{googleDriveFolderId}" />
         <input type="hidden" th:field="*{fileName}" />
         <input type="hidden" th:field="*{pokedexEntry.imageFileUrl}" />
-        <input type="hidden" th:field="*{pokedexEntry.pokedexEntryDocumentId}" />
         <input type="hidden" th:field="*{pokedexEntry.evolutionFamilyDocumentId}" />
         <span id="generatedHiddenFields">
             <!-- Array fields, such as Type and Egg Group, will be tossed here before submitting -->
@@ -79,7 +78,7 @@
 
         <!-- Basic info fields -->
         <div class="row row-slim">
-            <div class="form-group label-floating col-md-3 col-sm-6 col-12">
+            <div class="form-group label-floating col-md-3 col-sm-6 col-12" id="char-species-container">
                 <label class="control-label" for="char-species">Species</label>
                 <input class="form-control" type="text" id="char-species" th:field="*{pokedexEntry.species}" />
                 <input type="hidden" id="char-pokedexId" th:field="*{pokedexEntry.pokedexEntryDocumentId}">

@@ -469,6 +469,11 @@ input[disabled] {
     z-index: 1101 !important;
 }
 
+.ui-autocomplete {
+    top: auto !important;
+    left: auto !important;
+}
+
 
 /*
     Responsive Utilities

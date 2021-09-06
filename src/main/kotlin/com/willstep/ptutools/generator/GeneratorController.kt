@@ -2,6 +2,7 @@ package com.willstep.ptutools.generator
 
 import com.google.cloud.firestore.QueryDocumentSnapshot
 import com.willstep.ptutools.core.Nature
+import com.willstep.ptutools.dataaccess.dto.LabelValuePair
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Pokemon
 import com.willstep.ptutools.dataaccess.service.FirestoreService
@@ -59,22 +60,24 @@ class GeneratorController {
         return null
     }
 
-    @PostMapping("/speciesOptions")
-    fun speciesOptions(@RequestParam query: String): List<Pair<String, String>> {
+    @GetMapping("/speciesOptions")
+    fun speciesOptions(@RequestParam term: String): List<LabelValuePair> {
         val results = FirestoreService().getCollection("pokedexEntries")
-            .whereGreaterThanOrEqualTo("species", query.capitalize())
-            .whereLessThanOrEqualTo("species", query.capitalize() + '\uf8ff')
+            .whereGreaterThanOrEqualTo("species", term.capitalize())
+            .whereLessThanOrEqualTo("species", term.capitalize() + '\uf8ff')
             .orderBy("species").orderBy("form")
             .limit(25).get().get()
 
-        val options = ArrayList<Pair<String, String>>()
+        val options = ArrayList<LabelValuePair>()
 
         for (result in results) {
             if (result["form"] != null) {
-                options.add(Pair(result["pokedexEntryDocumentId"] as String,
-                    String.format("%s (%s)", result["species"] as String, result["form"] as String)))
+                options.add(
+                    LabelValuePair(String.format("%s (%s)", result["species"] as String, result["form"] as String),
+                        result["pokedexEntryDocumentId"] as String)
+                )
             } else {
-                options.add(Pair(result["pokedexEntryDocumentId"] as String, result["species"] as String))
+                options.add(LabelValuePair(result["species"] as String, result["pokedexEntryDocumentId"] as String))
             }
         }
 
