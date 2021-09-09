@@ -122,7 +122,7 @@ class PtuToolsRestController {
 
     @PostMapping("/savePokemonToFile")
     fun savePokemonToFile(@ModelAttribute pokemon: Pokemon): ResponseEntity<InputStreamResource> {
-        pokemon.pokedexEntry.saveOtherCapabilities()
+        pokemon.cleanup()
         pokemon.googleDriveFileId = null
         val buf: ByteArray = ObjectMapper().writeValueAsBytes(pokemon)
 
@@ -147,7 +147,7 @@ class PtuToolsRestController {
     }
 
     private fun doSaveToGoogleDrive(pokemon: Pokemon, request: HttpServletRequest, isNew: Boolean): ResponseEntity<String> {
-        pokemon.pokedexEntry.saveOtherCapabilities()
+        pokemon.cleanup()
         val buf: ByteArray = ObjectMapper().writeValueAsBytes(pokemon)
 
         val HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport()

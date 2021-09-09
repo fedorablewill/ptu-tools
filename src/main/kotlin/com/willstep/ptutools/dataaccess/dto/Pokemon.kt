@@ -61,4 +61,8 @@ data class Pokemon(
             return base + lvlUp + add
         }
     }
+
+    fun cleanup() {
+        moves = moves.filter { it.name != null }.toMutableList()
+    }
 }

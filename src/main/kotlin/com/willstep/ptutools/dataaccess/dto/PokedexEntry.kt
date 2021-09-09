@@ -54,17 +54,18 @@ data class PokedexEntry(
     constructor() : this(null)
 
     var otherCapabilities: String? = capabilities.filter { entry -> entry.value == -1 } .keys.joinToString(",")
-
-    fun saveOtherCapabilities() {
-        val items = otherCapabilities?.split(Regex(", ?")) ?: listOf()
-        for (capability in items) {
-            this.capabilities[capability] = -1
-        }
-
-        for (entry in capabilities.entries) {
-            if (entry.value != null && entry.value == -1 && !items.contains(entry.key)) {
-                this.capabilities.remove(entry.value)
+        set(value) {
+            val items = value?.split(Regex(", ?")) ?: listOf()
+            for (capability in items) {
+                this.capabilities[capability] = -1
             }
+
+            for (entry in capabilities.entries) {
+                if (entry.value != null && entry.value == -1 && !items.contains(entry.key)) {
+                    this.capabilities.remove(entry.value)
+                }
+            }
+            field = value
         }
-    }
+
 }
