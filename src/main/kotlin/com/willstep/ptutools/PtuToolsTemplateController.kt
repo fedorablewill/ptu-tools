@@ -9,6 +9,7 @@ import com.google.auth.oauth2.AccessToken
 import com.google.auth.oauth2.GoogleCredentials
 import com.willstep.ptutools.dataaccess.dto.Ability
 import com.willstep.ptutools.dataaccess.dto.Move
+import com.willstep.ptutools.dataaccess.dto.Note
 import com.willstep.ptutools.dataaccess.dto.Pokemon
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -166,6 +167,15 @@ class PtuToolsTemplateController {
         context.setVariable("ability", ability ?: Ability())
         context.setVariable("index", index)
         val fragmentsSelectors: Set<String> = setOf("ability")
+
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
+    }
+    @GetMapping("/pokemon/note")
+    fun getNoteFragment(@RequestParam note: Note?, @RequestParam index: Int): ResponseEntity<String> {
+        val context = Context()
+        context.setVariable("note", note ?: Note())
+        context.setVariable("index", index)
+        val fragmentsSelectors: Set<String> = setOf("note")
 
         return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
     }

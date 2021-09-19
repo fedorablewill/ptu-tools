@@ -108,6 +108,11 @@ function initialize() {
         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
     });
 
+    window.quills = []
+    $(".quill-editor").each(function (i) {
+        buildNotesQuillEditor(this, i);
+    });
+
     buildPageTitle();
 }
 
@@ -263,6 +268,36 @@ function buildMaxHealth(elem) {
     } else {
         buildValueFromSubscribedFields(elem)
     }
+}
+
+function buildNotesQuillEditor(elem, i) {
+    let value = elem.innerHTML;
+    elem.innerHTML = "";
+    var quill = new Quill(elem, {
+        theme: 'bubble',
+        placeholder: 'Type something here... Select text to format...',
+        modules: {
+            toolbar: [
+                [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                ['blockquote', 'code-block'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                [{ 'direction': 'rtl' }],                         // text direction
+                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                [{ 'align': [] }],
+                ['clean']                                         // remove formatting button
+            ]
+        }
+    });
+    if (value) {
+        quill.setContents(JSON.parse(value));
+    }
+    quill.on('text-change', function(delta, oldDelta, source) {
+        $(`[name='notes[${i}].body']`).val(JSON.stringify(quill.getContents()));
+    });
+    window.quills.push(quill);
 }
 
 //
@@ -769,4 +804,42 @@ function learnToastMove(moveName, elem) {
             }, 2000)
         }, 1000)
     }, 1000)
+}
+
+function onClickAddNote() {
+    let rowsElem = $("#accordionNotes")
+    let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".note-item").last().attr("data-index")) + 1
+
+    $.ajax("/pokemon/note", {
+        method: "GET",
+        contentType: "application/json",
+        data: {
+            "index": index
+        }
+    }).done(function(response) {
+        let newElem = $(`<div class="card note-item" id="note-${index}" data-index="${index}"></div>`).html(response)
+        rowsElem.append(newElem)
+        buildNotesQuillEditor(newElem.find(".quill-editor").get(0), index)
+    }).fail(function(jqxhr, textStatus, errorThrown)  {
+        alert("Error getting note template: " + textStatus + " : " + errorThrown)
+    })
+}
+
+function onClickDeleteNote(elem) {
+    if (confirm("Are you sure you want to delete this note?")) {
+        $(elem).closest(".note-item").remove()
+    }
+}
+
+function onNoteEditTitle(elem) {
+    let newTitle = prompt("Enter new title:")
+    if (!newTitle) {
+        return
+    }
+
+    let container = $(elem).closest(".note-item")
+    let index = container.attr("data-index")
+
+    container.find(`input[name='notes[${index}].title']`).val(newTitle)
+    container.find(".note-title").text(newTitle)
 }

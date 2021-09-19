@@ -107,6 +107,11 @@ button.control-action, .control-action button {
     padding-left: 110px;
 }
 
+.nav .material-icons {
+    line-height: 0;
+    bottom: 0.4rem;
+}
+
 .form-table {
     border: 2px solid #cad1d7;
     border-radius: .25rem;
@@ -151,6 +156,57 @@ ul.autocomplete {
     width: 46px;
     height: 46px;
     padding: initial;
+}
+
+.btn-link {
+    color: #172b4d;
+}
+
+.accordion .card {
+    background: none;
+}
+
+.accordion .card-header {
+    padding: 0.25rem 0.5rem;
+    background-color: #f5365c!important;
+}
+
+.accordion .card-header .btn-group {
+    position: absolute;
+    top: 0.1rem;
+    right: 0.625rem;
+}
+
+.accordion .card-header .btn-link {
+    padding: .625rem;
+}
+
+.accordion .card-header .btn-link .material-icons-outlined {
+    font-size: initial;
+}
+
+.accordion .card-header .btn-block .material-icons-outlined {
+    font-size: 20px;
+}
+
+#accordionNotes .card-body {
+    background: white;
+    color: black;
+    padding: 0.5rem;
+}
+
+.ql-container {
+    font-family: inherit !important;
+}
+
+.ql-bubble .ql-tooltip {
+    background-color: #212529 !important;
+    z-index: 10;
+    padding-left: 12px;
+}
+
+.ql-bubble .ql-toolbar .ql-formats:first-child {
+    margin-left: 0 !important;
 }
 
 @media (max-width: 575px) {

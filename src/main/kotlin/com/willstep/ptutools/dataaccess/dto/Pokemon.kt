@@ -50,6 +50,15 @@ data class Pokemon(
         }
 
 ) {
+
+    var notes: MutableList<Note> = ArrayList()
+        get() {
+            if (field.isEmpty()) {
+                field.add(Note())
+            }
+            return field
+        }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class Stat(
         var base: Int = 0,

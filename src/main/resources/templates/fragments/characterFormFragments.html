@@ -134,4 +134,34 @@
     </div>
 </div>
 
+<!-- START Notes &amp; Extras -->
+<div th:fragment="note(note, index)">
+    <!--/*@thymesVar id="note" type="com.willstep.ptutools.dataaccess.dto.Note"*/-->
+    <input type="hidden" th:name="'notes[' + ${index} + '].title'" th:value="${note.title}" />
+    <input type="hidden" th:name="'notes[' + ${index} + '].body'" th:value="${note.body}" />
+    <div class="card-header" th:id="'headingNote'+ ${index}">
+        <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                    th:data-target="'#collapseNote'+ ${index}" aria-expanded="true" th:aria-controls="'collapseNote'+ ${index}">
+                <span class="note-title" th:text="${note.title}"></span>
+                <span class="material-icons-outlined">expand_more</span>
+            </button>
+            <span class="btn-group">
+                <button class="btn btn-link note-btn-edit" type="button" title="Edit Title" onclick="onNoteEditTitle(this)">
+                    <span class="material-icons-outlined">edit</span>
+                </button>
+                <button class="btn btn-link note-btn-delete" type="button" title="Delete" onclick="onClickDeleteNote(this)">
+                    <span class="material-icons-outlined">delete_forever</span>
+                </button>
+            </span>
+        </h2>
+    </div>
+
+    <div th:id="'collapseNote'+ ${index}" class="collapse show" th:aria-labelledby="'headingNote'+ ${index}" data-parent="#accordionNotes">
+        <div class="card-body">
+            <div class="quill-editor" th:text="${note.body}"></div>
+        </div>
+    </div>
+</div>
+
 </html>
