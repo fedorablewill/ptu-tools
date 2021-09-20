@@ -397,6 +397,8 @@ hr {
 .exodus-title img {
     position: relative;
     bottom: 25px;
+    width: 400px;
+    max-width: 100%;
 }
 
 .exodus-title .exodus-title-text {
