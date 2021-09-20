@@ -6,7 +6,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-danger">
             <div class="char-picture navbar-brand">
                 <img th:src="'/img/pokemon/'+${pokemon.pokedexEntry.imageFileUrl}"
-                     onerror="this.onerror=null; this.src='/img/ptu-exodus-logo-black.png'" />
+                     onerror="this.onerror=null; this.src='/img/exodus-ptu-icon.png'" />
                 <span id="char-picture-shiny" th:class="'material-icons-outlined' + (*{shiny} ? '' : ' d-none')">auto_awesome</span>
             </div>
             <div class="form-inline form-group label-floating">
