@@ -18,7 +18,8 @@ class GeneratorController {
         val minLevel: Int = 0,
         val maxLevel: Int = 100,
         val nature: String?,
-        val shinyOdds: Double = 0.0
+        val shinyOdds: Double = 0.0,
+        val pokedex: String? = "1.05"
     )
 
     data class GeneratorRequestParam(
@@ -34,6 +35,10 @@ class GeneratorController {
     @PostMapping("/generatePokemon")
     fun generatePokemon(@RequestBody requestBody: GeneratorRequest) : Pokemon? {
         var query = FirestoreService().getCollection("pokedexEntries").offset(0)
+
+        if (requestBody.pokedex != null) {
+            query = query.whereEqualTo("pokedexDocumentId", requestBody.pokedex)
+        }
 
         for (requestParam in requestBody.params) {
             if (RequestMethod.EQUALS == requestParam.method) {
@@ -63,6 +68,7 @@ class GeneratorController {
     @GetMapping("/speciesOptions")
     fun speciesOptions(@RequestParam term: String): List<LabelValuePair> {
         val results = FirestoreService().getCollection("pokedexEntries")
+            .whereEqualTo("pokedexDocumentId", "1.05")
             .whereGreaterThanOrEqualTo("species", term.capitalize())
             .whereLessThanOrEqualTo("species", term.capitalize() + '\uf8ff')
             .orderBy("species").orderBy("form")
