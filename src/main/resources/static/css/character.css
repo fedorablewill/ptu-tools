@@ -105,11 +105,11 @@ button.control-action, .control-action button {
 
 .navbar {
     padding-left: 110px;
+    height: 85px;
 }
 
-.nav .material-icons {
-    line-height: 0;
-    bottom: 0.4rem;
+.nav-link .material-icons-outlined {
+    line-height: 0.5rem;
 }
 
 .form-table {
