@@ -60,6 +60,9 @@ function initialize() {
                         }
                     })
 
+                    moveLearnset = pokedexEntry["moveLearnset"]
+                    buildMoveLearnset()
+
                     let typesMs = $("#char-types").magicSuggest()
                     typesMs.clear()
                     typesMs.setValue(pokedexEntry.types)
@@ -114,6 +117,7 @@ function initialize() {
     });
 
     buildPageTitle();
+    buildMoveLearnset();
 }
 
 //
@@ -300,6 +304,27 @@ function buildNotesQuillEditor(elem, i) {
     window.quills.push(quill);
 }
 
+function buildMoveLearnset() {
+    window.moveCache = {}
+
+    if (moveLearnset) {
+        $.ajax("/pokemon/moveset", {
+            method: "GET",
+            contentType: "application/json",
+            data: {
+                "moveLearnset": JSON.stringify(moveLearnset),
+                "stabTypes": $("#char-types").magicSuggest().getValue().join()
+            }
+        }).done(function (response) {
+            $("#moveLookupModal-learnable").html(response).find('.collapse').collapse('hide')
+        }).fail(function (jqxhr, textStatus, errorThrown) {
+            alert("Error loading move learnset: " + textStatus + " : " + errorThrown)
+        })
+    } else {
+        $("#moveLookupModal-learnable").html("")
+    }
+}
+
 //
 // Actions & Handlers
 //
@@ -313,6 +338,8 @@ function onFormSubmit() {
     for (i = 0; i < eggGroups.length; i++) {
         hiddenContainer.append(`<input type="hidden" name="pokedexEntry.eggGroups[${i}]" value="${eggGroups[i]}" />`)
     }
+
+    hiddenContainer.append($(`<input type="hidden" name="pokedexEntry.moveLearnset" />`).val(JSON.stringify(moveLearnset)))
 
     let form = $("#form")
 
@@ -593,18 +620,13 @@ function onClickAddMove() {
     })
 }
 
-function onClickAddMoveByName() {
-    let name = window.prompt("Enter move name")
-
-    if (name) {
-        addMoveByName(name)
-    }
+function onClickLookupMove() {
+    $("#moveLookupModal").on('shown.bs.modal', function () {
+        $("#moveLookupModal-query").focus()
+    }).modal('show')
 }
 
 function addMoveByName(moveName) {
-    let rowsElem = $("#moves-list")
-    let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".form-move").last().attr("id").replace("move-", "")) + 1
-
     $.ajax("/move/" + moveName, {
         method: "GET",
         contentType: "application/json"
@@ -617,20 +639,27 @@ function addMoveByName(moveName) {
             moveJson["damageBase"] += 2
             moveJson["stab"] = true
         }
-        $.ajax("/pokemon/move", {
-            method: "GET",
-            contentType: "application/json",
-            data: {
-                "index": index,
-                "move": JSON.stringify(moveJson)
-            }
-        }).done(function(response) {
-            onMoveDone(response, index, rowsElem)
-        }).fail(function(jqxhr, textStatus, errorThrown)  {
-            alert("Error getting move template: " + textStatus + " : " + errorThrown)
-        })
+        addMoveByMoveJson(moveJson)
     })
 
+}
+
+function addMoveByMoveJson(moveJson) {
+    let rowsElem = $("#moves-list")
+    let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".form-move").last().attr("id").replace("move-", "")) + 1
+
+    $.ajax("/pokemon/move", {
+        method: "GET",
+        contentType: "application/json",
+        data: {
+            "index": index,
+            "move": JSON.stringify(moveJson)
+        }
+    }).done(function(response) {
+        onMoveDone(response, index, rowsElem)
+    }).fail(function(jqxhr, textStatus, errorThrown)  {
+        alert("Error getting move template: " + textStatus + " : " + errorThrown)
+    })
 }
 
 function onMoveDone(response, index, rowsElem) {
@@ -649,6 +678,29 @@ function onMoveDone(response, index, rowsElem) {
     newElem.find('[data-toggle="tooltip"]').tooltip()
     newElem.find('[data-subscribe]').each(loadSubscriber)
     changeMoveTypeColor(newElem.find('[data-autocomplete="type"]'))
+}
+
+function onMoveSearch() {
+    let query = $("#moveLookupModal-query").val()
+
+    if (query) {
+        $.ajax("/pokemon/move/search", {
+            method: "GET",
+            contentType: "application/json",
+            data: {
+                "term": query,
+                "stabTypes": $("#char-types").magicSuggest().getValue().join()
+            }
+        }).done(function (response) {
+            $("#moveLookupModal-queryResults").show().html(response).find('.collapse').collapse('hide')
+            $("#moveLookupModal-learnable").hide()
+        }).fail(function (jqxhr, textStatus, errorThrown) {
+            alert("Error searching moves: " + textStatus + " : " + errorThrown)
+        })
+    } else {
+        $("#moveLookupModal-queryResults").hide()
+        $("#moveLookupModal-learnable").show()
+    }
 }
 
 function onClickDeleteMove(elem) {

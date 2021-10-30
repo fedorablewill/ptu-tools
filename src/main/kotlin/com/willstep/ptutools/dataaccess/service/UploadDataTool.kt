@@ -196,6 +196,98 @@ class UploadDataTool {
             }
         }
     }
+
+    fun uploadMoveLearnset(data: Map<String, Map<String, List<String>>>) {
+        for (entry in data.entries) {
+            var species = entry.key
+            var form: String? = null
+
+            if (species.matches(Regex(".*\\(.*\\)"))) {
+                form = species.substring(species.indexOf("(") + 1, species.lastIndexOf(")"))
+                species = species.removeRange(species.indexOf(" ("), species.length)
+
+                if (form == "Alola") {
+                    form = "Alolan"
+                } else if (form == "Galar") {
+                    form = "Galarian"
+                }
+            }
+
+            val existingMatches = firestoreService.getCollection("pokedexEntries")
+                .whereEqualTo("species", species)
+                .whereEqualTo("form", form)
+                .get().get()
+
+            if (existingMatches.isEmpty || existingMatches.size() > 1) {
+                //Put breakpoint here and correct the stuff
+                println("Could not find entry for " + entry.key)
+            }
+
+            if (existingMatches.isEmpty) {
+                continue
+            }
+
+            for (document in existingMatches.documents) {
+                val pokedexEntry = document.toObject(PokedexEntry::class.java)
+
+                pokedexEntry.moveLearnset = PokedexEntry.MoveLearnset()
+
+                // Transfer Level Up Moves to new format
+                pokedexEntry.moveLearnset!!.levelUpMoves = pokedexEntry.levelUpMoves.map { PokedexEntry.MoveLearnset.Entry(it.key, it.value) }.toMutableList()
+
+                // TM/HM moves
+
+                if (entry.value["TMs"] != null && entry.value["TMs"]!!.size > 1) {
+                    for (moveNameData in entry.value["TMs"]!!) {
+                        var moveName = moveNameData.replace("*", "").removePrefix("_").removeSuffix("_").removeSuffix(" (N)")
+                        moveName = moveName.substring(moveName.indexOf(" ") + 1)
+
+                        val moveMatches = firestoreService.getDocument("moves", moveName)
+                        if (!moveMatches.get().get().exists()) {
+                            println("Move not found '" + moveName + "' for Pokemon " + entry.key)
+                        }
+
+                        pokedexEntry.moveLearnset!!.machineMoves.add(moveName)
+                    }
+                }
+
+                // Tutor moves
+                if (entry.value["Egg"] != null && entry.value["Egg"]!!.size > 1) {
+                    for (moveNameData in entry.value["Egg"]!!) {
+                        val moveName = moveNameData.replace("*", "").removePrefix("_").removeSuffix("_").removeSuffix(" (N)")
+
+                        val moveMatches = firestoreService.getDocument("moves", moveName)
+                        if (!moveMatches.get().get().exists()) {
+                            println("Move not found '" + moveName + "' for Pokemon " + entry.key)
+                        }
+
+                        pokedexEntry.moveLearnset!!.eggMoves.add(moveName)
+                    }
+                }
+
+                // Egg moves
+                if (entry.value["Tutor"] != null && entry.value["Tutor"]!!.size > 1) {
+                    for (moveNameData in entry.value["Tutor"]!!) {
+                        val moveName = moveNameData.replace("*", "").removePrefix("_").removeSuffix("_").removeSuffix(" (N)")
+
+                        val moveMatches = firestoreService.getDocument("moves", moveName)
+                        if (!moveMatches.get().get().exists()) {
+                            println("Move not found '" + moveName + "' for Pokemon " + entry.key)
+                        }
+
+                        pokedexEntry.moveLearnset!!.tutorMoves.add(moveName)
+                    }
+                }
+
+                // Save
+                if (pokedexEntry.capabilities.containsKey("")) {
+                    pokedexEntry.capabilities.remove("")
+                }
+                firestoreService.saveAsDocument("pokedexEntries", pokedexEntry.pokedexEntryDocumentId!!, pokedexEntry)
+                println("Completed: " + entry.key)
+            }
+        }
+    }
 }
 
 data class EvolutionsRemaining(

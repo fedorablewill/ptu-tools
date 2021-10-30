@@ -36,6 +36,13 @@ class PTUCoreInfoService (
 
         return results
     }
+    
+    fun checkMoveStab(move: Move, stabTypes: List<String>) {
+        if (move.damageBase != null && stabTypes.contains(move.type)) {
+            move.stab = true
+            move.damageBase = move.damageBase!! + 2
+        }
+    }
 
     fun calculateDamage(targetTypes: List<Type>, targetDefense: Int, attackType: Type, attackAmount: Int) : Int {
         val effectivity = getTypeEffectivity(targetTypes)[attackType]!!

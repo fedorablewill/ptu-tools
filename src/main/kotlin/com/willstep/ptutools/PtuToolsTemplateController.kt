@@ -7,10 +7,9 @@ import com.google.api.services.drive.Drive
 import com.google.auth.http.HttpCredentialsAdapter
 import com.google.auth.oauth2.AccessToken
 import com.google.auth.oauth2.GoogleCredentials
-import com.willstep.ptutools.dataaccess.dto.Ability
-import com.willstep.ptutools.dataaccess.dto.Move
-import com.willstep.ptutools.dataaccess.dto.Note
-import com.willstep.ptutools.dataaccess.dto.Pokemon
+import com.willstep.ptutools.core.PTUCoreInfoService
+import com.willstep.ptutools.dataaccess.dto.*
+import com.willstep.ptutools.dataaccess.service.FirestoreService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.core.env.Environment
@@ -176,6 +175,57 @@ class PtuToolsTemplateController {
         context.setVariable("note", note ?: Note())
         context.setVariable("index", index)
         val fragmentsSelectors: Set<String> = setOf("note")
+
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
+    }
+
+    @GetMapping("/pokemon/move/search")
+    fun getMoveSearchResults(@RequestParam term: String, @RequestParam stabTypes: List<String>): ResponseEntity<String> {
+        // Capitalize each word
+        val query = term.split(" ").joinToString(" ") { it.capitalize() }.trimEnd();
+
+        // Do search
+        val results = FirestoreService().getCollection("moves")
+            .whereGreaterThanOrEqualTo("name", query)
+            .whereLessThanOrEqualTo("name", query + '\uf8ff')
+            .orderBy("name")
+            .limit(10).get().get().map { it.toObject(Move::class.java) }
+
+        // Check STAB
+        results.forEach { PTUCoreInfoService().checkMoveStab(it, stabTypes) }
+
+        // Render results
+        val context = Context()
+        context.setVariable("moves", results)
+        val fragmentsSelectors: Set<String> = setOf("moveSearchResults")
+
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
+    }
+
+    @GetMapping("/pokemon/moveset")
+    fun getMoveLearnset(@RequestParam moveLearnset: PokedexEntry.MoveLearnset, @RequestParam stabTypes: List<String>): ResponseEntity<String> {
+
+        val levelUpMoveMap = FirestoreService().getDocuments("moves", "name", moveLearnset.getLevelUpMoveNames(), true)
+            .associate { it.get("name") to it.toObject(Move::class.java) }
+        val levelUpMoves = moveLearnset.levelUpMoves.map { Pair(levelUpMoveMap[it.moveName], it.learnedLevel) }.sortedBy { it.second }
+        val machineMoves = FirestoreService().getDocuments("moves", "name", moveLearnset.machineMoves, true)
+            .map { it.toObject(Move::class.java) }
+        val eggMoves = FirestoreService().getDocuments("moves", "name", moveLearnset.eggMoves, true)
+            .map { it.toObject(Move::class.java) }
+        val tutorMoves = FirestoreService().getDocuments("moves", "name", moveLearnset.tutorMoves, true)
+            .map { it.toObject(Move::class.java) }
+
+        levelUpMoves.forEach { PTUCoreInfoService().checkMoveStab(it.first!!, stabTypes) }
+        machineMoves.forEach { PTUCoreInfoService().checkMoveStab(it, stabTypes) }
+        eggMoves.forEach { PTUCoreInfoService().checkMoveStab(it, stabTypes) }
+        tutorMoves.forEach { PTUCoreInfoService().checkMoveStab(it, stabTypes) }
+
+        val context = Context()
+        context.setVariable("levelUpMoves", levelUpMoves)
+        context.setVariable("machineMoves", machineMoves)
+        context.setVariable("eggMoves", eggMoves)
+        context.setVariable("tutorMoves", tutorMoves)
+        val fragmentsSelectors: Set<String> = setOf("moveLearnset")
 
         return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
     }

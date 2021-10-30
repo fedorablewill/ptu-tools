@@ -164,4 +164,139 @@
     </div>
 </div>
 
+<div th:fragment="moveLearnset(levelUpMoves, machineMoves, eggMoves, tutorMoves)">
+    <!--/*@thymesVar id="levelUpMoves" type="java.util.List<kotlin.Pair<com.willstep.ptutools.dataaccess.dto.Move, int>>"*/-->
+    <!--/*@thymesVar id="machineMoves" type="java.util.List<com.willstep.ptutools.dataaccess.dto.Move>"*/-->
+    <!--/*@thymesVar id="eggMoves" type="java.util.List<com.willstep.ptutools.dataaccess.dto.Move>"*/-->
+    <!--/*@thymesVar id="tutorMoves" type="java.util.List<com.willstep.ptutools.dataaccess.dto.Move>"*/-->
+    <h5 class="text-muted text-center">Level-Up Moves</h5>
+    <hr/>
+    <div class="accordion" id="accordionMoves-lvlUp">
+        <div class="card move-item" th:each="pair, iStat: *{levelUpMoves}" th:id="'move-levelUp-' + ${iStat.index}" th:data-index="${iStat.index}">
+            <div th:replace="fragments/characterFormFragments :: moveLearnsetItem(move=${pair.first}, learnedAt=${pair.second}, section='lvlUp', index=${iStat.index})"></div>
+        </div>
+    </div>
+    <h5 class="text-muted text-center mt-3">TM/HM Moves</h5>
+    <hr/>
+    <div class="accordion" id="accordionMoves-machine">
+        <div class="card move-item" th:each="move, iStat: *{machineMoves}" th:id="'move-machine-' + ${iStat.index}" th:data-index="${iStat.index}">
+            <div th:replace="fragments/characterFormFragments :: moveLearnsetItem(move=${move}, learnedAt='', section='machine', index=${iStat.index})"></div>
+        </div>
+    </div>
+    <h5 class="text-muted text-center mt-3">Egg Moves</h5>
+    <hr/>
+    <div class="accordion" id="accordionMoves-egg">
+        <div class="card move-item" th:each="move, iStat: *{eggMoves}" th:id="'move-egg-' + ${iStat.index}" th:data-index="${iStat.index}">
+            <div th:replace="fragments/characterFormFragments :: moveLearnsetItem(move=${move}, learnedAt='', section='egg', index=${iStat.index})"></div>
+        </div>
+    </div>
+    <h5 class="text-muted text-center mt-3">Tutor Moves</h5>
+    <hr/>
+    <div class="accordion" id="accordionMoves-tutor">
+        <div class="card move-item" th:each="move, iStat: *{tutorMoves}" th:id="'move-tutor-' + ${iStat.index}" th:data-index="${iStat.index}">
+            <div th:replace="fragments/characterFormFragments :: moveLearnsetItem(move=${move}, learnedAt='', section='tutor', index=${iStat.index})"></div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="moveSearchResults(moves)">
+    <!--/*@thymesVar id="moves" type="java.util.List<com.willstep.ptutools.dataaccess.dto.Move>"*/-->
+    <div class="accordion" id="accordionMoves-search">
+        <div class="card move-item" th:each="move, iStat: *{moves}" th:id="'move-search-' + ${iStat.index}" th:data-index="${iStat.index}">
+            <div th:replace="fragments/characterFormFragments :: moveLearnsetItem(move=${move}, learnedAt='', section='search', index=${iStat.index})"></div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="moveLearnsetItem(move, learnedAt, section, index)">
+    <!--/*@thymesVar id="move" type="com.willstep.ptutools.dataaccess.dto.Move"*/-->
+    <script th:inline="javascript">
+        /*[+
+        moveCache['[(${move.name})]'] = [[${move}]];
+         +]*/
+    </script>
+    <div class="card-header" id="headingMove1">
+        <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                    th:data-target="'#collapseMove-' + ${section} + ${index}" aria-expanded="false" th:aria-controls="'collapseMove-' + ${section} + ${index}">
+                <span class="note-title">
+                    <span th:text="${move.name}"></span>
+                    <span th:class="'badge ml-1 bg-t-' + ${#strings.toLowerCase(move.type)}" th:text="${move.type}"></span>
+                    <small th:if="${section == 'lvlUp'}" th:text="'LVL ' + ${learnedAt}"></small>
+                </span>
+                <span class="material-icons-outlined">expand_more</span>
+            </button>
+            <span class="btn-group">
+                <button class="btn btn-outline-default btn-sm" type="button" title="Learn" th:data-name="${move.name}"
+                        onclick="addMoveByMoveJson(moveCache[this.getAttribute('data-name')]); $('#moveLookupModal').modal('hide')">
+                    Learn
+                </button>
+            </span>
+        </h2>
+    </div>
+
+    <div th:id="'collapseMove-' + ${section} + ${index}" class="collapse" th:aria-labelledby="'headingMove-' + ${section} + ${index}"
+         th:data-parent="'#accordionMoves-' + ${section}">
+        <div class="card-body">
+            <div class="row row-slim">
+                <div class="form-group label-floating col-sm-4">
+                    <label class="control-label" th:for="'move-'+${section}+'-'+${index}+'-type'">Type</label>
+                    <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+                    <input class="form-control ui-autocomplete-input" type="text" th:id="'move-'+${section}+'-'+${index}+'-type'"
+                           th:value="${move.type}">
+                </div>
+                <div class="form-group label-floating col-sm-4">
+                    <label class="control-label" th:for="'move-'+${section}+'-'+${index}+'-class'">Class</label>
+                    <select class="form-control" th:id="'move-'+${section}+'-'+${index}+'-class'" th:value="${move.damageClass}">
+                        <option th:value="'Physical'" th:selected="${move.damageClass} == 'Physical'">Physical</option>
+                        <option th:value="'Special'" th:selected="${move.damageClass} == 'Special'">Special</option>
+                        <option th:value="'Status'" th:selected="${move.damageClass} == 'Status'">Status</option>
+                    </select>
+                </div>
+                <div class="form-group label-floating col-sm-4">
+                    <label class="control-label" th:for="'move-'+${section}+'-'+${index}+'-freq'">Frequency</label>
+                    <input class="form-control" type="text" th:id="'move-'+${section}+'-'+${index}+'-freq'" th:value="${move.frequency}">
+                </div>
+
+                <div class="form-group label-floating col-sm-6">
+                    <label class="control-label" th:for="'move-'+${section}+'-'+${index}+'-range'">Range</label>
+                    <input class="form-control" type="text" th:id="'move-'+${section}+'-'+${index}+'-range'" th:value="${move.range}">
+                </div>
+                <div class="form-group label-floating col-sm-3 col-6">
+                    <label class="control-label" th:for="'move-'+${section}+'-'+${index}+'-ac'">AC</label>
+                    <input class="form-control" type="number" th:id="'move-'+${section}+'-'+${index}+'-ac'" th:value="${move.accuracyCheck}">
+                </div>
+                <div class="form-group label-floating col-sm-3 col-6">
+                    <label class="control-label" th:for="'move-'+${section}+'-'+${index}+'-db'">DB</label>
+                    <input class="form-control" type="number" th:id="'move-'+${section}+'-'+${index}+'-db'" data-db-tooltip="" th:value="${move.damageBase}">
+                </div>
+
+                <div class="form-group label-floating col-sm-3 col-6">
+                    <label class="control-label" th:for="'move-'+${section}+'-'+${index}+'-crit'">Crits On</label>
+                    <input class="form-control" type="number" th:id="'move-'+${section}+'-'+${index}+'-crit'" th:value="${move.critsOn}">
+                </div>
+                <div class="form-group label-floating custom-checkbox col-sm-3 col-6">
+                    <label class="control-label" th:for="'move-'+${section}+'-'+${index}+'-stab'">Has STAB?</label>
+                    <input class="form-control custom-control-input" type="checkbox" th:id="'move-'+${section}+'-'+${index}+'-stab'"
+                           th:value="${move.stab}" th:checked="${move.stab}">
+                    <span class="custom-control-label"></span>
+                </div>
+                <div class="form-group label-floating col-sm-6">
+                    <label class="control-label" th:for="'move-'+${section}+'-'+${index}+'-contest'">Contest Type/Effect</label>
+                    <input class="form-control" type="text" th:id="'move-'+${section}+'-'+${index}+'-contest'"
+                           th:value="${move.contestType ?: ''} + ' / ' + ${move.contestEffect ?: ''}">
+                    <input type="hidden" th:value="${move.contestType}">
+                    <input type="hidden" th:value="${move.contestEffect}">
+                </div>
+
+                <div class="form-group label-floating col-sm-12">
+                    <label class="control-label" th:for="'move-'+${section}+'-'+${index}+'-effect'">Effect</label>
+                    <textarea class="form-control" type="text" th:id="'move-'+${section}+'-'+${index}+'-effect'"
+                              th:text="${move.effects}"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>

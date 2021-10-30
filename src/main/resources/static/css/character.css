@@ -195,6 +195,11 @@ ul.autocomplete {
     padding: 0.5rem;
 }
 
+.card-header .btn-sm {
+    top: 10px;
+    position: relative;
+}
+
 .ql-container {
     font-family: inherit !important;
 }

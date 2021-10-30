@@ -1,5 +1,7 @@
 package com.willstep.ptutools.dataaccess.dto
 
+import com.google.cloud.firestore.annotation.Exclude
+
 data class PokedexEntry(
     val pokedexEntryDocumentId: String?,
     var pokedexDocumentId: String? = null,
@@ -26,9 +28,7 @@ data class PokedexEntry(
     var hatchRate: String? = null,
     var habitats: List<String> = ArrayList(),
     var diets: List<String> = ArrayList(),
-    var levelUpMoves: Map<String, Int> = HashMap(),
-    var machineMoves: List<String> = ArrayList(),
-    var tutorMoves: List<String> = ArrayList(),
+    var moveLearnset: MoveLearnset? = null,
     var basicAbilities: List<String> = ArrayList(),
     var advancedAbilities: List<String> = ArrayList(),
     var highAbilities: List<String> = ArrayList(),
@@ -40,6 +40,9 @@ data class PokedexEntry(
     var evolutionsRemainingFemale: Int? = null,
     var evolutionsRemainingGenderless: Int? = null,
     var megaEvolution: MegaEvolution? = null,
+
+    @Deprecated("Use moveLearnset")
+    var levelUpMoves: Map<String, Int> = HashMap()
 ) {
     data class MegaEvolution(
         var name: String? = null,
@@ -49,6 +52,23 @@ data class PokedexEntry(
         var addedStats: Map<String, Int> = HashMap()
     ) {
         constructor() : this(null)
+    }
+
+    data class MoveLearnset(
+        var levelUpMoves: MutableList<Entry> = ArrayList(),
+        var machineMoves: MutableList<String> = ArrayList(),
+        var eggMoves: MutableList<String> = ArrayList(),
+        var tutorMoves: MutableList<String> = ArrayList(),
+    ) {
+        @Exclude
+        fun getLevelUpMoveNames(): List<String> {
+            return levelUpMoves.map { it.moveName!! }
+        }
+
+        data class Entry(
+            var moveName: String? = null,
+            var learnedLevel: Int = 0
+        )
     }
 
     constructor() : this(null)

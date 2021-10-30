@@ -30,28 +30,35 @@ import javax.servlet.http.HttpServletResponse
 @RestController
 class PtuToolsRestController {
 
-    @PostMapping("/uploadMoves")
+//    @PostMapping("/uploadMoves")
     fun uploadMoves(@RequestBody movesList: List<Map<String, Any>>, model: Model) {
         UploadDataTool().uploadMoveArray(movesList)
     }
 
-    @PostMapping("/uploadAbilities")
+//    @PostMapping("/uploadAbilities")
     fun uploadAbilities(@RequestBody abilities: List<Ability>, model: Model) {
         for (ability in abilities) {
             FirestoreService().saveAsDocument("abilities", ability.name!!, ability)
         }
     }
 
-    @PostMapping("/uploadPokedex")
+//    @PostMapping("/uploadPokedex")
     fun uploadPokedex(@RequestBody dexEntries: List<Map<String, Any>>, model: Model): String {
         UploadDataTool().uploadPokedexEntries(dexEntries)
 
         return dexEntries.size.toString() + " Entries Uploaded"
     }
 
-    @PostMapping("/uploadEvolutionsRemaining")
+//    @PostMapping("/uploadEvolutionsRemaining")
     fun uploadEvolutionsRemaining(@RequestBody entries: List<EvolutionsRemaining>, model: Model): String {
         UploadDataTool().uploadEvolutionsRemaining(entries)
+
+        return entries.size.toString() + " Entries Uploaded"
+    }
+
+//    @PostMapping("/uploadMoveLearnset")
+    fun uploadMoveLearnset(@RequestBody entries: Map<String, Map<String, List<String>>>, model: Model): String {
+        UploadDataTool().uploadMoveLearnset(entries)
 
         return entries.size.toString() + " Entries Uploaded"
     }

@@ -546,7 +546,7 @@
                         </div>
                     </div>
                     <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickAddMove()">Add Blank Move</button>
-                    <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickAddMoveByName()">Add Move By Name</button>
+                    <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickLookupMove()">Lookup Move</button>
                 </section>
             </div>
             <div class="col-12 col-lg-6">
@@ -842,6 +842,41 @@
             </div>
         </div>
     </div>
+
+    <!-- Move Lookup Modal -->
+    <div class="modal fade" id="moveLookupModal" tabindex="-1" aria-labelledby="moveLookupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-center text-white" id="moveLookupModalLabel">
+                        Move Lookup
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-dark" id="moveLookupModal-body">
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="moveLookupModal-query">Search</label>
+                        <input class="form-control" type="text" id="moveLookupModal-query" oninput="onMoveSearch()">
+                    </div>
+                    <div id="moveLookupModal-queryResults"></div>
+                    <hr class="w-100"/>
+                    <div id="moveLookupModal-learnable" class="text-center">
+                        <img src="/img/loading-pokedie.gif" alt="Loading" style="height: 300px"/>
+                    </div>
+                </div>
+                <div class="modal-footer bg-dark">
+                    <div class="w-100">
+                        <button type="button" class="btn btn-outline-danger float-right" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        var moveLearnset = /*[[*{pokedexEntry.moveLearnset}]]*/ {};
+    </script>
 </form>
 
 <!-- Type Effectivity Modal -->
