@@ -9,6 +9,7 @@ import com.google.auth.oauth2.AccessToken
 import com.google.auth.oauth2.GoogleCredentials
 import com.willstep.ptutools.core.PTUCoreInfoService
 import com.willstep.ptutools.dataaccess.dto.*
+import com.willstep.ptutools.dataaccess.service.DataUpdater
 import com.willstep.ptutools.dataaccess.service.FirestoreService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -66,6 +67,8 @@ class PtuToolsTemplateController {
     }
     @PostMapping("/pokemonFragment")
     fun pokemonFragment(@RequestBody pokemon: Pokemon, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String>? {
+        DataUpdater().checkPokemonForUpdates(pokemon)
+
         val variables = mapOf<String, Any>("pokemon" to pokemon)
         val context = Context()
         context.setVariables(variables)
@@ -88,8 +91,12 @@ class PtuToolsTemplateController {
     }
     @PostMapping("/pokemon")
     fun pokemon(@ModelAttribute requestBody: JsonAsString, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String>? {
+        val pokemon = ObjectMapper().readValue(requestBody.myData, Pokemon::class.java)
+
+        DataUpdater().checkPokemonForUpdates(pokemon)
+
         val variables = mapOf<String, Any>(
-            "pokemon" to ObjectMapper().readValue(requestBody.myData, Pokemon::class.java),
+            "pokemon" to pokemon,
             "jsVersion" to environment.getProperty("js.version")!!,
             "cssVersion" to environment.getProperty("css.version")!!
         )
@@ -142,6 +149,8 @@ class PtuToolsTemplateController {
 
         val pokemon = ObjectMapper().readValue(outputStream.toString(), Pokemon::class.java);
         pokemon.googleDriveFileId = fileId
+
+        DataUpdater().checkPokemonForUpdates(pokemon)
 
         variables["pokemon"] = pokemon
         context.setVariables(variables)

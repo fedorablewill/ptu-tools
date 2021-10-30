@@ -3,6 +3,7 @@ package com.willstep.ptutools.dataaccess.dto
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.util.*
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class Pokemon(
     val pokemonDocumentId: String = UUID.randomUUID().toString(),
     var googleDriveFileId: String? = null,

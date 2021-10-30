@@ -1,7 +1,9 @@
 package com.willstep.ptutools.dataaccess.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.google.cloud.firestore.annotation.Exclude
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class PokedexEntry(
     val pokedexEntryDocumentId: String?,
     var pokedexDocumentId: String? = null,
