@@ -8,7 +8,10 @@ import java.io.IOException
 
 @Component
 class MoveLearnsetConverter(private val objectMapper: ObjectMapper) : Converter<String, PokedexEntry.MoveLearnset> {
-    override fun convert(source: String): PokedexEntry.MoveLearnset {
+    override fun convert(source: String): PokedexEntry.MoveLearnset? {
+        if (source == "null") {
+            return null
+        }
         return try {
             objectMapper.readValue(source, PokedexEntry.MoveLearnset::class.java)
         } catch (e: IOException) {
