@@ -57,10 +57,10 @@ class PTUCoreInfoService (
     }
 
     fun levelUpPokemon(pokedexEntryDocumentId: String?, currentLevel: Int, exp: Int) : LevelUpChanges {
-        var newLevel = 1
+        var newLevel = 0
         val newMoves = ArrayList<Move>()
 
-        while(newLevel < EXPERIENCE_CHART.size && EXPERIENCE_CHART[newLevel - 1] < exp) {
+        while(newLevel < EXPERIENCE_CHART.size && EXPERIENCE_CHART[newLevel] <= exp) {
             newLevel++
         }
 

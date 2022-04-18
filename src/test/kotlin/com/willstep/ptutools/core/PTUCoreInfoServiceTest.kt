@@ -112,6 +112,20 @@ internal class PTUCoreInfoServiceTest {
     }
 
     @Test
+    fun levelUpPokemon_levelUp_expEqualToThreshold() {
+        val result = ptuCoreInfoService.levelUpPokemon("abc123", 1, 30)
+
+        assertEquals(4, result.level)
+    }
+
+    @Test
+    fun levelUpPokemon_levelUp_expGreaterThanThreshold() {
+        val result = ptuCoreInfoService.levelUpPokemon("abc123", 1, 32)
+
+        assertEquals(4, result.level)
+    }
+
+    @Test
     fun levelUpPokemon_noNewMoves() {
         `when`(firestoreService.getDocument("pokedexEntries", "abc123")).thenReturn(mockDocumentReference)
         `when`(mockDocumentReference.get()).thenReturn(mockApiFuture)
