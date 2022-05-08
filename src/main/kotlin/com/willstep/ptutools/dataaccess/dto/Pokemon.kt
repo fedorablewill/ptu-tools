@@ -2,6 +2,8 @@ package com.willstep.ptutools.dataaccess.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.util.*
+import kotlin.math.floor
+import kotlin.math.roundToInt
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Pokemon(
@@ -42,6 +44,9 @@ data class Pokemon(
 
     var moves: MutableList<Move> = ArrayList(),
     var abilities: MutableList<Ability> = ArrayList(),
+    var pokeEdges: MutableList<PokeEdge> = ArrayList(),
+
+    var tutorPoints: Int = (floor(level / 5.0) + 1).roundToInt(),
 
     var evolutionsRemaining: Int? =
         when (gender?.toLowerCase()) {

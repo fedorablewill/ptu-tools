@@ -809,7 +809,33 @@
                         </div>
                     </div>
                     <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickAddAbility()">Add Blank Ability</button>
-                    <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickAddAbilityByName()">Add Ability By Name</button>
+                    <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickAddAbilityByName()">Lookup Ability</button>
+                </section>
+
+                <section id="pokeedges">
+                    <div class="char-section-title mt-4">
+                        <h2>Poké Edges</h2>
+                        <hr/>
+                    </div>
+                    <div class="row row-slim" id="pokeedges-list">
+                        <div class="form-table form-pokeedge col-sm-12 mt-3" th:each="edge, iStat: *{pokeEdges}" th:id="'pokeedge-' + ${iStat.index}">
+                            <div th:replace="fragments/characterFormFragments :: pokeedge(edge = ${edge}, index = ${iStat.index})"></div>
+                        </div>
+                    </div>
+                    <div class="row row-slim mt-3">
+                        <div class="form-group label-floating col-sm-3 col-6">
+                            <label class="control-label" for="char-tp-remaining">Tutor Points</label>
+                            <input class="form-control" type="number" id="char-tp-remaining" th:field="*{tutorPoints}">
+                            <span class="form-control-posttext" id="char-tp-max"
+                                  data-subscribe="char-level"
+                                  data-subscribe-callback="buildValueFromSubscribedFields"
+                                  data-formula="'/ ' + (Math.floor(#0 / 5) + 1)"></span>
+                        </div>
+                        <div class="form-group col-sm">
+                            <button type="button" class="btn btn-outline-danger" onclick="onClickAddPokeEdge()">Add Blank Edge</button>
+                            <button type="button" class="btn btn-outline-danger" onclick="onClickAddPokeEdgeByName()">Lookup Edge</button>
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>

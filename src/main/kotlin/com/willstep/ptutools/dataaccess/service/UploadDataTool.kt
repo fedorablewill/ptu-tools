@@ -1,6 +1,7 @@
 package com.willstep.ptutools.dataaccess.service
 
 import com.willstep.ptutools.dataaccess.dto.Move
+import com.willstep.ptutools.dataaccess.dto.PokeEdge
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import java.util.*
 
@@ -286,6 +287,20 @@ class UploadDataTool {
                 firestoreService.saveAsDocument("pokedexEntries", pokedexEntry.pokedexEntryDocumentId!!, pokedexEntry)
                 println("Completed: " + entry.key)
             }
+        }
+    }
+
+    fun uploadPokeEdges(data: List<Map<String, String>>) {
+        for (entry in data) {
+            var effect = entry["description"]
+
+            if (entry["note"] != null) {
+                effect += " (" + entry["note"] + ")" //48 89
+            }
+
+            val pokeEdge = PokeEdge(entry["name"], effect, entry["cost"], entry["prerequisites"])
+
+            firestoreService.saveAsDocument("pokeEdges", pokeEdge.name!!, pokeEdge)
         }
     }
 }

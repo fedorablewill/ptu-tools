@@ -63,6 +63,13 @@ class PtuToolsRestController {
         return entries.size.toString() + " Entries Uploaded"
     }
 
+//    @PostMapping("/uploadPokeEdges")
+    fun uploadPokeEdges(@RequestBody entries: List<Map<String, String>>, model: Model): String {
+        UploadDataTool().uploadPokeEdges(entries)
+
+        return entries.size.toString() + " Entries Uploaded"
+    }
+
     @GetMapping("/pokedex/{dexNumber}")
     fun getPokedexEntryByNumber(@PathVariable dexNumber: String, model: Model) : List<PokedexEntry?> {
         if (dexNumber.length > 3) {
@@ -80,6 +87,11 @@ class PtuToolsRestController {
     @GetMapping("/ability/{abilityName}")
     fun getAbilityByName(@PathVariable abilityName: String, model: Model): ResponseEntity<Ability> {
         return ResponseEntity.ok(FirestoreService().getDocument("abilities", abilityName).get().get().toObject(Ability::class.java))
+    }
+
+    @GetMapping("/pokeedge/{pokeEdgeName}")
+    fun getPokeEdgeByName(@PathVariable pokeEdgeName: String, model: Model): ResponseEntity<PokeEdge> {
+        return ResponseEntity.ok(FirestoreService().getDocument("pokeEdges", pokeEdgeName).get().get().toObject(PokeEdge::class.java))
     }
 
     @DeleteMapping("/pokemon/{pokemonId}")

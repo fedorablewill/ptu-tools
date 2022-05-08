@@ -134,6 +134,37 @@
     </div>
 </div>
 
+<!-- START Poke Edge Fragment -->
+<div th:fragment="pokeedge(edge, index)">
+    <!--/*@thymesVar id="edge" type="com.willstep.ptutools.dataaccess.dto.PokeEdge"*/-->
+    <label class="control-label control-label-title">
+        <input class="form-control form-control-sm" type="text" th:id="'pokeedge-' + ${index} + '-name'"
+               th:name="'pokeEdges[' + ${index} + '].name'" th:value="${edge.name}" />
+    </label>
+    <span class="control-action">
+      <button type="button" class="btn" onclick="onClickDeletePokeEdge(this)">
+          <img src="/img/icons/delete-forever-outline.png" alt="Delete">
+      </button>
+    </span>
+    <div class="row row-slim mt-4">
+        <div class="form-group label-floating col-sm-3">
+            <label class="control-label" th:for="'pokeedge-' + ${index} + '-cost'">Cost</label>
+            <input class="form-control" type="text" th:id="'pokeedge-' + ${index} + '-cost'"
+                   th:name="'pokeEdges[' + ${index} + '].cost'" th:value="${edge.cost}" />
+        </div>
+        <div class="form-group label-floating col-sm-9">
+            <label class="control-label" th:for="'pokeedge-' + ${index} + '-prereq'">Prerequisites</label>
+            <input class="form-control" type="text" th:id="'pokeedge-' + ${index} + '-prereq'"
+                   th:name="'pokeEdges[' + ${index} + '].prerequisites'" th:value="${edge.prerequisites}" />
+        </div>
+        <div class="form-group label-floating col-sm-12">
+            <label class="control-label" th:for="'pokeedge-' + ${index} + '-effect'">Effect</label>
+            <textarea class="form-control" th:id="'pokeedge-' + ${index} + '-effect'"
+                      th:name="'pokeEdges[' + ${index} + '].effect'" th:text="${edge.effect}"></textarea>
+        </div>
+    </div>
+</div>
+
 <!-- START Notes &amp; Extras -->
 <div th:fragment="note(note, index)">
     <!--/*@thymesVar id="note" type="com.willstep.ptutools.dataaccess.dto.Note"*/-->

@@ -432,7 +432,11 @@ function buildValueFromSubscribedFields(elem) {
         i++
     })
 
-    elem.val(eval(formula))
+    if (elem.is("input") || elem.is("textarea") || elem.is("select")) {
+        elem.val(eval(formula))
+    } else {
+        elem.text(eval(formula))
+    }
 }
 
 //

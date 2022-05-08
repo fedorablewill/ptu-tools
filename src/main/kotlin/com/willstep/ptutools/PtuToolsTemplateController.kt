@@ -178,6 +178,15 @@ class PtuToolsTemplateController {
 
         return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
     }
+    @GetMapping("/pokemon/pokeedge")
+    fun getPokeEdgeFragment(@RequestParam pokeEdge: PokeEdge?, @RequestParam index: Int): ResponseEntity<String> {
+        val context = Context()
+        context.setVariable("edge", pokeEdge ?: PokeEdge())
+        context.setVariable("index", index)
+        val fragmentsSelectors: Set<String> = setOf("pokeedge")
+
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
+    }
     @GetMapping("/pokemon/note")
     fun getNoteFragment(@RequestParam note: Note?, @RequestParam index: Int): ResponseEntity<String> {
         val context = Context()

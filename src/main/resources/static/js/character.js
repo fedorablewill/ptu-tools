@@ -94,6 +94,8 @@ function initialize() {
         $("#navbarNav").collapse('hide')
     })
 
+    $("#char-level").change(onChangeLevel)
+
     $("#navbarNav").collapse('hide')
 
     $('#form').data('saved-state', $('#form').serialize()).submit(onFormSubmit);
@@ -778,6 +780,71 @@ function onClickDeleteAbility(elem) {
     }
 }
 
+function onClickAddPokeEdge() {
+    let rowsElem = $("#pokeedges-list")
+    let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".form-pokeedge").last().attr("id").replace("pokeedge-", "")) + 1
+
+    $.ajax("/pokemon/pokeedge", {
+        method: "GET",
+        contentType: "application/json",
+        data: {
+            "index": index
+        }
+    }).done(function(response) {
+        let newElem = $(`<div class="form-table form-pokeedge col-sm-12 mt-3" id="pokeedge-${index}"></div>`).html(response)
+        rowsElem.append(newElem)
+    }).fail(function(jqxhr, textStatus, errorThrown)  {
+        alert("Error getting PokeEdge template: " + textStatus + " : " + errorThrown)
+    })
+}
+
+function onClickAddPokeEdgeByName() {
+    let name = window.prompt("Enter Poke Edge name")
+
+    if (name) {
+        addPokeEdgeByName(name)
+    }
+}
+
+function addPokeEdgeByName(pokeEdgeName) {
+    let rowsElem = $("#pokeedges-list")
+    let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".form-pokeedge").last().attr("id").replace("pokeedge-", "")) + 1
+
+    $.ajax("/pokeedge/" + pokeEdgeName, {
+        method: "GET",
+        contentType: "application/json"
+    }).done(function(pokeEdgeJson) {
+        if (!pokeEdgeJson) {
+            alert("Poke Edge not found: " + pokeEdgeName)
+            return
+        }
+        $.ajax("/pokemon/pokeedge", {
+            method: "GET",
+            contentType: "application/json",
+            data: {
+                "index": index,
+                "pokeEdge": JSON.stringify(pokeEdgeJson)
+            }
+        }).done(function(response) {
+            let newElem = $(`<div class="form-table form-pokeedge col-sm-12 mt-3" id="pokeedge-${index}"></div>`).html(response)
+            rowsElem.append(newElem)
+        }).fail(function(jqxhr, textStatus, errorThrown)  {
+            alert("Error getting Poke Edge template: " + textStatus + " : " + errorThrown)
+        })
+    })
+
+}
+
+function onClickDeletePokeEdge(elem) {
+    if (confirm("Are you sure you want to delete this Poke Edge?")) {
+        $(elem).closest(".form-pokeedge").remove()
+
+        if ($("#pokeedges-list").children().length === 0) {
+            onClickAddPokeEdge()
+        }
+    }
+}
+
 function onChangeShiny(elem) {
     if ($(elem).is(':checked')) {
         $('#char-picture-shiny').removeClass("d-none")
@@ -826,7 +893,7 @@ function onChangeExp(elem) {
                 if (level < response["level"]) {
                     buildToast(name + " Leveled up!")
                 }
-                $("#char-level").val(response["level"])
+                $("#char-level").val(response["level"]).change()
 
                 if (response["moves"].length > 0) {
                     for (var move of response["moves"]) {
@@ -839,6 +906,20 @@ function onChangeExp(elem) {
         }).fail(function(jqxhr, textStatus, errorThrown)  {
             alert("Error checking for level up: " + textStatus + " : " + errorThrown)
         })
+    }
+}
+
+function onChangeLevel() {
+    //Add Tutor Points
+    var tpRemainingElem = $("#char-tp-remaining")
+    var tpMaxElem = $("#char-tp-max")
+    var tpMaxCurrent = parseInt(tpMaxElem.text().substring(2))
+    var tpMaxNew = Math.floor($("#char-level").val() / 5) + 1
+
+    if (!isNaN(tpMaxCurrent) && tpMaxNew !== tpMaxCurrent) {
+        var tpDiff = tpMaxNew - tpMaxCurrent
+        var tpRemain = parseInt(tpRemainingElem.val()) + tpDiff
+        tpRemainingElem.val(tpRemain)
     }
 }
 

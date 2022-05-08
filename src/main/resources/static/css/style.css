@@ -480,6 +480,14 @@ input[disabled] {
     left: auto !important;
 }
 
+.form-control-posttext {
+    color: #cad1d7;
+    font-size: .875rem;
+    position: absolute;
+    top: .745rem;
+    left: 2.5rem;
+}
+
 
 /*
     Responsive Utilities
