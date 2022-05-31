@@ -303,6 +303,28 @@ class UploadDataTool {
             firestoreService.saveAsDocument("pokeEdges", pokeEdge.name!!, pokeEdge)
         }
     }
+
+    fun fixPokedexMovesWithSpaces() {
+        for (document in firestoreService.getCollection("pokedexEntries").get().get().documents) {
+            val entry = document.toObject(PokedexEntry::class.java)
+
+            if (entry.moveLearnset == null)
+                continue
+
+            for (moveEntry in entry.moveLearnset!!.levelUpMoves){
+                moveEntry.moveName = moveEntry.moveName?.trim()
+
+                if (moveEntry.moveName != null && !firestoreService.getDocument("moves", moveEntry.moveName!!).get().get().exists()) {
+                    System.out.printf("Uh ohhhh!!! We got a problem with %s that has a move called '%s'. RIP!\n")
+                }
+            }
+            System.out.printf("Fixed %s %s\n", entry.species, entry.form)
+
+            entry.capabilities.remove("")
+
+            firestoreService.saveAsDocument("pokedexEntries", entry.pokedexEntryDocumentId!!, entry)
+        }
+    }
 }
 
 data class EvolutionsRemaining(
