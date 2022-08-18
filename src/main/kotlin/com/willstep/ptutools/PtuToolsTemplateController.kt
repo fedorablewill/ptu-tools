@@ -133,7 +133,7 @@ class PtuToolsTemplateController {
                 AccessToken(token, null)
             ))
         )
-            .setApplicationName("PTU Exodus")
+            .setApplicationName("PokéSheets")
             .build()
 
         try {

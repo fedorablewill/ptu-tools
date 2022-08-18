@@ -184,12 +184,12 @@ class PtuToolsRestController {
                 )
             )
         )
-            .setApplicationName("PTU Exodus")
+            .setApplicationName("PokéSheets")
             .build()
 
         val file = File()
         file.name = pokemon.fileName ?: pokemon.name
-        file.description = "PTU Exodus Pokemon"
+        file.description = "PokéSheets Pokemon"
         file.mimeType = "application/json"
 
         if (!isNew) {

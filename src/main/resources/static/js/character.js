@@ -130,9 +130,9 @@ function initialize() {
 function buildPageTitle() {
     let name = $('#char-name').val()
     if (name) {
-        document.title = name + " - PTU Exodus Character Sheet"
+        document.title = name + " - PokéSheets Character Sheet"
     } else {
-        document.title = "New Pokemon - PTU Exodus Character Sheet"
+        document.title = "New Pokemon - PokéSheets Character Sheet"
     }
 }
 
