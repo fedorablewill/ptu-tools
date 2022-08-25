@@ -1,22 +1,26 @@
 # PokéSheets: Tools &amp; API
 For Pokemon Tabletop United v1.05
 
-## About
-So many people I've talked to have been turned off from PokeGenesis because of its poor user interface/experience design. This web app aims to be a replacement to this tool, an upgrade in every way.
+https://pokesheets.app/
 
-### PokéSheets vs PokeGenesis
-PokéSheets' Advantages
+## About
+This webapp is a Pokemon generator and sheet manager for Pokemon Tabletop United 1.05. The goal is to make everything streamlined, easy to use, with a focus on excelent user experience.
+
+### PokéSheets Features
 - Intuitive UI/UX designed professionally
 - REST API that can be used to query for Pokedex data and other PTU resources
 - Designed as a web app, making ALL platforms immediately supported
 - Industry standard technologies like Spring Boot and Thymeleaf
 - More customizable generator
-- Shiny Pokemon
-
-PokeGenesis' Advantages (but are planned as upcoming features!!!)
-- Easy to switch between and manage Pokemon
-- Dynamax Pokemon
-- Custom Pokedex
+- Build a custom Pokemon from scratch
+- Google Drive integration
+- Stat calculation
+- Automatic Level-Up with move learning
+- Damage calculator
+- Damage Base formula copying (for use with Roll20 and other apps)
+- Move Lookup
+- Evolving (abilites do not *yet* change)
+- Fully customizable notes
 
 ## Technologies
 - Kotlin/Java
