@@ -120,9 +120,12 @@
             contentType: "application/json",
             data: json
         }).done(function(response) {
+            window.history.replaceState("reload", null, '/')
+            window.history.pushState("reload", null, '/')
             $("#top").html(response)
             initialize()
             initializeWidgets()
+            window.history.replaceState(response, null, '/pokemon')
         }).fail(function(jqxhr, textStatus, errorThrown)  {
             alert("Error building character sheet: " + textStatus + " : " + errorThrown)
         })
@@ -133,13 +136,28 @@
             method: "GET",
             contentType: "application/json"
         }).done(function(response) {
+            window.history.replaceState("reload", null, '/')
+            window.history.pushState("reload", null, '/')
             $("#top").html(response)
             initialize()
             initializeWidgets()
+            window.history.replaceState(response, null, '/pokemon')
         }).fail(function(jqxhr, textStatus, errorThrown)  {
             alert("Error building character sheet: " + textStatus + " : " + errorThrown)
         })
     }
+
+    window.addEventListener('popstate', function(e) {
+        if (e.state === "reload") {
+            location.reload()
+        } else if (e.state != null) {
+            $("#top").html(e.state)
+            initialize()
+            initializeWidgets()
+        } else {
+            window.history.replaceState($("#top").html(), null, location.pathname)
+        }
+    });
 </script>
 </body>
 </html>
