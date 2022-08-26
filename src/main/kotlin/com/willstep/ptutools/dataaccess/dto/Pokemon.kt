@@ -79,5 +79,7 @@ data class Pokemon(
 
     fun cleanup() {
         moves = moves.filter { it.name != null }.toMutableList()
+        abilities = abilities.filter { it.name != null }.toMutableList()
+        pokeEdges = pokeEdges.filter { it.name != null }.toMutableList()
     }
 }
