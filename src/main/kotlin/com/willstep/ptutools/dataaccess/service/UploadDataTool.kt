@@ -1,5 +1,6 @@
 package com.willstep.ptutools.dataaccess.service
 
+import com.google.cloud.firestore.QuerySnapshot
 import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokeEdge
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
@@ -136,8 +137,7 @@ class UploadDataTool {
                             )
                         )
 
-
-            firestoreService.saveAsDocument("pokedexEntries", documentId, PokedexEntry(
+            val entry = PokedexEntry(
                 pokedexEntryDocumentId = documentId,
                 pokedexDocumentId = "1.05",
                 species = species,
@@ -157,7 +157,6 @@ class UploadDataTool {
                     "spdef" to entry["spdef"] as Int,
                     "spd" to entry["spd"] as Int
                 ),
-                capabilities = capabilities,
                 size = entry["size"] as String,
                 weight = entry["weight"] as String,
                 genderless = "No Gender" == entry["gender"],
@@ -175,16 +174,18 @@ class UploadDataTool {
                 evolutionFamilyDocumentId = null,
                 evolutionStage = entry["stage"] as Int,
                 megaEvolution = mega,
-            ))
+            )
+
+            entry.capabilities = capabilities
+
+            firestoreService.saveAsDocument("pokedexEntries", documentId, entry)
 
         }
     }
 
     fun uploadEvolutionsRemaining(items: List<EvolutionsRemaining>) {
         for (item in items) {
-            val result = firestoreService.getCollection("pokedexEntries")
-                .whereEqualTo("species", item.species)
-                .whereEqualTo("form", item.form).get().get()
+            val result = findPokedexEntryBySpecies(item.species, item.form)
 
             if (!result.isEmpty) {
                 val entries = result.toObjects(PokedexEntry::class.java)
@@ -214,15 +215,7 @@ class UploadDataTool {
                 }
             }
 
-            val existingMatches = firestoreService.getCollection("pokedexEntries")
-                .whereEqualTo("species", species)
-                .whereEqualTo("form", form)
-                .get().get()
-
-            if (existingMatches.isEmpty || existingMatches.size() > 1) {
-                //Put breakpoint here and correct the stuff
-                println("Could not find entry for " + entry.key)
-            }
+            val existingMatches = findPokedexEntryBySpecies(species, form)
 
             if (existingMatches.isEmpty) {
                 continue
@@ -234,13 +227,15 @@ class UploadDataTool {
                 pokedexEntry.moveLearnset = PokedexEntry.MoveLearnset()
 
                 // Transfer Level Up Moves to new format
-                pokedexEntry.moveLearnset!!.levelUpMoves = pokedexEntry.levelUpMoves.map { PokedexEntry.MoveLearnset.Entry(it.key, it.value) }.toMutableList()
+                pokedexEntry.moveLearnset!!.levelUpMoves = pokedexEntry.levelUpMoves.map { PokedexEntry.MoveLearnset.Entry(it.key.trim(), it.value) }.toMutableList()
 
                 // TM/HM moves
 
                 if (entry.value["TMs"] != null && entry.value["TMs"]!!.size > 1) {
                     for (moveNameData in entry.value["TMs"]!!) {
-                        var moveName = moveNameData.replace("*", "").removePrefix("_").removeSuffix("_").removeSuffix(" (N)")
+                        var moveDisplayName = moveNameData.replace("*", "").replace("_", "")
+                        var moveName = moveDisplayName.removeSuffix(" (N)")
+                        moveDisplayName = moveDisplayName.substring(moveDisplayName.indexOf(" ") + 1)
                         moveName = moveName.substring(moveName.indexOf(" ") + 1)
 
                         val moveMatches = firestoreService.getDocument("moves", moveName)
@@ -248,35 +243,37 @@ class UploadDataTool {
                             println("Move not found '" + moveName + "' for Pokemon " + entry.key)
                         }
 
-                        pokedexEntry.moveLearnset!!.machineMoves.add(moveName)
+                        pokedexEntry.moveLearnset!!.machineMoves.add(moveDisplayName)
                     }
                 }
 
                 // Tutor moves
                 if (entry.value["Egg"] != null && entry.value["Egg"]!!.size > 1) {
                     for (moveNameData in entry.value["Egg"]!!) {
-                        val moveName = moveNameData.replace("*", "").removePrefix("_").removeSuffix("_").removeSuffix(" (N)")
+                        val moveDisplayName = moveNameData.replace("*", "").replace("_", "")
+                        var moveName = moveDisplayName.removePrefix("§ ").removeSuffix(" (N)")
 
                         val moveMatches = firestoreService.getDocument("moves", moveName)
                         if (!moveMatches.get().get().exists()) {
                             println("Move not found '" + moveName + "' for Pokemon " + entry.key)
                         }
 
-                        pokedexEntry.moveLearnset!!.eggMoves.add(moveName)
+                        pokedexEntry.moveLearnset!!.eggMoves.add(moveDisplayName)
                     }
                 }
 
                 // Egg moves
                 if (entry.value["Tutor"] != null && entry.value["Tutor"]!!.size > 1) {
                     for (moveNameData in entry.value["Tutor"]!!) {
-                        val moveName = moveNameData.replace("*", "").removePrefix("_").removeSuffix("_").removeSuffix(" (N)")
+                        val moveDisplayName = moveNameData.replace("*", "").replace("_", "")
+                        var moveName = moveDisplayName.removePrefix("§ ").removeSuffix(" (N)")
 
                         val moveMatches = firestoreService.getDocument("moves", moveName)
                         if (!moveMatches.get().get().exists()) {
                             println("Move not found '" + moveName + "' for Pokemon " + entry.key)
                         }
 
-                        pokedexEntry.moveLearnset!!.tutorMoves.add(moveName)
+                        pokedexEntry.moveLearnset!!.tutorMoves.add(moveDisplayName)
                     }
                 }
 
@@ -324,6 +321,58 @@ class UploadDataTool {
 
             firestoreService.saveAsDocument("pokedexEntries", entry.pokedexEntryDocumentId!!, entry)
         }
+    }
+
+    // Converts Forms and Names from CWStra's format to PokeGenesis format
+    protected fun findPokedexEntryBySpecies(species_: String, form_: String?): QuerySnapshot {
+
+        var species = species_
+        var form = form_
+
+        if ("Nidoran F" == species) species = "Nidoran♀"
+        if ("Nidoran M" == species) species = "Nidoran♂"
+
+        //percent for Zygrade is 10% Forme, Complete Forme, etc.
+        //Deoxys and Shaymin and Lycanroc and Meloetta is Speed -> Speed Form
+        //Wormadam is Plant -> Plant Cloak
+
+        if ("Zygrade" == species && form != null && !form.contains("Forme")) {
+            form += " Forme"
+        }
+
+        if ("Wormadam" == species && form != null && !form.contains("Cloak")) {
+            form += " Cloak"
+        }
+
+        var existingMatches = firestoreService.getCollection("pokedexEntries")
+            .whereEqualTo("species", species)
+            .whereEqualTo("form", form)
+            .get().get()
+
+        if ("Indeedee" == species) {
+            firestoreService.getCollection("pokedexEntries")
+                .whereIn("species", listOf("Indeedee♀", "Indeedee♂"))
+                .get().get()
+        }
+
+        if (existingMatches.isEmpty) {
+            existingMatches = firestoreService.getCollection("pokedexEntries")
+                .whereEqualTo("species", species)
+                .whereEqualTo("form", "$form Form")
+                .get().get()
+        }
+
+        if (existingMatches.isEmpty) {
+            existingMatches = firestoreService.getCollection("pokedexEntries")
+                .whereEqualTo("species", species)
+                .get().get()
+        }
+
+        if (existingMatches.isEmpty) {
+            //Put breakpoint here and correct the stuff
+            println("Could not find entry for " + species)
+        }
+        return existingMatches
     }
 }
 

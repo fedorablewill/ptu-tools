@@ -44,6 +44,15 @@ class PTUCoreInfoService (
         }
     }
 
+    fun checkMoveNatural(move: Move, moveLearnset: List<String>) {
+        if (moveLearnset.any { name -> name.contains(move.name!!) && name.contains("(N)") }) {
+            move.name += " (N)"
+        }
+        if (moveLearnset.any { name -> name.contains(move.name!!) && name.contains("§") }) {
+            move.name = "§ " + move.name
+        }
+    }
+
     fun calculateDamage(targetTypes: List<Type>, targetDefense: Int, attackType: Type, attackAmount: Int) : Int {
         val effectivity = getTypeEffectivity(targetTypes)[attackType]!!
 

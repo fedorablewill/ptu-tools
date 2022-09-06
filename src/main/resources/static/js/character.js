@@ -650,6 +650,8 @@ function addMoveByMoveJson(moveJson) {
     let rowsElem = $("#moves-list")
     let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".form-move").last().attr("id").replace("move-", "")) + 1
 
+    moveJson['name'] = moveJson['name'].replace(' (N)', '').replace('§ ', '')
+
     $.ajax("/pokemon/move", {
         method: "GET",
         contentType: "application/json",

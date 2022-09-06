@@ -243,7 +243,7 @@
     <!--/*@thymesVar id="move" type="com.willstep.ptutools.dataaccess.dto.Move"*/-->
     <script th:inline="javascript">
         /*[+
-        moveCache['[(${move.name})]'] = [[${move}]];
+        moveCache['[(${#strings.replace(#strings.replace(move.name, ' (N)', ''), '§ ', '')})]'] = [[${move}]];
          +]*/
     </script>
     <div class="card-header" id="headingMove1">
@@ -258,7 +258,7 @@
                 <span class="material-icons-outlined">expand_more</span>
             </button>
             <span class="btn-group">
-                <button class="btn btn-outline-default btn-sm" type="button" title="Learn" th:data-name="${move.name}"
+                <button class="btn btn-outline-default btn-sm" type="button" title="Learn" th:data-name="${#strings.replace(#strings.replace(move.name, ' (N)', ''), '§ ', '')}"
                         onclick="addMoveByMoveJson(moveCache[this.getAttribute('data-name')]); $('#moveLookupModal').modal('hide')">
                     Learn
                 </button>

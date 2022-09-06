@@ -222,21 +222,37 @@ class PtuToolsTemplateController {
 
     @GetMapping("/pokemon/moveset")
     fun getMoveLearnset(@RequestParam moveLearnset: PokedexEntry.MoveLearnset, @RequestParam stabTypes: List<String>): ResponseEntity<String> {
+        val machineMoveNames = ArrayList(moveLearnset.machineMoves)
+        val eggMoveNames = ArrayList(moveLearnset.eggMoves)
+        val tutorMoveNames = ArrayList(moveLearnset.tutorMoves)
+
+        machineMoveNames.replaceAll { str -> str.removePrefix("§ ").removeSuffix(" (N)") }
+        eggMoveNames.replaceAll { str -> str.removePrefix("§ ").removeSuffix(" (N)") }
+        tutorMoveNames.replaceAll { str -> str.removePrefix("§ ").removeSuffix(" (N)") }
 
         val levelUpMoveMap = FirestoreService().getDocuments("moves", "name", moveLearnset.getLevelUpMoveNames(), true)
             .associate { it.get("name") to it.toObject(Move::class.java) }
         val levelUpMoves = moveLearnset.levelUpMoves.map { Pair(levelUpMoveMap[it.moveName], it.learnedLevel) }.sortedBy { it.second }
-        val machineMoves = FirestoreService().getDocuments("moves", "name", moveLearnset.machineMoves, true)
+        val machineMoves = FirestoreService().getDocuments("moves", "name", machineMoveNames, true)
             .map { it.toObject(Move::class.java) }
-        val eggMoves = FirestoreService().getDocuments("moves", "name", moveLearnset.eggMoves, true)
+        val eggMoves = FirestoreService().getDocuments("moves", "name", eggMoveNames, true)
             .map { it.toObject(Move::class.java) }
-        val tutorMoves = FirestoreService().getDocuments("moves", "name", moveLearnset.tutorMoves, true)
+        val tutorMoves = FirestoreService().getDocuments("moves", "name", tutorMoveNames, true)
             .map { it.toObject(Move::class.java) }
 
         levelUpMoves.forEach { PTUCoreInfoService().checkMoveStab(it.first!!, stabTypes) }
-        machineMoves.forEach { PTUCoreInfoService().checkMoveStab(it, stabTypes) }
-        eggMoves.forEach { PTUCoreInfoService().checkMoveStab(it, stabTypes) }
-        tutorMoves.forEach { PTUCoreInfoService().checkMoveStab(it, stabTypes) }
+        machineMoves.forEach {
+            PTUCoreInfoService().checkMoveStab(it, stabTypes)
+            PTUCoreInfoService().checkMoveNatural(it, moveLearnset.machineMoves)
+        }
+        eggMoves.forEach {
+            PTUCoreInfoService().checkMoveStab(it, stabTypes)
+            PTUCoreInfoService().checkMoveNatural(it, moveLearnset.eggMoves)
+        }
+        tutorMoves.forEach {
+            PTUCoreInfoService().checkMoveStab(it, stabTypes)
+            PTUCoreInfoService().checkMoveNatural(it, moveLearnset.tutorMoves)
+        }
 
         val context = Context()
         context.setVariable("levelUpMoves", levelUpMoves)
