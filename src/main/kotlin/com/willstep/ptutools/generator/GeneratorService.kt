@@ -7,6 +7,7 @@ import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Pokemon
 import com.willstep.ptutools.dataaccess.service.FirestoreService
+import java.util.stream.Collectors
 import kotlin.random.Random
 
 
@@ -34,7 +35,15 @@ class GeneratorService(
     }
 
     fun randomizeMoves(pokemon: Pokemon, level: Int, count: Int) {
-        val filteredList = pokemon.pokedexEntry.levelUpMoves.filterValues { i -> i <= level }.keys.toMutableList()
+        var filteredList: MutableList<String>
+
+        if (pokemon.pokedexEntry.moveLearnset != null && pokemon.pokedexEntry.moveLearnset!!.levelUpMoves.isNotEmpty()) {
+            filteredList = pokemon.pokedexEntry.moveLearnset!!.levelUpMoves.filter { m -> m.learnedLevel <= level }
+                .stream().map(PokedexEntry.MoveLearnset.Entry::moveName).collect(Collectors.toList())
+        } else {
+            filteredList = pokemon.pokedexEntry.levelUpMoves.filterValues { i -> i <= level }.keys.toMutableList()
+        }
+
         val results = ArrayList<String>()
 
         for (i in 1..count) {
@@ -63,6 +72,10 @@ class GeneratorService(
 
     fun randomizeAbilities(pokemon: Pokemon) {
         val usedNames = ArrayList<String>()
+
+        if (pokemon.pokedexEntry.basicAbilities.isEmpty()) {
+            return
+        }
 
         var name = pokemon.pokedexEntry.basicAbilities[Random.nextInt(pokemon.pokedexEntry.basicAbilities.size)]
         pokemon.abilities.add(
