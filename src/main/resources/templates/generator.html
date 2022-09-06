@@ -42,8 +42,16 @@
             border-top: solid 1px #b0bec5 !important;
         }
 
-        #genmon-submit {
-            margin-top: 20px;
+        .char-picture-shiny {
+            position: absolute;
+            right: 17px;
+            bottom: 6px;
+            font-size: 16px;
+            color: #ffeb3a;
+        }
+
+        .result-item:not(:last-child) {
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -217,7 +225,20 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-large btn-outline-danger" id="genmon-submit">GENERATE</button>
+    </section>
+    <hr/>
+    <section>
+        <div class="row">
+            <div class="col-6 col-sm-6 col-md-3">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="genmon-count">Number to Gen</label>
+                    <input class="form-control" type="number" id="genmon-count" min="1" max="50" value="1" required />
+                </div>
+            </div>
+            <div class="col-6 col-sm-6 col-md-3 pt-1">
+                <button class="btn btn-lg w-100 btn-outline-danger" id="genmon-submit">GENERATE</button>
+            </div>
+        </div>
     </section>
 </div>
 
@@ -225,23 +246,16 @@
 <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="#" th:action="@{/pokemon}" th:object="${requestBody}" target="_blank">
-                <input id="result-json" type="hidden" th:field="*{myData}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resultsModalLabel">A wild <strong id="result-name">MissingNo</strong> appeared!</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <textarea id="result-body" style="width: 100%; min-height: 100px"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="result-save">Save</button>
-                    <button type="submit" class="btn btn-primary" id="result-view">View</button>
-                </div>
-            </form>
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title" id="resultsModalLabel">A wild Pokémon appeared!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-dark" id="result-body"></div>
+            <div class="modal-footer bg-dark">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
@@ -274,7 +288,7 @@
 <script th:src="${'/js/script.js?v=' + @environment.getProperty('js.version')}"></script>
 
 <script>
-    var generatedPokemonId
+    var generatedPokemon = []
     //
     // Initialize Components
     //
@@ -376,7 +390,14 @@
             minLevel: $("#genmon-lvlmin").val(),
             maxLevel: $("#genmon-lvlmax").val(),
             shinyOdds: $("#genmon-shiny-odds").val(),
+            count: $("#genmon-count").val(),
             params: []
+        }
+
+
+        if ($("#genmon-count").val() > 50 || $("#genmon-count").val() < 1) {
+            alert("Number to Generate must be between 1 and 50.")
+            return
         }
 
 
@@ -407,22 +428,13 @@
 
         showLoadingOverlay()
 
-        $.ajax("/generatePokemon", {
+        $.ajax("/generatePokemonForModal", {
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify(requestBody)
         }).done(function(response) {
-            if (response) {
-                $("#result-name").html(response["name"])
-                $("#result-body").val(JSON.stringify(response, null, 4))
-                $("#result-json").val(JSON.stringify(response))
-                $("#result-view").attr("href", "/pokemon/" + response["pokemonDocumentId"])
-
-                $('#resultsModal').modal('show')
-                generatedPokemonId = response["pokemonDocumentId"]
-            } else {
-                buildToast("No Pokemon could be found that matches your filters.")
-            }
+            $("#result-body").html(response)
+            $('#resultsModal').modal('show')
         }).fail(function(jqxhr, textStatus, errorThrown)  {
             alert("Error: " + textStatus + " : " + errorThrown)
         }).always(function () {
@@ -437,6 +449,40 @@
         a.download = $("#result-name").text() + ".json";
         a.click();
     })
+
+    function openResult(index) {
+        let pokemon = generatedPokemon[index]
+
+        let url = '/pokemon';
+        let params = {
+            myData: JSON.stringify(pokemon)
+        };
+
+        let f = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
+            action: url
+        }).appendTo(document.body);
+
+        for (var i in params) {
+            if (params.hasOwnProperty(i)) {
+                if($.isArray(params[i])) {
+                    for (var j in params[i]) {
+                        $('<input type="hidden" />').attr({
+                            name: i + '[]',
+                            value: params[i][j]
+                        }).appendTo(f);
+                    }
+                } else {
+                    $('<input type="hidden" />').attr({
+                        name: i,
+                        value: params[i]
+                    }).appendTo(f);
+                }
+            }
+        }
+
+        f.submit();
+        f.remove();
+    }
 </script>
 </body>
 </html>

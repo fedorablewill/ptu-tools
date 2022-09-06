@@ -343,6 +343,14 @@ hr {
     max-width: 100% !important;
 }
 
+.text-sm {
+    font-size: .875rem!important;
+}
+
+.bg-dark {
+    background-color: #434343 !important;
+}
+
 .material-icons-outlined {
     position: relative;
     bottom: -0.3rem;

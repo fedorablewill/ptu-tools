@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- START Result List Fragment -->
+<div th:fragment="generatorResults(results)">
+    <!--/*@thymesVar id="results" type="java.util.List<com.willstep.ptutools.dataaccess.dto.Pokemon>"*/-->
+    <div class="result-item" th:each="result, iStat: *{results}" th:id="'result-item-' + ${iStat.index}">
+        <div th:replace="fragments/generatorFragments :: generatorResult(result = ${result}, index = ${iStat.index})"></div>
+    </div>
+</div>
+<!-- END Result Fragment -->
+
+<!-- START Result Fragment -->
+<div th:fragment="generatorResult(result, index)">
+    <!--/*@thymesVar id="result" type="com.willstep.ptutools.dataaccess.dto.Pokemon"*/-->
+    <div class="card card-stats">
+        <!-- Card body -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <span class="h5 font-weight-bold mb-0" th:text="${result.pokedexEntry.species} +
+                    (${#strings.isEmpty(result.pokedexEntry.form)} ? '' : ' (' + ${result.pokedexEntry.form} + ')')"></span>
+                    <span class="card-title text-uppercase text-muted text-sm mb-0 ml-1" th:text="'Level ' + ${result.level}"></span>
+                </div>
+                <div class="col-auto">
+                    <div th:class="'icon icon-shape text-white rounded-circle shadow bg-t-' + ${#strings.toLowerCase(result.pokedexEntry.types.get(0))}">
+                        <img th:src="'/img/pokemon/'+${result.pokedexEntry.imageFileUrl}"
+                             onerror="this.onerror=null; this.src='/img/exodus-ptu-icon.png'" />
+                        <span th:class="'char-picture-shiny material-icons-outlined' + (${result.shiny} ? '' : ' d-none')">auto_awesome</span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-danger" th:onclick="'openResult('+${index}+')'">Open</button>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        /*[+
+        generatedPokemon[ [[(${index})]] ] = [[${result}]];
+         +]*/
+    </script>
+</div>
+<!-- END Result Fragment -->
+</html>
