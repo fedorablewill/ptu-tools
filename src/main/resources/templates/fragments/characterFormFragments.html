@@ -330,4 +330,66 @@
     </div>
 </div>
 
+<div th:fragment="abilitySearchResults(abilities)">
+    <!--/*@thymesVar id="abilities" type="java.util.List<com.willstep.ptutools.dataaccess.dto.Move>"*/-->
+    <div class="accordion" id="accordionAbilities-search">
+        <div class="card ability-item" th:each="ability, iStat: *{abilities}" th:id="'ability-search-' + ${iStat.index}" th:data-index="${iStat.index}">
+            <div th:replace="fragments/characterFormFragments :: abilityLearnsetItem(ability=${ability}, section='search', index=${iStat.index})"></div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="abilityLearnsetItem(ability, section, index)">
+    <!--/*@thymesVar id="ability" type="com.willstep.ptutools.dataaccess.dto.Ability"*/-->
+    <script th:inline="javascript">
+        /*[+
+        window.abilityCache['[(${ability.name})]'] = [[${ability}]];
+         +]*/
+    </script>
+    <div class="card-header" id="headingAbility1">
+        <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                    th:data-target="'#collapseAbility-' + ${section} + ${index}" aria-expanded="false" th:aria-controls="'collapseAbility-' + ${section} + ${index}">
+                <input class="form-control form-control-sm text-default border-default col-8 d-inline" type="text" th:id="'ability-' +${section}+'-' + ${index} + '-name'"
+                       th:name="'pokedexEntry.abilityLearnset.'+${section}+'[' + ${index} + '].name'" th:value="${ability.name}" />
+                <span class="material-icons-outlined">expand_more</span>
+            </button>
+            <span class="btn-group">
+                <button class="btn btn-outline-default btn-sm mt-1" type="button" title="Learn" th:data-name="${ability.name}"
+                        onclick="addAbilityByAbilityJson(abilityCache[this.getAttribute('data-name')]); $('#abilityLookupModal').modal('hide')">
+                    Learn
+                </button>
+            </span>
+        </h2>
+    </div>
+
+    <div th:id="'collapseAbility-' + ${section} + ${index}" class="collapse" th:aria-labelledby="'headingAbility-' + ${section} + ${index}"
+         th:data-parent="'#accordionAbilities-' + ${section}">
+        <div class="card-body">
+            <div class="row row-slim">
+                <div class="form-group label-floating col-sm-6">
+                    <label class="control-label" th:for="'ability-' +${section}+'-' + ${index} + '-freq'">Frequency</label>
+                    <input class="form-control" type="text" th:id="'ability-' +${section}+'-' + ${index} + '-freq'"
+                           th:name="'pokedexEntry.abilityLearnset.'+${section}+'[' + ${index} + '].frequency'" th:value="${ability.frequency}" />
+                </div>
+                <div class="form-group label-floating col-sm-6">
+                    <label class="control-label" th:for="'ability-' +${section}+'-' + ${index} + '-target'">Target</label>
+                    <input class="form-control" type="text" th:id="'ability-' +${section}+'-' + ${index} + '-target'"
+                           th:name="'pokedexEntry.abilityLearnset.'+${section}+'[' + ${index} + '].target'" th:value="${ability.target}" />
+                </div>
+                <div class="form-group label-floating col-sm-12">
+                    <label class="control-label" th:for="'ability-' +${section}+'-' + ${index} + '-trigger'">Trigger</label>
+                    <input class="form-control" type="text" th:id="'ability-' +${section}+'-' + ${index} + '-trigger'"
+                           th:name="'pokedexEntry.abilityLearnset.'+${section}+'[' + ${index} + '].trigger'" th:value="${ability.trigger}" />
+                </div>
+                <div class="form-group label-floating col-sm-12">
+                    <label class="control-label" th:for="'ability-' +${section}+'-' + ${index} + '-effect'">Effect</label>
+                    <textarea class="form-control" th:id="'ability-' +${section}+'-' + ${index} + '-effect'"
+                              th:name="'pokedexEntry.abilityLearnset.'+${section}+'[' + ${index} + '].effect'" th:text="${ability.effect}"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>

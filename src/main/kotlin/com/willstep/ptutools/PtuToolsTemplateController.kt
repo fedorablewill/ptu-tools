@@ -80,7 +80,15 @@ class PtuToolsTemplateController {
     }
     @GetMapping("/pokemon/new")
     fun newPokemon(request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<String>? {
-        val variables = mapOf<String, Any>("pokemon" to Pokemon())
+        val pokemon = Pokemon()
+
+        pokemon.pokedexEntry.abilityLearnset.basicAbilities.add(Ability())
+        pokemon.pokedexEntry.abilityLearnset.basicAbilities.add(Ability())
+        pokemon.pokedexEntry.abilityLearnset.advancedAbilities.add(Ability())
+        pokemon.pokedexEntry.abilityLearnset.advancedAbilities.add(Ability())
+        pokemon.pokedexEntry.abilityLearnset.highAbilities.add(Ability())
+
+        val variables = mapOf<String, Any>("pokemon" to pokemon)
         val context = Context()
         context.setVariables(variables)
         val requestContext = RequestContext(request, response, servletContext, variables)
@@ -216,6 +224,26 @@ class PtuToolsTemplateController {
         val context = Context()
         context.setVariable("moves", results)
         val fragmentsSelectors: Set<String> = setOf("moveSearchResults")
+
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
+    }
+
+    @GetMapping("/pokemon/ability/search")
+    fun getAbilitySearchResults(@RequestParam term: String): ResponseEntity<String> {
+        // Capitalize each word
+        val query = term.split(" ").joinToString(" ") { it.capitalize() }.trimEnd();
+
+        // Do search
+        val results = FirestoreService().getCollection("abilities")
+            .whereGreaterThanOrEqualTo("name", query)
+            .whereLessThanOrEqualTo("name", query + '\uf8ff')
+            .orderBy("name")
+            .limit(10).get().get().map { it.toObject(Ability::class.java) }
+
+        // Render results
+        val context = Context()
+        context.setVariable("abilities", results)
+        val fragmentsSelectors: Set<String> = setOf("abilitySearchResults")
 
         return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
     }

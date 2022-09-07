@@ -1,5 +1,6 @@
 package com.willstep.ptutools.dataaccess.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.google.cloud.firestore.annotation.Exclude
 
@@ -31,9 +32,7 @@ data class PokedexEntry(
     var habitats: List<String> = ArrayList(),
     var diets: List<String> = ArrayList(),
     var moveLearnset: MoveLearnset? = null,
-    var basicAbilities: List<String> = ArrayList(),
-    var advancedAbilities: List<String> = ArrayList(),
-    var highAbilities: List<String> = ArrayList(),
+    var abilityLearnset: AbilityLearnset = AbilityLearnset(),
     var skills: Map<String, String> = HashMap(),
 
     var evolutionFamilyDocumentId: String? = null,
@@ -44,7 +43,13 @@ data class PokedexEntry(
     var megaEvolution: MegaEvolution? = null,
 
     @Deprecated("Use moveLearnset")
-    var levelUpMoves: Map<String, Int> = HashMap()
+    var levelUpMoves: Map<String, Int> = HashMap(),
+    @Deprecated("Use abilityLearnset")
+    var basicAbilities: List<String> = ArrayList(),
+    @Deprecated("Use abilityLearnset")
+    var advancedAbilities: List<String> = ArrayList(),
+    @Deprecated("Use abilityLearnset")
+    var highAbilities: List<String> = ArrayList()
 ) {
     data class MegaEvolution(
         var name: String? = null,
@@ -63,6 +68,7 @@ data class PokedexEntry(
         var tutorMoves: MutableList<String> = ArrayList(),
     ) {
         @Exclude
+        @JsonIgnore
         fun getLevelUpMoveNames(): List<String> {
             return levelUpMoves.map { it.moveName!! }
         }
@@ -71,6 +77,19 @@ data class PokedexEntry(
             var moveName: String? = null,
             var learnedLevel: Int = 0
         )
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    data class AbilityLearnset(
+        var basicAbilities: MutableList<Ability> = ArrayList(),
+        var advancedAbilities: MutableList<Ability> = ArrayList(),
+        var highAbilities: MutableList<Ability> = ArrayList()
+    ) {
+        @Exclude
+        @JsonIgnore
+        fun isEmpty(): Boolean {
+            return basicAbilities.isEmpty() && advancedAbilities.isEmpty() && highAbilities.isEmpty()
+        }
     }
 
     constructor() : this(null)

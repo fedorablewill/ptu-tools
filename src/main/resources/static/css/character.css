@@ -173,6 +173,11 @@ ul.autocomplete {
     right: 0.625rem;
 }
 
+.accordion .card-header .form-control {
+    display: inline-block;
+    font-weight: 600;
+}
+
 .accordion .card-header .btn-link {
     padding: .625rem;
 }

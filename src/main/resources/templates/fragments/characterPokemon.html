@@ -809,7 +809,7 @@
                         </div>
                     </div>
                     <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickAddAbility()">Add Blank Ability</button>
-                    <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickAddAbilityByName()">Lookup Ability</button>
+                    <button type="button" class="btn btn-outline-danger mt-3" onclick="onClickLookupAbility()">Lookup Ability</button>
                 </section>
 
                 <section id="pokeedges">
@@ -903,6 +903,61 @@
     <script th:inline="javascript">
         var moveLearnset = /*[[*{pokedexEntry.moveLearnset}]]*/ {};
     </script>
+
+    <!-- Ability Lookup Modal -->
+    <div class="modal fade" id="abilityLookupModal" tabindex="-1" aria-labelledby="abilityLookupModalLabel" aria-hidden="true">
+        <script>
+            window.abilityCache = {}
+        </script>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-center text-white" id="abilityLookupModalLabel">
+                        Ability Lookup
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-dark" id="abilityLookupModal-body">
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="abilityLookupModal-query">Search</label>
+                        <input class="form-control" type="text" id="abilityLookupModal-query" oninput="onAbilitySearch()">
+                    </div>
+                    <div id="abilityLookupModal-queryResults"></div>
+                    <hr class="w-100"/>
+                    <div id="abilityLookupModal-learnable">
+                        <h5 class="text-muted text-center">Basic Abilities</h5>
+                        <hr/>
+                        <div class="accordion" id="accordionAbilities-basicAbilities">
+                            <div class="card move-item" th:each="ability, iStat: *{pokedexEntry.abilityLearnset.basicAbilities}" th:id="'ability-basic-' + ${iStat.index}" th:data-index="${iStat.index}">
+                                <div th:replace="fragments/characterFormFragments :: abilityLearnsetItem(ability=${ability}, section='basicAbilities', index=${iStat.index})"></div>
+                            </div>
+                        </div>
+                        <h5 class="text-muted text-center mt-3">Advanced Abilities</h5>
+                        <hr/>
+                        <div class="accordion" id="accordionAbilities-advancedAbilities">
+                            <div class="card move-item" th:each="ability, iStat: *{pokedexEntry.abilityLearnset.advancedAbilities}" th:id="'ability-adv-' + ${iStat.index}" th:data-index="${iStat.index}">
+                                <div th:replace="fragments/characterFormFragments :: abilityLearnsetItem(ability=${ability}, section='advancedAbilities', index=${iStat.index})"></div>
+                            </div>
+                        </div>
+                        <h5 class="text-muted text-center mt-3">High Abilities</h5>
+                        <hr/>
+                        <div class="accordion" id="accordionAbilities-highAbilities">
+                            <div class="card move-item" th:each="ability, iStat: *{pokedexEntry.abilityLearnset.highAbilities}" th:id="'ability-high-' + ${iStat.index}" th:data-index="${iStat.index}">
+                                <div th:replace="fragments/characterFormFragments :: abilityLearnsetItem(ability=${ability}, section='highAbilities', index=${iStat.index})"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-dark">
+                    <div class="w-100">
+                        <button type="button" class="btn btn-outline-danger float-right" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
 
 <!-- Type Effectivity Modal -->

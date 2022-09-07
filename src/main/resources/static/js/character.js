@@ -118,6 +118,8 @@ function initialize() {
         buildNotesQuillEditor(this, i);
     });
 
+    $("#abilityLookupModal-learnable").find('.collapse').collapse('hide')
+
     buildPageTitle();
     buildMoveLearnset();
 }
@@ -717,6 +719,28 @@ function onClickDeleteMove(elem) {
     }
 }
 
+function onAbilitySearch() {
+    let query = $("#abilityLookupModal-query").val()
+
+    if (query) {
+        $.ajax("/pokemon/ability/search", {
+            method: "GET",
+            contentType: "application/json",
+            data: {
+                "term": query
+            }
+        }).done(function (response) {
+            $("#abilityLookupModal-queryResults").show().html(response).find('.collapse').collapse('hide')
+            $("#abilityLookupModal-learnable").hide()
+        }).fail(function (jqxhr, textStatus, errorThrown) {
+            alert("Error searching abilities: " + textStatus + " : " + errorThrown)
+        })
+    } else {
+        $("#abilityLookupModal-queryResults").hide()
+        $("#abilityLookupModal-learnable").show()
+    }
+}
+
 function onClickAddAbility() {
     let rowsElem = $("#abilities-list")
     let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".form-ability").last().attr("id").replace("ability-", "")) + 1
@@ -735,12 +759,10 @@ function onClickAddAbility() {
     })
 }
 
-function onClickAddAbilityByName() {
-    let name = window.prompt("Enter ability name")
-
-    if (name) {
-        addAbilityByName(name)
-    }
+function onClickLookupAbility() {
+    $("#abilityLookupModal").on('shown.bs.modal', function () {
+        $("#abilityLookupModal-query").focus()
+    }).modal('show')
 }
 
 function addAbilityByName(abilityName) {
@@ -770,6 +792,25 @@ function addAbilityByName(abilityName) {
         })
     })
 
+}
+
+function addAbilityByAbilityJson(abilityJson) {
+    let rowsElem = $("#abilities-list")
+    let index = rowsElem.children().length === 0 ? 0 : parseInt(rowsElem.find(".form-ability").last().attr("id").replace("ability-", "")) + 1
+
+    $.ajax("/pokemon/ability", {
+        method: "GET",
+        contentType: "application/json",
+        data: {
+            "index": index,
+            "ability": JSON.stringify(abilityJson)
+        }
+    }).done(function(response) {
+        let newElem = $(`<div class="form-table form-ability col-sm-12 mt-3" id="ability-${index}"></div>`).html(response)
+        rowsElem.append(newElem)
+    }).fail(function(jqxhr, textStatus, errorThrown)  {
+        alert("Error getting move template: " + textStatus + " : " + errorThrown)
+    })
 }
 
 function onClickDeleteAbility(elem) {
