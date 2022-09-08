@@ -3,6 +3,7 @@ package com.willstep.ptutools.dataaccess.dto
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.google.cloud.firestore.annotation.Exclude
+import org.thymeleaf.util.StringUtils
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PokedexEntry(
@@ -33,7 +34,7 @@ data class PokedexEntry(
     var diets: List<String> = ArrayList(),
     var moveLearnset: MoveLearnset? = null,
     var abilityLearnset: AbilityLearnset = AbilityLearnset(),
-    var skills: Map<String, String> = HashMap(),
+    var skills: MutableMap<String, String> = HashMap(),
 
     var evolutionFamilyDocumentId: String? = null,
     var evolutionStage: Int? = null,
@@ -94,8 +95,11 @@ data class PokedexEntry(
 
     constructor() : this(null)
 
-    var otherCapabilities: String? = capabilities.filter { entry -> entry.value == -1 } .keys.joinToString(",")
+    var otherCapabilities: String = ""
+        get() = capabilities.filter { entry -> entry.value == -1 } .keys.joinToString(",")
         set(value) {
+            if (StringUtils.isEmpty(value)) return
+
             val items = value?.split(Regex(", ?")) ?: listOf()
             for (capability in items) {
                 this.capabilities[capability] = -1

@@ -44,7 +44,8 @@ const REGIONS = [
     "Unova",
     "Kalos",
     "Alola",
-    "Galar"
+    "Galar",
+    "Hisui"
 ]
 
 const NATURES = {

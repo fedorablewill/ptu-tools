@@ -8,6 +8,7 @@ class DataUpdater {
     var firestoreService: FirestoreService = FirestoreService()
 
     fun checkPokemonForUpdates(pokemon: Pokemon) {
+        pokemon.pokedexEntry.capabilities.remove("")
 
         // Old files without MoveLearnset
         if (pokemon.pokedexEntry.pokedexEntryDocumentId != null && pokemon.pokedexEntry.moveLearnset == null) {

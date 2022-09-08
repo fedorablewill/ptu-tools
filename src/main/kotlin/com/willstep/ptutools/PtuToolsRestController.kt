@@ -49,6 +49,13 @@ class PtuToolsRestController {
         return dexEntries.size.toString() + " Entries Uploaded"
     }
 
+//    @PostMapping("/uploadPokedexEntriesFromPdfText")
+    fun uploadPokedexEntriesFromPdfText(@RequestPart content: String, @RequestParam region: String): String {
+        UploadDataTool().uploadPokedexEntriesFromPdfText(content.split("\n"), region)
+
+        return "Entries Uploaded"
+    }
+
 //    @PostMapping("/uploadEvolutionsRemaining")
     fun uploadEvolutionsRemaining(@RequestBody entries: List<EvolutionsRemaining>, model: Model): String {
         UploadDataTool().uploadEvolutionsRemaining(entries)

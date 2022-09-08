@@ -1,6 +1,7 @@
 package com.willstep.ptutools.dataaccess.service
 
 import com.google.cloud.firestore.QuerySnapshot
+import com.willstep.ptutools.dataaccess.dto.Ability
 import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokeEdge
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
@@ -171,7 +172,6 @@ class UploadDataTool {
                 advancedAbilities = entry["advancedAbilities"] as List<String>,
                 highAbilities = entry["highAbilities"] as List<String>,
                 skills = skillList,
-                evolutionFamilyDocumentId = null,
                 evolutionStage = entry["stage"] as Int,
                 megaEvolution = mega,
             )
@@ -180,6 +180,221 @@ class UploadDataTool {
 
             firestoreService.saveAsDocument("pokedexEntries", documentId, entry)
 
+        }
+    }
+
+    fun uploadPokedexEntriesFromPdfText(lines: List<String>, region: String) {
+        val skills = mapOf(
+            "Athl" to "athletics",
+            "Acro" to "acrobatics",
+            "Combat" to "combat",
+            "Stealth" to "stealth",
+            "Percep" to "perception",
+            "Focus" to "focus"
+        )
+
+        val itr = lines.iterator()
+        var pokedexEntry = PokedexEntry()
+        var newPokemon = true
+
+        while (itr.hasNext()) {
+            // New one! See if we have a document already, and grab the name and form
+            if (newPokemon) {
+                newPokemon = false
+
+                val name = itr.next()
+                var species = name
+                var form: String? = null
+
+                // Has a form
+                if (name.matches(Regex(".*[a-z]"))){
+                    val i = name.indexOfFirst { c -> c.isLowerCase() } - 1
+                    species = name.substring(0, i - 1)
+                    form = name.substring(i)
+
+                    if (form == "Galar") {
+                        form = "Galarian"
+                    } else if (form == "Hisui") {
+                        form = "Hisuian"
+                    }
+                }
+
+                // Capitalize each word
+                species = species.toLowerCase().split(" ").joinToString(" ") { it.capitalize() }.trimEnd();
+
+                // Check if existing
+                var existingMatches: QuerySnapshot?
+                if (form != null) {
+                    existingMatches = firestoreService.getCollection("pokedexEntries")
+                        .whereEqualTo("species", species)
+                        .whereEqualTo("form", form)
+                        .get().get()
+                } else {
+                    existingMatches = firestoreService.getCollection("pokedexEntries")
+                        .whereEqualTo("species", species)
+                        .get().get()
+                }
+
+                if (!existingMatches.isEmpty) {
+                    pokedexEntry = existingMatches.toObjects(PokedexEntry::class.java)[0]
+                } else {
+                    pokedexEntry = PokedexEntry(
+                        pokedexEntryDocumentId = UUID.randomUUID().toString(),
+                        pokedexDocumentId = "1.05",
+                        species = species,
+                        form = form,
+                        regionOfOrigin = region
+                    )
+                }
+
+                continue
+            }
+
+            val line = itr.next().trim()
+
+            //Base Stats
+            if (line == "Base Stats:") {
+                var s = itr.next().trim()
+                pokedexEntry.baseStats["hp"] = Integer.parseInt(s.substring(s.indexOf(':') + 2))
+                s = itr.next()
+                pokedexEntry.baseStats["atk"] = Integer.parseInt(s.substring(s.indexOf(':') + 2))
+                s = itr.next()
+                pokedexEntry.baseStats["def"] = Integer.parseInt(s.substring(s.indexOf(':') + 2))
+                s = itr.next()
+                pokedexEntry.baseStats["spatk"] = Integer.parseInt(s.substring(s.indexOf(':') + 2))
+                s = itr.next()
+                pokedexEntry.baseStats["spdef"] = Integer.parseInt(s.substring(s.indexOf(':') + 2))
+                s = itr.next()
+                pokedexEntry.baseStats["spd"] = Integer.parseInt(s.substring(s.indexOf(':') + 2))
+
+                continue
+            }
+
+            // Evolution can't be done now because some entries won't have document ID's cuz don't exist yet
+
+            // Capability List
+            if (line == "Capability List") {
+                for (capability in itr.next().split(", ")) {
+                    if (capability.matches(Regex(".* \\d$")) || capability.startsWith("Jump ")) {
+                        val splitIndex = capability.lastIndexOf(' ')
+                        val name = capability.substring(0, splitIndex)
+                        val value = capability.substring(splitIndex + 1, capability.length)
+
+                        if ("Jump" == name && value.contains('/')) {
+                            val jumps = value.split('/')
+                            pokedexEntry.capabilities["High Jump"] = jumps[0].toInt()
+                            pokedexEntry.capabilities["Long Jump"] = jumps[1].toInt()
+                        } else {
+                            pokedexEntry.capabilities[name] = value.toInt()
+                        }
+                    } else {
+                        pokedexEntry.capabilities[capability] = -1
+                    }
+                }
+                continue
+            }
+
+            // Skill List
+            if (line == "Skill List") {
+                for (skill in itr.next().split(", ")) {
+                    val skillInfo = skill.split(" ")
+                    if (skills.containsKey(skillInfo[0])) {
+                        pokedexEntry.skills.put(skills[skillInfo[0]]!!, skillInfo[1])
+                    } else {
+                        println("Could not find skill ${skillInfo[0]} for ${pokedexEntry.species}")
+                    }
+                }
+                continue
+            }
+
+            // Move List
+            if (line == "Move List") {
+                itr.next() //skip a line
+                pokedexEntry.moveLearnset = PokedexEntry.MoveLearnset()
+                var moveLine = itr.next()
+                while (!moveLine.contains(" Move List")) {
+                    moveLine = moveLine.removePrefix("§ ")
+                    var level = moveLine.substring(0, moveLine.indexOf(" "))
+                    val name = moveLine.substring(moveLine.indexOf(" ") + 1, moveLine.indexOf(" - "))
+                    if (level == "Evo") {
+                        level = "-1"
+                    }
+                    pokedexEntry.moveLearnset!!.levelUpMoves.add(PokedexEntry.MoveLearnset.Entry(name, level.toInt()))
+                    moveLine = itr.next()
+                }
+
+                if (moveLine == "TM Move List" || moveLine == "TM/HM Move List") {
+                    pokedexEntry.moveLearnset!!.machineMoves = itr.next().split(", ").map { s -> s.substring(3) }.toMutableList()
+                    moveLine = itr.next()
+                }
+
+                if (moveLine == "Egg Move List") {
+                    pokedexEntry.moveLearnset!!.eggMoves = itr.next().split(", ").toMutableList()
+                    moveLine = itr.next()
+                }
+
+                if (moveLine == "Tutor Move List") {
+                    pokedexEntry.moveLearnset!!.tutorMoves = itr.next().split(", ").toMutableList()
+                    // SET BREAKPOINT HERE to check data and manually enter other fields
+                    pokedexEntry.evolutionsRemainingGenderless = 0
+                    pokedexEntry.evolutionStage = 1
+                    newPokemon = true
+                    firestoreService.saveAsDocument("pokedexEntries", pokedexEntry.pokedexEntryDocumentId!!, pokedexEntry)
+                }
+                continue
+            }
+
+            // Basic/Size/Breeding Information
+            if (line.contains(":") && line.indexOf(':') + 1 < line.length) {
+                val info = line.substring(line.indexOf(':') + 2)
+                if (line.startsWith("Type: ")) {
+                    pokedexEntry.types = info.split(" / ")
+                } else if (line.startsWith("Basic Ability")) {
+                    val ability = firestoreService.getDocument("abilities", info).get().get().toObject(Ability::class.java)
+                    if (ability != null) {
+                        pokedexEntry.abilityLearnset.basicAbilities.add(ability)
+                    } else {
+                        println("Could not find Ability $info for ${pokedexEntry.species}")
+                    }
+                } else if (line.startsWith("Adv Ability")) {
+                    val ability = firestoreService.getDocument("abilities", info).get().get().toObject(Ability::class.java)
+                    if (ability != null) {
+                        pokedexEntry.abilityLearnset.advancedAbilities.add(ability)
+                    } else {
+                        println("Could not find Ability $info for ${pokedexEntry.species}")
+                    }
+                } else if (line.startsWith("High Ability")) {
+                    val ability = firestoreService.getDocument("abilities", info).get().get().toObject(Ability::class.java)
+                    if (ability != null) {
+                        pokedexEntry.abilityLearnset.highAbilities.add(ability)
+                    } else {
+                        println("Could not find Ability $info for ${pokedexEntry.species}")
+                    }
+                } else if (line.startsWith("Height: ")) {
+                    pokedexEntry.size = info
+                } else if (line.startsWith("Weight: ")) {
+                    pokedexEntry.weight = info
+                } else if (line.startsWith("Gender Ratio: ")) {
+                    if (info == "No Gender") {
+                        pokedexEntry.genderless = true
+                    } else {
+                        pokedexEntry.genderless = false
+                        pokedexEntry.malePercent = info.substring(0, info.indexOf('%')).toDouble()
+                        pokedexEntry.femalePercent =
+                            info.substring(info.indexOf('/') + 2, info.lastIndexOf('%')).toDouble()
+                    }
+                } else if (line.startsWith("Egg Group: ")) {
+                    pokedexEntry.eggGroups = info.split(" / ")
+                } else if (line.startsWith("Average Hatch Rate: ")) {
+                    pokedexEntry.hatchRate = info
+                } else if (line.startsWith("Diet: ")) {
+                    pokedexEntry.diets = info.split(" / ")
+                } else if (line.startsWith("Habitat: ")) {
+                    pokedexEntry.habitats = info.split(", ")
+                } else if (line.startsWith("Text: ")) {
+                    pokedexEntry.entryText = info
+                }
+            }
         }
     }
 

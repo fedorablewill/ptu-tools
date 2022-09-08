@@ -2,10 +2,10 @@ package com.willstep.ptutools.generator
 
 import com.willstep.ptutools.core.EXPERIENCE_CHART
 import com.willstep.ptutools.core.Nature
-import com.willstep.ptutools.dataaccess.dto.Ability
 import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Pokemon
+import com.willstep.ptutools.dataaccess.service.DataUpdater
 import com.willstep.ptutools.dataaccess.service.FirestoreService
 import java.util.stream.Collectors
 import kotlin.random.Random
@@ -23,6 +23,8 @@ class GeneratorService(
             exp = EXPERIENCE_CHART[level-1],
             gender = if (pokedexEntry.genderless) "No Gender" else if (Random.nextDouble(100.0) <= pokedexEntry.malePercent ?: 0.0) "Male" else "Female"
         )
+
+        DataUpdater().checkPokemonForUpdates(pokemon)
 
         applyNature(pokemon, nature ?: Nature.values()[Random.nextInt(Nature.values().size)])
         randomizeStats(pokemon)
@@ -73,33 +75,28 @@ class GeneratorService(
     fun randomizeAbilities(pokemon: Pokemon) {
         val usedNames = ArrayList<String>()
 
-        if (pokemon.pokedexEntry.basicAbilities.isEmpty()) {
+        if (pokemon.pokedexEntry.abilityLearnset.basicAbilities.isEmpty()) {
             return
         }
 
-        var name = pokemon.pokedexEntry.basicAbilities[Random.nextInt(pokemon.pokedexEntry.basicAbilities.size)]
-        pokemon.abilities.add(
-            firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
-        )
-        usedNames.add(name)
+        var ability = pokemon.pokedexEntry.abilityLearnset.basicAbilities[Random.nextInt(pokemon.pokedexEntry.abilityLearnset.basicAbilities.size)]
+        pokemon.abilities.add(ability)
+        usedNames.add(ability.name!!)
 
         if (pokemon.level >= 20) {
-            val secondAbilities = (pokemon.pokedexEntry.basicAbilities + pokemon.pokedexEntry.advancedAbilities).toMutableList()
-            secondAbilities.removeAll(usedNames)
-            name = secondAbilities[Random.nextInt(secondAbilities.size)]
-            pokemon.abilities.add(
-                firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
-            )
-            usedNames.add(name)
+            val secondAbilities = (pokemon.pokedexEntry.abilityLearnset.basicAbilities + pokemon.pokedexEntry.abilityLearnset.advancedAbilities).toMutableList()
+            secondAbilities.removeAll { a -> usedNames.contains(a.name) }
+            ability = secondAbilities[Random.nextInt(secondAbilities.size)]
+            pokemon.abilities.add(ability)
+            usedNames.add(ability.name!!)
         }
         if (pokemon.level >= 40) {
-            val thirdAbilities = (pokemon.pokedexEntry.basicAbilities + pokemon.pokedexEntry.advancedAbilities + pokemon.pokedexEntry.highAbilities).toMutableList()
-            thirdAbilities.removeAll(usedNames)
-            name = thirdAbilities[Random.nextInt(thirdAbilities.size)]
-            pokemon.abilities.add(
-                firestoreService.getDocument("abilities",name).get().get().toObject(Ability::class.java) ?: Ability(name)
-            )
-            usedNames.add(name)
+            val thirdAbilities = (pokemon.pokedexEntry.abilityLearnset.basicAbilities + pokemon.pokedexEntry.abilityLearnset.advancedAbilities
+                    + pokemon.pokedexEntry.abilityLearnset.highAbilities).toMutableList()
+            thirdAbilities.removeAll { a -> usedNames.contains(a.name) }
+            ability = thirdAbilities[Random.nextInt(thirdAbilities.size)]
+            pokemon.abilities.add(ability)
+            usedNames.add(ability.name!!)
         }
     }
 
