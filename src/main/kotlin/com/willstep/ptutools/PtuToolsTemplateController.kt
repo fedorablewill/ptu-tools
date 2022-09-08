@@ -215,7 +215,15 @@ class PtuToolsTemplateController {
             .whereGreaterThanOrEqualTo("name", query)
             .whereLessThanOrEqualTo("name", query + '\uf8ff')
             .orderBy("name")
-            .limit(10).get().get().map { it.toObject(Move::class.java) }
+            .limit(10).get().get().map { it.toObject(Move::class.java) }.toMutableList()
+
+        // Check if term is a Type
+        val typeMatch = Type.values().find { t -> t.displayName.equals(term, ignoreCase = true) }
+        if (typeMatch != null) {
+            results.addAll(FirestoreService().getCollection("moves")
+                .whereEqualTo("type", typeMatch.displayName)
+                .orderBy("name").get().get().map { it.toObject(Move::class.java) })
+        }
 
         // Check STAB
         results.forEach { PTUCoreInfoService().checkMoveStab(it, stabTypes) }
