@@ -11,6 +11,7 @@ import com.google.auth.oauth2.AccessToken
 import com.google.auth.oauth2.GoogleCredentials
 import com.willstep.ptutools.core.PTUCoreInfoService
 import com.willstep.ptutools.dataaccess.dto.*
+import com.willstep.ptutools.dataaccess.service.DataUpdater
 import com.willstep.ptutools.dataaccess.service.EvolutionsRemaining
 import com.willstep.ptutools.dataaccess.service.FirestoreService
 import com.willstep.ptutools.dataaccess.service.UploadDataTool
@@ -80,7 +81,11 @@ class PtuToolsRestController {
     @GetMapping("/pokedex/{dexNumber}")
     fun getPokedexEntryByNumber(@PathVariable dexNumber: String, model: Model) : List<PokedexEntry?> {
         if (dexNumber.length > 3) {
-            return listOf(FirestoreService().getDocument("pokedexEntries", dexNumber).get().get().toObject(PokedexEntry::class.java))
+            val entry = FirestoreService().getDocument("pokedexEntries", dexNumber).get().get().toObject(PokedexEntry::class.java)
+            if (entry != null) {
+                DataUpdater().checkPokedexEntryForUpdates(entry)
+            }
+            return listOf(entry)
         } else {
             return FirestoreService().getCollection("pokedexEntries").whereEqualTo("nationalDexNumber", dexNumber).get().get().toObjects(PokedexEntry::class.java)
         }

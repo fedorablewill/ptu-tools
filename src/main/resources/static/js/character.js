@@ -62,12 +62,23 @@ function initialize() {
 
                     moveLearnset = pokedexEntry["moveLearnset"]
                     buildMoveLearnset()
+                    buildAbilityLearnset(pokedexEntry["abilityLearnset"])
 
+                    // Check if Image exists
+                    $.get('/img/pokemon/' + pokedexEntry["imageFileUrl"])
+                        .done(function () {
+                            $("#char-img").attr("src", '/img/pokemon/' + pokedexEntry["imageFileUrl"])
+                        }).fail(function () {
+                            $("#char-img").attr("src", '/img/exodus-ptu-icon.png')
+                        })
+
+                    // Update Types
                     let typesMs = $("#char-types").magicSuggest()
                     typesMs.clear()
                     typesMs.setValue(pokedexEntry.types)
                     typesMs.collapse()
 
+                    // Base Stats
                     if (confirm("Use the base stats for " + ui.item.label + "?")) {
                         $("#char-stat-hp-base").val(pokedexEntry.baseStats.hp)
                         $("#char-stat-atk-base").val(pokedexEntry.baseStats.atk)
@@ -326,6 +337,24 @@ function buildMoveLearnset() {
         })
     } else {
         $("#moveLookupModal-learnable").html("")
+    }
+}
+
+function buildAbilityLearnset(abilityLearnset) {
+    window.moveCache = {}
+
+    if (abilityLearnset) {
+        $.ajax("/pokemon/abilityLearnset", {
+            method: "GET",
+            contentType: "application/json",
+            data: {
+                "abilityLearnset": JSON.stringify(abilityLearnset)
+            }
+        }).done(function (response) {
+            $("#abilityLookupModal-learnable").html(response).find('.collapse').collapse('hide')
+        }).fail(function (jqxhr, textStatus, errorThrown) {
+            alert("Error loading ability learnset: " + textStatus + " : " + errorThrown)
+        })
     }
 }
 

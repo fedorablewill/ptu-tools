@@ -299,6 +299,15 @@ class PtuToolsTemplateController {
 
         return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
     }
+
+    @GetMapping("/pokemon/abilityLearnset")
+    fun getAbilityLearnset(@RequestParam abilityLearnset: PokedexEntry.AbilityLearnset): ResponseEntity<String> {
+        val context = Context()
+        context.setVariable("abilityLearnset", abilityLearnset)
+        val fragmentsSelectors: Set<String> = setOf("abilityLearnset")
+
+        return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
+    }
 }
 
 data class JsonAsString(var myData: String = "")

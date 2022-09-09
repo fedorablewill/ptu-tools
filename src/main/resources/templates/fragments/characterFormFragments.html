@@ -9,12 +9,6 @@
                th:name="'moves[' + ${index} + '].name'" th:value="${move.name}"/>
     </label>
     <span class="control-action">
-      <button type="button" class="btn" onclick="alert('Feature coming soon')">
-          <img src="/img/icons/dice-d20-outline.png" alt="Roll AC Only">
-      </button>
-      <button type="button" class="btn" onclick="alert('Feature coming soon')">
-          <img src="/img/icons/octagram-outline.png" alt="Roll Everything">
-      </button>
       <button type="button" class="btn" onclick="onClickDeleteMove(this)">
           <img src="/img/icons/delete-forever-outline.png" alt="Delete">
       </button>
@@ -326,6 +320,31 @@
                               th:text="${move.effects}"></textarea>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="abilityLearnset(abilityLearnset)">
+    <!--/*@thymesVar id="abilityLearnset" type="java.util.List<com.willstep.ptutools.dataaccess.dto.PokedexEntry.AbilityLearnset>"*/-->
+    <h5 class="text-muted text-center">Basic Abilities</h5>
+    <hr/>
+    <div class="accordion" id="accordionAbilities-basicAbilities">
+        <div class="card move-item" th:each="ability, iStat: ${abilityLearnset.basicAbilities}" th:id="'ability-basic-' + ${iStat.index}" th:data-index="${iStat.index}">
+            <div th:replace="fragments/characterFormFragments :: abilityLearnsetItem(ability=${ability}, section='basicAbilities', index=${iStat.index})"></div>
+        </div>
+    </div>
+    <h5 class="text-muted text-center mt-3">Advanced Abilities</h5>
+    <hr/>
+    <div class="accordion" id="accordionAbilities-advancedAbilities">
+        <div class="card move-item" th:each="ability, iStat: ${abilityLearnset.advancedAbilities}" th:id="'ability-adv-' + ${iStat.index}" th:data-index="${iStat.index}">
+            <div th:replace="fragments/characterFormFragments :: abilityLearnsetItem(ability=${ability}, section='advancedAbilities', index=${iStat.index})"></div>
+        </div>
+    </div>
+    <h5 class="text-muted text-center mt-3">High Abilities</h5>
+    <hr/>
+    <div class="accordion" id="accordionAbilities-highAbilities">
+        <div class="card move-item" th:each="ability, iStat: ${abilityLearnset.highAbilities}" th:id="'ability-high-' + ${iStat.index}" th:data-index="${iStat.index}">
+            <div th:replace="fragments/characterFormFragments :: abilityLearnsetItem(ability=${ability}, section='highAbilities', index=${iStat.index})"></div>
         </div>
     </div>
 </div>

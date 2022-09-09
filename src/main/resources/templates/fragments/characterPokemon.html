@@ -5,7 +5,7 @@
     <div class="char char-pokemon">
         <nav class="navbar navbar-expand-lg navbar-light bg-danger">
             <div class="char-picture navbar-brand">
-                <img th:src="'/img/pokemon/'+${pokemon.pokedexEntry.imageFileUrl}"
+                <img id="char-img" th:src="'/img/pokemon/'+${pokemon.pokedexEntry.imageFileUrl}"
                      onerror="this.onerror=null; this.src='/img/exodus-ptu-icon.png'" />
                 <span id="char-picture-shiny" th:class="'material-icons-outlined' + (*{shiny} ? '' : ' d-none')">auto_awesome</span>
             </div>
@@ -926,27 +926,7 @@
                     <div id="abilityLookupModal-queryResults"></div>
                     <hr class="w-100"/>
                     <div id="abilityLookupModal-learnable">
-                        <h5 class="text-muted text-center">Basic Abilities</h5>
-                        <hr/>
-                        <div class="accordion" id="accordionAbilities-basicAbilities">
-                            <div class="card move-item" th:each="ability, iStat: *{pokedexEntry.abilityLearnset.basicAbilities}" th:id="'ability-basic-' + ${iStat.index}" th:data-index="${iStat.index}">
-                                <div th:replace="fragments/characterFormFragments :: abilityLearnsetItem(ability=${ability}, section='basicAbilities', index=${iStat.index})"></div>
-                            </div>
-                        </div>
-                        <h5 class="text-muted text-center mt-3">Advanced Abilities</h5>
-                        <hr/>
-                        <div class="accordion" id="accordionAbilities-advancedAbilities">
-                            <div class="card move-item" th:each="ability, iStat: *{pokedexEntry.abilityLearnset.advancedAbilities}" th:id="'ability-adv-' + ${iStat.index}" th:data-index="${iStat.index}">
-                                <div th:replace="fragments/characterFormFragments :: abilityLearnsetItem(ability=${ability}, section='advancedAbilities', index=${iStat.index})"></div>
-                            </div>
-                        </div>
-                        <h5 class="text-muted text-center mt-3">High Abilities</h5>
-                        <hr/>
-                        <div class="accordion" id="accordionAbilities-highAbilities">
-                            <div class="card move-item" th:each="ability, iStat: *{pokedexEntry.abilityLearnset.highAbilities}" th:id="'ability-high-' + ${iStat.index}" th:data-index="${iStat.index}">
-                                <div th:replace="fragments/characterFormFragments :: abilityLearnsetItem(ability=${ability}, section='highAbilities', index=${iStat.index})"></div>
-                            </div>
-                        </div>
+                        <div th:replace="fragments/characterFormFragments :: abilityLearnset(abilityLearnset=*{pokedexEntry.abilityLearnset})"></div>
                     </div>
                 </div>
                 <div class="modal-footer bg-dark">
