@@ -118,10 +118,16 @@
                     <input class="form-control tags_input" type="text" id="filter-stage" />
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 col-md-3">
                 <div class="form-group label-floating custom-checkbox custom-checkbox-lone mt-sm-4 mb-5">
-                    <input class="form-control custom-control-input" type="checkbox" id="genmon-legend" checked />
+                    <input class="form-control custom-control-input" type="checkbox" id="genmon-legend" />
                     <label class="control-label custom-control-label" for="genmon-legend">Include Legendaries</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3 offset-sm-6 offset-md-0">
+                <div class="form-group label-floating custom-checkbox custom-checkbox-lone mt-sm-4 mb-5">
+                    <input class="form-control custom-control-input" type="checkbox" id="genmon-evolutionLvls" checked />
+                    <label class="control-label custom-control-label" for="genmon-evolutionLvls">Filter By Evolution Levels</label>
                 </div>
             </div>
         </div>
@@ -403,6 +409,7 @@
         var requestBody = {
             minLevel: $("#genmon-lvlmin").val(),
             maxLevel: $("#genmon-lvlmax").val(),
+            filterEvolveLevel: $("#genmon-evolutionLvls").is(":checked"),
             shinyOdds: $("#genmon-shiny-odds").val(),
             count: $("#genmon-count").val(),
             params: []

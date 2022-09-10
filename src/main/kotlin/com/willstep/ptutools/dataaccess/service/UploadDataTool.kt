@@ -1,10 +1,7 @@
 package com.willstep.ptutools.dataaccess.service
 
 import com.google.cloud.firestore.QuerySnapshot
-import com.willstep.ptutools.dataaccess.dto.Ability
-import com.willstep.ptutools.dataaccess.dto.Move
-import com.willstep.ptutools.dataaccess.dto.PokeEdge
-import com.willstep.ptutools.dataaccess.dto.PokedexEntry
+import com.willstep.ptutools.dataaccess.dto.*
 import java.util.*
 
 class UploadDataTool {
@@ -527,7 +524,7 @@ class UploadDataTool {
                 moveEntry.moveName = moveEntry.moveName?.trim()
 
                 if (moveEntry.moveName != null && !firestoreService.getDocument("moves", moveEntry.moveName!!).get().get().exists()) {
-                    System.out.printf("Uh ohhhh!!! We got a problem with %s that has a move called '%s'. RIP!\n")
+                    System.out.printf("Uh ohhhh!!! We got a problem with %s that has a move called '%s'. RIP!\n", entry.species, moveEntry.moveName)
                 }
             }
             System.out.printf("Fixed %s %s\n", entry.species, entry.form)
@@ -535,6 +532,139 @@ class UploadDataTool {
             entry.capabilities.remove("")
 
             firestoreService.saveAsDocument("pokedexEntries", entry.pokedexEntryDocumentId!!, entry)
+        }
+    }
+
+    fun uploadEvolutionData(data: List<List<String>>) {
+        inputLoop@ for (entry in data) {
+            val nameData = entry[0]
+            val values = entry[1].split("\n")
+
+            val pokedexNatNo = nameData.substring(1, 4)
+
+            var species: String = nameData.substring(6)
+            var form: String? = null
+
+            if (species.matches(Regex(".*\\(.*\\)"))) {
+                form = species.substring(species.indexOf("(") + 1, species.lastIndexOf(")"))
+                species = species.removeRange(species.indexOf(" ("), species.length)
+
+                if (form == "Alola") {
+                    form = "Alolan"
+                } else if (form == "Galar") {
+                    form = "Galarian"
+                }
+            }
+
+            val existingMatches = findPokedexEntryBySpecies(species, form)
+
+            if (existingMatches.isEmpty) {
+                continue
+            }
+
+            for (document in existingMatches.documents) {
+                val pokedexEntry = document.toObject(PokedexEntry::class.java)
+                var evolutionFamily: EvolutionFamily? = null
+
+                for ((index, value) in values.withIndex()) {
+                    val evolutionStage = value.substring(0,1)
+                    var evolutionData = value.substring(4)
+                    var species2 =
+                        if (evolutionData.contains(Regex("\\(([AG])\\)")))
+                            evolutionData.substring(0, evolutionData.indexOf(")")+1).trim()
+                        // Names with spaces: "Mr. Mime","Mr. Mime","Mime Jr.","Type: Null","Tapu Koko","Tapu Lele","Tapu Bulu","Tapu Fini","Mr. Rime"
+                        else if (evolutionData.indexOf(" ") > 6 && (evolutionData.contains("Mr. ") || evolutionData.contains(" Jr.") || evolutionData.contains("Tapu ") || evolutionData.contains("Type: Null")))
+                            evolutionData.substring(0, evolutionData.indexOf(" ", 6)).trim()
+                        else if (evolutionData.contains(" "))
+                            evolutionData.substring(0, evolutionData.indexOf(" ")).trim()
+                        else evolutionData
+                    var form2: String? = null
+
+                    if (species2.matches(Regex(".*\\(.*\\)"))) {
+                        form2 = species2.substring(species2.indexOf("(") + 1, species2.lastIndexOf(")"))
+                        species2 = species2.removeRange(species2.indexOf(" ("), species2.length)
+
+                        if (form2 == "A") {
+                            form2 = "Alolan"
+                        } else if (form2 == "G") {
+                            form2 = "Galarian"
+                        }
+                    }
+
+                    val existingMatches2 = findPokedexEntryBySpecies(species2, form2)
+
+                    if (existingMatches2.isEmpty) {
+                        continue
+                    }
+
+                    val pokedexEntry2 = existingMatches2.documents[0].toObject(PokedexEntry::class.java)
+
+                    if (index == 0) {
+                        evolutionFamily = EvolutionFamily(
+                            familyName = if (form != null) "%s (%s)".format(species, form) else species
+                        )
+                    }
+
+                    if (evolutionFamily != null) {
+                        var level: Int? = null
+                        evolutionData = evolutionData.removePrefix(species2).trim()
+
+                        if (evolutionData.contains("Minimum ")) {
+                            try {
+                                level = Integer.parseInt(evolutionData.substring(evolutionData.lastIndexOf(" ")).trim())
+                                evolutionData = evolutionData.substring(0, evolutionData.indexOf("Minimum ")).trim()
+                            } catch (e: NumberFormatException) {
+                                println("$evolutionData could not be parsed as a number")
+                            }
+                        }
+
+                        if (evolutionData.contains("(A)")) {
+                            evolutionData = evolutionData.replace("(A)", "").trim()
+                        }
+
+                        if (evolutionData.contains("(G)")) {
+                            evolutionData = evolutionData.replace("(G)", "").trim()
+                        }
+
+                        val evolveEntry = EvolutionFamily.EvolutionFamilyEntry(
+                            pokedexEntryDocumentId = pokedexEntry2.pokedexEntryDocumentId,
+                            displayName = if (form2 != null) "%s (%s)".format(species2, form2) else species2,
+                            stage = Integer.parseInt(evolutionStage),
+                            prerequisites = evolutionData,
+                            level = level
+                        )
+
+                        if (level != null) {
+                            if (pokedexEntry2.evolutionAtLevel == null)
+                                pokedexEntry2.evolutionAtLevel = 100
+
+                            pokedexEntry2.evolutionMinLevel = level
+                            firestoreService.saveAsDocument("pokedexEntries", pokedexEntry2.pokedexEntryDocumentId!!, pokedexEntry2)
+
+                            if (pokedexEntry2.pokedexEntryDocumentId == pokedexEntry.pokedexEntryDocumentId) {
+                                pokedexEntry.evolutionMinLevel = level
+                            } else if (pokedexEntry2.evolutionStage == pokedexEntry.evolutionStage?.plus(1)) {
+                                // Entry is the next in line, so collect level
+                                pokedexEntry.evolutionAtLevel = level
+                            }
+                        }
+
+                        evolutionFamily.entries.add(evolveEntry)
+                    }
+                }
+
+                if (evolutionFamily != null) {
+                    if (pokedexEntry.evolutionMinLevel == null)
+                        pokedexEntry.evolutionMinLevel = 1
+
+                    if (pokedexEntry.evolutionAtLevel == null)
+                        pokedexEntry.evolutionAtLevel = 100
+
+                    pokedexEntry.evolutionFamily = evolutionFamily
+                    firestoreService.saveAsDocument("pokedexEntries", pokedexEntry.pokedexEntryDocumentId!!, pokedexEntry)
+                    println("Finished " + evolutionFamily.familyName)
+                }
+            }
         }
     }
 

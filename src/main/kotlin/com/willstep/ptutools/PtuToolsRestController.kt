@@ -78,6 +78,13 @@ class PtuToolsRestController {
         return entries.size.toString() + " Entries Uploaded"
     }
 
+//    @PostMapping("/uploadPokemonEvolutionData")
+    fun uploadPokemonEvolutionData(@RequestBody entries: List<List<String>>, model: Model): String {
+        UploadDataTool().uploadEvolutionData(entries)
+
+        return entries.size.toString() + " Entries Uploaded"
+    }
+
     @GetMapping("/pokedex/{dexNumber}")
     fun getPokedexEntryByNumber(@PathVariable dexNumber: String, model: Model) : List<PokedexEntry?> {
         if (dexNumber.length > 3) {

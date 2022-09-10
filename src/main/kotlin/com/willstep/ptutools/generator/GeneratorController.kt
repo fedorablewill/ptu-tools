@@ -24,6 +24,7 @@ class GeneratorController {
         val params: List<GeneratorRequestParam> = ArrayList(),
         val minLevel: Int = 0,
         val maxLevel: Int = 100,
+        val filterEvolveLevel: Boolean = false,
         val nature: String?,
         val shinyOdds: Double = 0.0,
         val pokedex: String? = "1.05",
@@ -54,6 +55,12 @@ class GeneratorController {
             }
         }
 
+        val level = Random.nextInt(requestBody.minLevel, requestBody.maxLevel + 1)
+        if (requestBody.filterEvolveLevel) {
+            // Firestore hates me and won't let me also do a Greater Than filter and a Less Than filter at the same time
+            query = query.whereLessThanOrEqualTo("evolutionMinLevel", level)
+        }
+
         var nature: Nature? = null
         if (requestBody.nature != null && enumValues<Nature>().any { it.name == requestBody.nature.toUpperCase()}) {
             nature = Nature.valueOf(requestBody.nature.toUpperCase())
@@ -66,8 +73,7 @@ class GeneratorController {
                 pokemon.add(
                     GeneratorService().generatePokemon(
                         results[Random.nextInt(0, results.size)].toObject(PokedexEntry::class.java),
-                        requestBody.minLevel,
-                        requestBody.maxLevel,
+                        level,
                         nature,
                         requestBody.shinyOdds
                     )

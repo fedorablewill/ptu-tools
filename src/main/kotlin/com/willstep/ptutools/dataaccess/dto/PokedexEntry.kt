@@ -22,7 +22,6 @@ data class PokedexEntry(
     var cryFileUrl: String? = null,
 
     var baseStats: MutableMap<String, Int> = HashMap(),
-    var capabilities: MutableMap<String, Int?> = HashMap(),
     var size: String? = null,
     var weight: String? = null,
     var genderless: Boolean = true,
@@ -36,11 +35,13 @@ data class PokedexEntry(
     var abilityLearnset: AbilityLearnset = AbilityLearnset(),
     var skills: MutableMap<String, String> = HashMap(),
 
-    var evolutionFamilyDocumentId: String? = null,
+    var evolutionFamily: EvolutionFamily? = EvolutionFamily(),
     var evolutionStage: Int? = null,
     var evolutionsRemainingMale: Int? = null,
     var evolutionsRemainingFemale: Int? = null,
     var evolutionsRemainingGenderless: Int? = null,
+    var evolutionMinLevel: Int? = 0,
+    var evolutionAtLevel: Int? = 100,
     var megaEvolution: MegaEvolution? = null,
 
     @Deprecated("Use moveLearnset")
@@ -94,6 +95,9 @@ data class PokedexEntry(
     }
 
     constructor() : this(null)
+
+    var capabilities: MutableMap<String, Int?> = HashMap()
+        get() { field.remove(""); return field }
 
     var otherCapabilities: String = ""
         get() = capabilities.filter { entry -> entry.value == -1 } .keys.joinToString(",")

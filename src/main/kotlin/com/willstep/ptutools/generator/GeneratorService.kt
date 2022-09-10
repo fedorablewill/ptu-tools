@@ -17,6 +17,11 @@ class GeneratorService(
 
     fun generatePokemon(pokedexEntry: PokedexEntry, minLevel: Int, maxLevel: Int, nature: Nature?, shinyOdds: Double): Pokemon {
         val level = Random.nextInt(minLevel, maxLevel + 1)
+
+        return generatePokemon(pokedexEntry, level, nature, shinyOdds)
+    }
+
+    fun generatePokemon(pokedexEntry: PokedexEntry, level: Int, nature: Nature?, shinyOdds: Double): Pokemon {
         val pokemon = Pokemon(
             pokedexEntry = pokedexEntry,
             level = level,
