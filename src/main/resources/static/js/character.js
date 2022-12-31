@@ -41,45 +41,48 @@ function initialize() {
                     method: "GET",
                     contentType: "application/json"
                 }).done(function (pokedexEntries) {
-                    let pokedexEntry = pokedexEntries[0]
-                    $("[name*='pokedexEntry.']").each(function () {
-                        var propName = $(this).attr("name").substring(13)
-                        var val = null
-                        if (propName.includes("['")) {
-                            var childProps = propName.match(/\['(.*?)'\]/);
-                            propName = propName.substring(0, propName.indexOf("['"))
-                            val = pokedexEntry[propName][childProps[1]]
-                        } else {
-                            val = pokedexEntry[propName]
-                        }
+                    if (confirm("Would you like to evolve into " + ui.item.label + "?")) {
+                        let pokedexEntry = pokedexEntries[0]
 
-                        if ($(this).is("[type='checkbox']")) {
-                            $(this).prop("checked", val)
-                        } else {
-                            $(this).val(val)
-                        }
-                    })
+                        applyNewAbilities(pokedexEntry["abilityLearnset"])
 
-                    moveLearnset = pokedexEntry["moveLearnset"]
-                    buildMoveLearnset()
-                    buildAbilityLearnset(pokedexEntry["abilityLearnset"])
+                        $("[name*='pokedexEntry.']").each(function () {
+                            var propName = $(this).attr("name").substring(13)
+                            var val = null
+                            if (propName.includes("['")) {
+                                var childProps = propName.match(/\['(.*?)'\]/);
+                                propName = propName.substring(0, propName.indexOf("['"))
+                                val = pokedexEntry[propName][childProps[1]]
+                            } else {
+                                val = pokedexEntry[propName]
+                            }
 
-                    // Check if Image exists
-                    $.get('/img/pokemon/' + pokedexEntry["imageFileUrl"])
-                        .done(function () {
-                            $("#char-img").attr("src", '/img/pokemon/' + pokedexEntry["imageFileUrl"])
-                        }).fail(function () {
-                            $("#char-img").attr("src", '/img/exodus-ptu-icon.png')
+                            if ($(this).is("[type='checkbox']")) {
+                                $(this).prop("checked", val)
+                            } else {
+                                $(this).val(val)
+                            }
                         })
 
-                    // Update Types
-                    let typesMs = $("#char-types").magicSuggest()
-                    typesMs.clear()
-                    typesMs.setValue(pokedexEntry.types)
-                    typesMs.collapse()
+                        moveLearnset = pokedexEntry["moveLearnset"]
+                        buildMoveLearnset()
+                        buildAbilityLearnset(pokedexEntry["abilityLearnset"])
 
-                    // Base Stats
-                    if (confirm("Use the base stats for " + ui.item.label + "?")) {
+                        // Check if Image exists
+                        $.get('/img/pokemon/' + pokedexEntry["imageFileUrl"])
+                            .done(function () {
+                                $("#char-img").attr("src", '/img/pokemon/' + pokedexEntry["imageFileUrl"])
+                            }).fail(function () {
+                                $("#char-img").attr("src", '/img/exodus-ptu-icon.png')
+                            })
+
+                        // Update Types
+                        let typesMs = $("#char-types").magicSuggest()
+                        typesMs.clear()
+                        typesMs.setValue(pokedexEntry.types)
+                        typesMs.collapse()
+
+                        // Base Stats
                         $("#char-stat-hp-base").val(pokedexEntry.baseStats.hp)
                         $("#char-stat-atk-base").val(pokedexEntry.baseStats.atk)
                         $("#char-stat-def-base").val(pokedexEntry.baseStats.def)
@@ -626,6 +629,50 @@ function applyNewNature(val) {
         statElem.val(1)
         statElem.change()
     }
+}
+
+function applyNewAbilities(abilityLearnset) {
+    var basicList = {}
+    var advList = {}
+    var highList = {}
+
+    $("#accordionAbilities-basicAbilities input[id*='-name']").each(function () {
+        if (this.value) {
+            basicList[this.value.toLowerCase()] = parseInt($(this).closest(".move-item").attr("data-index"))
+        }
+    })
+    $("#accordionAbilities-advancedAbilities input[id*='-name']").each(function () {
+        if (this.value) {
+            advList[this.value.toLowerCase()] = parseInt($(this).closest(".move-item").attr("data-index"))
+        }
+    })
+    $("#accordionAbilities-highAbilities input[id*='-name']").each(function () {
+        if (this.value) {
+            highList[this.value.toLowerCase()] = parseInt($(this).closest(".move-item").attr("data-index"))
+        }
+    })
+
+    $("#abilities-list input[id*='-name']").each(function () {
+        let val = this.value.trim().toLowerCase()
+
+        if (basicList[val] !== undefined) {
+            swapAbility(this, abilityLearnset.basicAbilities[basicList[val]])
+        } else if (advList[val] !== undefined) {
+            swapAbility(this, abilityLearnset.advancedAbilities[advList[val]])
+        } else if (highList[val] !== undefined) {
+            swapAbility(this, abilityLearnset.highAbilities[highList[val]])
+        }
+    });
+}
+
+function swapAbility(elem, ability) {
+    let parentElem = $(elem).closest(".form-ability")
+
+    parentElem.find("input[id*='-name']").val(ability.name)
+    parentElem.find("textarea[id*='-effect']").val(ability.effect)
+    parentElem.find("input[id*='-trigger']").val(ability.trigger)
+    parentElem.find("input[id*='-target']").val(ability.target)
+    parentElem.find("input[id*='-freq']").val(ability.frequency)
 }
 
 function onChangeMoveContest(elem) {
