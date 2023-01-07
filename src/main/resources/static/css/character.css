@@ -91,6 +91,25 @@ button.control-action, .control-action button {
     height: auto;
 }
 
+.char-img-edit {
+    display: none;
+    border: none;
+    background-color: rgb(68 68 68 / 68%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.char-img-edit .material-icons {
+    color: white;
+}
+
+.char-picture:hover .char-img-edit {
+    display: block;
+}
+
 #char-picture-shiny {
     position: absolute;
     right: 6px;

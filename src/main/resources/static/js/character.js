@@ -1095,3 +1095,16 @@ function onNoteEditTitle(elem) {
     container.find(`input[name='notes[${index}].title']`).val(newTitle)
     container.find(".note-title").text(newTitle)
 }
+
+function onClickEditPhoto() {
+    let urlInput = prompt("Enter the URL to a photo")
+
+    if (urlInput) {
+        if (!isValidHttpsUrl(urlInput)) {
+            alert("URL is not a valid https URL.")
+        } else {
+            $("input[name='pokedexEntry.imageFileUrl']").val(urlInput)
+            $("#char-img").attr("src", urlInput)
+        }
+    }
+}
