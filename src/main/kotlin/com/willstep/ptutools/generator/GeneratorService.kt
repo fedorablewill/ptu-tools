@@ -175,6 +175,9 @@ class GeneratorService(
 
             incrementStatByName(pokemon, canAddTo[Random.nextInt(canAddTo.size)])
         }
+
+        // Determine starting Health
+        pokemon.health = pokemon.level + (pokemon.hp.getSum() * 3) + 10
     }
 
     private fun getStatByName(pokemon: Pokemon, statName: String): Int {
