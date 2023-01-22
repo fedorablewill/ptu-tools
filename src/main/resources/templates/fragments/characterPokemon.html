@@ -5,7 +5,7 @@
     <div class="char char-pokemon">
         <nav class="navbar navbar-expand-lg navbar-light bg-danger">
             <div class="char-picture navbar-brand">
-                <img id="char-img" th:src="${#strings.indexOf(pokemon.pokedexEntry.imageFileUrl,'https://') == 0} ? ${pokemon.pokedexEntry.imageFileUrl} : '/img/pokemon/'+${pokemon.pokedexEntry.imageFileUrl}"
+                <img id="char-img" th:src="${pokemon.pokedexEntry.imageFileUrl != null && #strings.indexOf(pokemon.pokedexEntry.imageFileUrl,'https://') == 0} ? ${pokemon.pokedexEntry.imageFileUrl} : '/img/pokemon/'+${pokemon.pokedexEntry.imageFileUrl}"
                      onerror="this.onerror=null; this.src='/img/exodus-ptu-icon.png'" />
                 <span id="char-picture-shiny" th:class="'material-icons-outlined' + (*{shiny} ? '' : ' d-none')">auto_awesome</span>
                 <button class="char-img-edit" type="button" onclick="onClickEditPhoto()">
