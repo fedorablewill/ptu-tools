@@ -247,7 +247,7 @@
                 <span class="note-title">
                     <span th:text="${move.name}"></span>
                     <span th:class="'badge ml-1 bg-t-' + ${#strings.toLowerCase(move.type)}" th:text="${move.type}"></span>
-                    <small th:if="${section == 'lvlUp'}" th:text="'LVL ' + ${learnedAt}"></small>
+                    <small th:if="${section == 'lvlUp'}" th:text="${learnedAt} == -1 ? 'EVOLUTION' : 'LVL ' + ${learnedAt}"></small>
                 </span>
                 <span class="material-icons-outlined">expand_more</span>
             </button>

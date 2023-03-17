@@ -67,6 +67,7 @@ function initialize() {
                         moveLearnset = pokedexEntry["moveLearnset"]
                         buildMoveLearnset()
                         buildAbilityLearnset(pokedexEntry["abilityLearnset"])
+                        checkEvolutionMoves()
 
                         // Check if Image exists
                         $.get('/img/pokemon/' + pokedexEntry["imageFileUrl"])
@@ -358,6 +359,15 @@ function buildAbilityLearnset(abilityLearnset) {
         }).fail(function (jqxhr, textStatus, errorThrown) {
             alert("Error loading ability learnset: " + textStatus + " : " + errorThrown)
         })
+    }
+}
+
+function checkEvolutionMoves() {
+    for (let moveEntry of moveLearnset['levelUpMoves']) {
+        if (moveEntry.learnedLevel === -1) {
+            let name = $("#char-name").val() || "You"
+            buildMoveLearnToast(name, moveEntry.moveName)
+        }
     }
 }
 
@@ -1016,9 +1026,7 @@ function onChangeExp(elem) {
 
                 if (response["moves"].length > 0) {
                     for (var move of response["moves"]) {
-                        buildToast(`${name} wants to learn <strong>${move['name']}</strong>!<br/>` +
-                        `<button type="button" class="btn btn-sm btn-outline-white" onclick="learnToastMove('${move['name']}', this)">Learn</button> ` +
-                        `<button type="button" class="btn btn-sm btn-outline-white" data-dismiss="toast" aria-label="Close">Don't Learn</button>`, false)
+                        buildMoveLearnToast(name, move['name'])
                     }
                 }
             }
@@ -1026,6 +1034,12 @@ function onChangeExp(elem) {
             alert("Error checking for level up: " + textStatus + " : " + errorThrown)
         })
     }
+}
+
+function buildMoveLearnToast(name, moveName) {
+    buildToast(`${name} wants to learn <strong>${moveName}</strong>!<br/>` +
+        `<button type="button" class="btn btn-sm btn-outline-white" onclick="learnToastMove('${moveName}', this)">Learn</button> ` +
+        `<button type="button" class="btn btn-sm btn-outline-white" data-dismiss="toast" aria-label="Close">Don't Learn</button>`, false)
 }
 
 function onChangeLevel() {
