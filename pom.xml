@@ -14,8 +14,8 @@
     <name>ptu-tools</name>
     <description>Pokemon Tabletop United Tools by FedorableWill</description>
     <properties>
-        <java.version>11</java.version>
-        <kotlin.version>1.4.31</kotlin.version>
+        <java.version>17</java.version>
+        <kotlin.version>1.9.23</kotlin.version>
         <spring-cloud-gcp.version>2.0.0</spring-cloud-gcp.version>
         <spring-cloud.version>2020.0.2</spring-cloud.version>
     </properties>

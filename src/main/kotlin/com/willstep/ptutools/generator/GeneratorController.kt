@@ -158,6 +158,8 @@ class GeneratorController {
                     if (!(obj[requestParam.field!!] as List<Any>).contains(requestParam.value)) return false
                 RequestMethod.ARRAY_CONTAINS_LIST ->
                     if (!(obj[requestParam.field!!] as List<Any>).containsAll(parseList(requestParam.value as List<Any>))) return false
+
+                else -> return true
             }
         }
         return true

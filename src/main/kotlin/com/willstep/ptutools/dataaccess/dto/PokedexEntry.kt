@@ -109,11 +109,14 @@ data class PokedexEntry(
                 this.capabilities[capability] = -1
             }
 
+            val toDelete = ArrayList<String>()
             for (entry in capabilities.entries) {
                 if (entry.value != null && entry.value == -1 && !items.contains(entry.key)) {
-                    this.capabilities.remove(entry.value)
+                    toDelete.add(entry.key)
                 }
             }
+            for (key in toDelete) this.capabilities.remove(key)
+
             field = value
         }
 
