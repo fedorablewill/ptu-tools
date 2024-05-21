@@ -234,6 +234,17 @@
                     <input class="form-control" type="number" id="genmon-shiny-odds" min="0" max="100" value="0.01220703125" required />
                 </div>
             </div>
+            <div class="col-6 col-sm-6 col-md-3">
+                <button class="btn btn-lg w-100 btn-outline-danger" id="genmon-edit-homebrew" onclick="$('#homebrewModal').modal('show')">
+                    Edit Homebrew
+                </button>
+            </div>
+            <div class="col-6 col-sm-6 col-md-3">
+                <div class="form-group label-floating custom-checkbox custom-checkbox-lone mt-sm-4 mb-5">
+                    <input class="form-control custom-control-input" type="checkbox" id="genmon-coredex" checked />
+                    <label class="control-label custom-control-label" for="genmon-coredex">Include Pokedex 1.05 + Gen 7-8</label>
+                </div>
+            </div>
         </div>
     </section>
     <hr/>
@@ -246,7 +257,7 @@
                 </div>
             </div>
             <div class="col-6 col-sm-6 col-md-3 pt-1">
-                <button class="btn btn-lg w-100 btn-outline-danger" id="genmon-submit">GENERATE</button>
+                <button class="btn btn-lg w-100 btn-danger" id="genmon-submit">GENERATE</button>
             </div>
         </div>
     </section>
@@ -267,6 +278,36 @@
             <div class="modal-body bg-dark" id="result-body"></div>
             <div class="modal-footer bg-dark">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Homebrew Modal -->
+<div class="modal fade" id="homebrewModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title" id="homebrewModalLabel">Manage Pokedex</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-dark">
+                <div class="form-group label-floating">
+                    <label class="control-label" for="homebrew-dex-json">Homebrew Pokedex JSON</label>
+                    <textarea type="file" class="form-control" id="homebrew-dex-json"></textarea>
+                </div>
+                <div class="form-group label-floating">
+                    <label class="control-label" for="homebrew-moves-json">Homebrew Moves JSON</label>
+                    <textarea type="file" class="form-control" id="homebrew-moves-json" placeholder="Coming Soon" disabled></textarea>
+                </div>
+                <a href="https://github.com/fedorablewill/ptu-tools/wiki/Homebrew-Pokedex-JSON" target="_blank">Format Documentation</a>
+                <br/>
+                <small>Submit your homebrew Pokedex to be featured here in the <a href="https://discord.gg/kSzJjzErQS">Discord</a>!</small>
+            </div>
+            <div class="modal-footer bg-dark">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Done</button>
             </div>
         </div>
     </div>
@@ -417,6 +458,10 @@
             params: []
         }
 
+        if (!$("#genmon-coredex").is(":checked")) {
+            requestBody['pokedex'] = "homebrewOnly"
+        }
+
 
         if ($("#genmon-count").val() > 50 || $("#genmon-count").val() < 1) {
             alert("Number to Generate must be between 1 and 50.")
@@ -449,6 +494,16 @@
             requestBody["nature"] = nature
         }
 
+        let homebrew = $("#homebrew-dex-json").val()
+        if (homebrew) {
+            try {
+                requestBody["homebrewPokedex"] = JSON.parse(homebrew)
+            } catch (e) {
+                alert("Invalid Homebrew JSON: Could not parse JSON")
+                return
+            }
+        }
+
         showLoadingOverlay()
 
         $.ajax("/generatePokemonForModal", {
@@ -459,7 +514,11 @@
             $("#result-body").html(response)
             $('#resultsModal').modal('show')
         }).fail(function(jqxhr, textStatus, errorThrown)  {
-            alert("Error: " + textStatus + " : " + errorThrown)
+            if (jqxhr.status === 400) {
+                alert("Error with inputs: " + jqxhr.responseText)
+            } else {
+                alert("Error: " + jqxhr.status + " : " + errorThrown)
+            }
         }).always(function () {
             hideLoadingOverlay()
         })
