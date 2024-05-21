@@ -266,15 +266,26 @@ class PtuToolsTemplateController {
         eggMoveNames.replaceAll { str -> str.removePrefix("§ ").removeSuffix(" (N)") }
         tutorMoveNames.replaceAll { str -> str.removePrefix("§ ").removeSuffix(" (N)") }
 
-        val levelUpMoveMap = FirestoreService().getDocuments("moves", "name", moveLearnset.getLevelUpMoveNames(), true)
-            .associate { it.get("name") to it.toObject(Move::class.java) }
+        // Find homebrew entries
+        val levelUpMoveNames = moveLearnset.getLevelUpMoveNames().toMutableList()
+        val levelUpMoveMapHomebrew = ArrayList<Move>()
+        for (moveName in levelUpMoveNames) {
+            val homebrew = moveLearnset.homebrewMoves.find { it.name == moveName }
+            if (homebrew != null) {
+                levelUpMoveMapHomebrew.add(homebrew)
+            }
+        }
+        // Remove from list to search if already found
+        levelUpMoveNames.removeIf { val it1= it; levelUpMoveMapHomebrew.any { it.name == it1 } }
+        val levelUpMoveMap = FirestoreService().getDocuments("moves", "name", levelUpMoveNames, true)
+            .associate { it.get("name") to it.toObject(Move::class.java) }.toMutableMap()
+        levelUpMoveMapHomebrew.forEach { levelUpMoveMap[it.name] = it }
         val levelUpMoves = moveLearnset.levelUpMoves.map { Pair(levelUpMoveMap[it.moveName], it.learnedLevel) }.sortedBy { it.second }
-        val machineMoves = FirestoreService().getDocuments("moves", "name", machineMoveNames, true)
-            .map { it.toObject(Move::class.java) }
-        val eggMoves = FirestoreService().getDocuments("moves", "name", eggMoveNames, true)
-            .map { it.toObject(Move::class.java) }
-        val tutorMoves = FirestoreService().getDocuments("moves", "name", tutorMoveNames, true)
-            .map { it.toObject(Move::class.java) }
+
+        // Remaining lists
+        val machineMoves = findMoves(machineMoveNames, moveLearnset.homebrewMoves)
+        val eggMoves = findMoves(eggMoveNames, moveLearnset.homebrewMoves)
+        val tutorMoves = findMoves(tutorMoveNames, moveLearnset.homebrewMoves)
 
         levelUpMoves.forEach { PTUCoreInfoService().checkMoveStab(it.first!!, stabTypes) }
         machineMoves.forEach {
@@ -298,6 +309,18 @@ class PtuToolsTemplateController {
         val fragmentsSelectors: Set<String> = setOf("moveLearnset")
 
         return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
+    }
+
+    fun findMoves(moveNames: List<String>, homebrewMoves: List<Move>): List<Move> {
+        val moveNameList = moveNames.toMutableList()
+        val moveList = ArrayList<Move>()
+        homebrewMoves.forEach { if (moveNames.contains(it.name)) moveList.add(it) }
+        moveNameList.removeIf { val it1= it; moveList.any { it.name == it1 } }
+        val lookupList = FirestoreService().getDocuments("moves", "name", moveNameList, true)
+            .map { it.toObject(Move::class.java) }
+        moveList.addAll(lookupList)
+
+        return moveList
     }
 
     @GetMapping("/pokemon/abilityLearnset")

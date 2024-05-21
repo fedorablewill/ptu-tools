@@ -3,6 +3,7 @@ package com.willstep.ptutools.generator
 import com.google.cloud.firestore.QueryDocumentSnapshot
 import com.willstep.ptutools.core.Nature
 import com.willstep.ptutools.dataaccess.dto.LabelValuePair
+import com.willstep.ptutools.dataaccess.dto.Move
 import com.willstep.ptutools.dataaccess.dto.PokedexEntry
 import com.willstep.ptutools.dataaccess.dto.Pokemon
 import com.willstep.ptutools.dataaccess.service.FirestoreService
@@ -31,7 +32,8 @@ class GeneratorController {
         val nature: String?,
         val shinyOdds: Double = 0.0,
         val pokedex: String? = "1.05",
-        val homebrewPokedex: List<PokedexEntry> = ArrayList()
+        val homebrewPokedex: List<PokedexEntry> = ArrayList(),
+        val homebrewMoves: List<Move> = ArrayList()
     )
 
     data class GeneratorRequestParam(
@@ -132,10 +134,11 @@ class GeneratorController {
             for (i in 1..requestBody.count) {
                 val randPokemon = allResults[Random.nextInt(0, allResults.size)]
                 val entry = if (randPokemon is QueryDocumentSnapshot) randPokemon.toObject(PokedexEntry::class.java)
-                            else randPokemon
+                            else randPokemon as PokedexEntry
+                entry.moveLearnset?.homebrewMoves = requestBody.homebrewMoves
                 pokemon.add(
                     GeneratorService().generatePokemon(
-                        entry as PokedexEntry,
+                        entry,
                         level,
                         nature,
                         requestBody.shinyOdds

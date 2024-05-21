@@ -68,6 +68,7 @@ data class PokedexEntry(
         var machineMoves: MutableList<String> = ArrayList(),
         var eggMoves: MutableList<String> = ArrayList(),
         var tutorMoves: MutableList<String> = ArrayList(),
+        var homebrewMoves: List<Move> = ArrayList()
     ) {
         @Exclude
         @JsonIgnore

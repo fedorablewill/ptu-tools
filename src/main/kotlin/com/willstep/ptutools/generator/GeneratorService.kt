@@ -65,12 +65,17 @@ class GeneratorService(
         val moves = ArrayList<Move>()
 
         for (name in results) {
-            firestoreService.getDocument("moves", name).get().get().toObject(Move::class.java)?.let {
-                if (pokemon.pokedexEntry.types.contains(it.type)) {
-                    it.stab = true
-                    it.damageBase = it.damageBase?.plus(2)
+            val homebrew = pokemon.pokedexEntry.moveLearnset?.homebrewMoves?.find { it.name == name }
+            if (homebrew != null) {
+                moves.add(homebrew)
+            } else {
+                firestoreService.getDocument("moves", name).get().get().toObject(Move::class.java)?.let {
+                    if (pokemon.pokedexEntry.types.contains(it.type)) {
+                        it.stab = true
+                        it.damageBase = it.damageBase?.plus(2)
+                    }
+                    moves.add(it)
                 }
-                moves.add(it)
             }
         }
 
