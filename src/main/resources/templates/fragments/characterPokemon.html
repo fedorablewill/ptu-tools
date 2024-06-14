@@ -44,6 +44,7 @@
                             <a id="saveToGDriveMobile" th:class="'dropdown-item' + (*{googleDriveFileId} ? '' : ' d-none')" href="#"
                                onclick="onClickSaveToGoogleDrive()">Save to Google Drive</a>
                             <a class="dropdown-item" href="#" onclick="onClickSaveAsToGoogleDrive()">Save As to Google Drive</a>
+                            <a class="dropdown-item" href="#" onclick="onClickCopyR20ToClipboard()">Copy Roll20 JSON to clipboard</a>
                         </div>
                     </li>
                     <li class="nav-item d-lg-none">
@@ -118,6 +119,7 @@
                     <a id="saveToGDrive" th:class="'dropdown-item' + (*{googleDriveFileId} ? '' : ' d-none')" href="#"
                        onclick="onClickSaveToGoogleDrive()">Save to Google Drive</a>
                     <a class="dropdown-item" href="#" onclick="onClickSaveAsToGoogleDrive()">Save As to Google Drive</a>
+                    <a class="dropdown-item" href="#" onclick="onClickCopyR20ToClipboard()">Copy Roll20 JSON to clipboard</a>
                 </div>
             </div>
 

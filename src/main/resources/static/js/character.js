@@ -1122,3 +1122,10 @@ function onClickEditPhoto() {
         }
     }
 }
+
+
+function onClickCopyR20ToClipboard() {
+
+}
+    navigator.clipboard.writeText("OH MY GOD")
+}
