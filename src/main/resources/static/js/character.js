@@ -1125,7 +1125,37 @@ function onClickEditPhoto() {
 
 
 function onClickCopyR20ToClipboard() {
+    navigator.clipboard.writeText(JSON.stringify(buildRoll20Json()))
+}
 
+
+function buildRoll20Json() {
+
+    var json = {
+        "CharType": 0,
+        "nickname": $("#char-name").val(),
+        "species": $("#char-name").val(),
+        "type1": "None"
+        "type2": "None"
+        "Level": $("#char-level").val(),
+        "HeldItem": "None",
+        "Gender": $("#char-gender").val(),
+        "base_HP":$("#char-stat-hp-base").val(),
+        "base_ATK":$("#char-stat-atk-base").val(),
+        "base_DEF":$("#char-stat-def-base").val(),
+        "base_SPATK":$("#char-stat-spatk-base").val(),
+        "base_SPDEF":$("#char-stat-spdef-base").val(),
+        "base_SPEED":$("#char-stat-spd-base").val()
+    };
+
+    if $("#char-types").val().equals("") {
+            json["type1"] = $("#char-types").val().split(",")[1]
+            json["type2"] = ($("#char-types").val().split(",").length>1 ? $("#char-types").val().split(",")[2] : "None")
+    } else {
+            json["type1"] = $("#char-types").val().split(",")[1]
+            json["type2"] = ($("#char-types").val().split(",").length>1 ? $("#char-types").val().split(",")[2] : "None")
+    }
+
+    return json
 }
-    navigator.clipboard.writeText("OH MY GOD")
-}
+
