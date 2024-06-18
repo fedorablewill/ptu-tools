@@ -1128,6 +1128,26 @@ function onClickCopyR20ToClipboard() {
     navigator.clipboard.writeText(JSON.stringify(buildRoll20Json()))
 }
 
+// Conversions from roll20 JSON
+var skillLookup = {
+    "Athletics": "athletics",
+    "Acrobatics": "acrobatics",
+    "Charm": "charm",
+    "Combat": "combat",
+    "Command": "command",
+    "GeneralEducation": "generalEdu",
+    "MedicineEducation": "medicineEdu",
+    "OccultEducation": "occultEdu",
+    "PokeEducation": "pokemonEdu",
+    "TechnologyEducation": "techEdu",
+    "Focus": "focus",
+    "Guile": "guile",
+    "Intimidate": "intimidate",
+    "Intuition": "intuition",
+    "Perception": "perception",
+    "Stealth": "stealth",
+    "Survival": "survival"
+}
 
 function buildRoll20Json() {
 
@@ -1135,26 +1155,102 @@ function buildRoll20Json() {
         "CharType": 0,
         "nickname": $("#char-name").val(),
         "species": $("#char-name").val(),
-        "type1": "None"
-        "type2": "None"
+        "type1": "None",
+        "type2": "None",
         "Level": $("#char-level").val(),
         "HeldItem": "None",
         "Gender": $("#char-gender").val(),
+        "Nature": $("#char-nature").val(),
+        "height": $("#char-size").val().split("(").pop().split(")")[0],
+        "weight":$("#char-weight").val(),
+        "weightClass": $("#char-weight").val().split("(").pop().split(")")[0],
         "base_HP":$("#char-stat-hp-base").val(),
         "base_ATK":$("#char-stat-atk-base").val(),
         "base_DEF":$("#char-stat-def-base").val(),
         "base_SPATK":$("#char-stat-spatk-base").val(),
         "base_SPDEF":$("#char-stat-spdef-base").val(),
-        "base_SPEED":$("#char-stat-spd-base").val()
-    };
+        "base_SPEED":$("#char-stat-spd-base").val(),
+        "HP": $("#char-stat-hp-lvlup").val(),
+        "ATK": $("#char-stat-atk-lvlup").val(),
+        "DEF": $("#char-stat-def-lvlup").val(),
+        "SPATK": $("#char-stat-spatk-lvlup").val(),
+        "SPDEF": $("#char-stat-spdef-lvlup").val(),
+        "SPEED": $("#char-stat-spd-lvlup").val(),
+        "Capabilities": {},
+        "Athletics": 2,
+        "Acrobatics": 2,
+        "Charm": 2,
+        "Combat": 2,
+        "Command": 2,
+        "GeneralEducation": 1,
+        "MedicineEducation": 1,
+        "OccultEducation": 1,
+        "PokeEducation": 1,
+        "TechnologyEducation": 1,
+        "Focus": 2,
+        "Guile": 2,
+        "Intimidate": 2,
+        "Intuition": 2,
+        "Perception": 2,
+        "Stealth": 2,
+        "Survival": 2,
 
-    if $("#char-types").val().equals("") {
-            json["type1"] = $("#char-types").val().split(",")[1]
-            json["type2"] = ($("#char-types").val().split(",").length>1 ? $("#char-types").val().split(",")[2] : "None")
-    } else {
-            json["type1"] = $("#char-types").val().split(",")[1]
-            json["type2"] = ($("#char-types").val().split(",").length>1 ? $("#char-types").val().split(",")[2] : "None")
+        "Athletics_bonus": 0,
+        "Acrobatics_bonus": 0,
+        "Charm_bonus": 0,
+        "Combat_bonus": 0,
+        "Command_bonus": 0,
+        "GeneralEducation_bonus": 0,
+        "MedicineEducation_bonus": 0,
+        "OccultEducation_bonus": 0,
+        "PokeEducation_bonus": 0,
+        "TechnologyEducation_bonus": 0,
+        "Focus_bonus": 0,
+        "Guile_bonus": 0,
+        "Intimidate_bonus": 0,
+        "Intuition_bonus": 0,
+        "Perception_bonus": 0,
+        "Stealth_bonus": 0,
+        "Survival_bonus": 0
     }
+
+    json["Capabilities"] = {
+        "Overland": Number($("#char-capble-overland").val()),
+        "Swim": Number($("#char-capble-swim").val()),
+        "LJ": Number($("#char-capble-high").val()),
+        "HJ": Number($("#char-capble-long").val()),
+        "Power": Number($("#char-capble-power").val())
+    }
+
+
+    var test
+    if ($("#char-types").val().length == 0) {
+        test = $("#char-types").magicSuggest().getValue()
+    } else {
+        test = $("#char-types").val().split(",")
+    }
+    json["type1"] = test[0]
+    json["type2"] = (test.length > 1 ? test[1] : "None")
+
+    for (var key in skillLookup) {
+        test = $("#char-"+skillLookup[key]).val()
+        if (test.length > 0) {
+            console.log(test)
+            json[key] = Number(test.split("d6")[0]);
+            json[key+"_bonus"] = parseInt(test.substring(test.length-2))
+        }
+    }
+
+    test = $("#char-capble-burrow").val()
+    if (test>0) {json["Capabilities"]["Burrow"]=Number(test)}
+    test = $("#char-capble-sky").val()
+    if (test>0) {json["Capabilities"]["Sky"]=Number(test)}
+    test = $("#char-capble-levitate").val()
+    if (test>0) {json["Capabilities"]["Levitate"]=Number(test)}
+
+
+
+
 
     return json
 }
