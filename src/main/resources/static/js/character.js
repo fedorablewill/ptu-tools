@@ -1164,6 +1164,11 @@ function buildRoll20Json() {
         "height": $("#char-size").val().split("(").pop().split(")")[0],
         "weight":$("#char-weight").val(),
         "weightClass": $("#char-weight").val().split("(").pop().split(")")[0],
+
+        "hitPoints":$("#char-hp-current").val(),
+        "injuries":$("#char-injuries").val(),
+        "tempHitPoints":$("#char-hp-temp").val(),
+
         "base_HP":$("#char-stat-hp-base").val(),
         "base_ATK":$("#char-stat-atk-base").val(),
         "base_DEF":$("#char-stat-def-base").val(),
@@ -1176,6 +1181,7 @@ function buildRoll20Json() {
         "SPATK": $("#char-stat-spatk-lvlup").val(),
         "SPDEF": $("#char-stat-spdef-lvlup").val(),
         "SPEED": $("#char-stat-spd-lvlup").val(),
+
         "Capabilities": {},
         "Athletics": 2,
         "Acrobatics": 2,
@@ -1222,6 +1228,50 @@ function buildRoll20Json() {
         "Power": Number($("#char-capble-power").val())
     }
 
+    var others = $("#char-capble-other").val()
+    if (others.includes("Naturewalk")) {
+        try {
+            splits = others.split("Naturewalk (")[1].split(")")[0].split(",")
+            for (var key in splits) {
+                json["Capabilities"]["Naturewalk (" + splits[key] + ")"] = true
+                console.log("A-side: " + splits[key])
+            }
+
+            splitsA = others.split("Naturewalk (")[0]
+            splitsB = others.split("Naturewalk (")[1].split(")")[1]
+            if (splitsB == undefined) {splitsB = ""}
+
+            moreSplits = (splitsA + splitsB).split(",")
+
+            for (var key in moreSplits) {
+                if (moreSplits[key] != "") {
+                    json["Capabilities"][moreSplits[key]] = true
+                           console.log("B-side: " + moreSplits[key])
+                }
+            }
+        } catch (meh) {
+
+            splits = others.split(",")
+            for (var key in splits) {
+                if (splits[key] != "") {
+                    json["Capabilities"][splits[key]] = true
+                    console.log("Post-error: " + splits[key])
+                }
+            }
+
+        }
+    } else {
+
+        splits = others.split(",")
+        for (var key in splits) {
+            if (splits[key] != "") {
+                json["Capabilities"][splits[key]] = true
+            }
+        }
+
+    }
+
+
 
     var test
     if ($("#char-types").val().length == 0) {
@@ -1235,7 +1285,6 @@ function buildRoll20Json() {
     for (var key in skillLookup) {
         test = $("#char-"+skillLookup[key]).val()
         if (test.length > 0) {
-            console.log(test)
             json[key] = Number(test.split("d6")[0]);
             json[key+"_bonus"] = parseInt(test.substring(test.length-2))
         }
@@ -1249,6 +1298,56 @@ function buildRoll20Json() {
     if (test>0) {json["Capabilities"]["Levitate"]=Number(test)}
 
 
+
+    var breakout = false
+
+    for (let x=0; x < 100; x++) {
+        var mname = "Move"+x
+        var mnameb = "#move-"+x+"-"
+        if ($(mnameb+"name").val() == undefined) {
+            break
+        }
+        json[mname] = {}
+        json[mname]["Name"] = $(mnameb+"name").val()
+        json[mname]["Type"] = $(mnameb+"type").val()
+        json[mname]["Freq"] = $(mnameb+"freq").val()
+        json[mname]["AC"] = $(mnameb+"ac").val()
+        json[mname]["DB"] = $(mnameb+"db").val()
+        json[mname]["DType"] = $(mnameb+"class").val()
+        json[mname]["Range"] = $(mnameb+"range").val()
+        json[mname]["Effects"] = $(mnameb+"effect").val()
+        var cont = $(mnameb+"contest").val().split(" / ")
+        json[mname]["Contest Type"] = cont[0]
+        json[mname]["Contest Effect"] = cont[2]
+
+    }
+
+    for (let x=0; x < 100; x++) {
+        var mname = "Ability-"+x
+        var mnameb = "#ability-"+x+"-"
+        if ($(mnameb+"name").val() == undefined) {
+            break
+        }
+        json[mname] = {}
+        json[mname]["Name"] = $(mnameb+"name").val()
+        json[mname]["Freq"] = $(mnameb+"freq").val()
+        json[mname]["Target"] = $(mnameb+"target").val()
+        json[mname]["Trigger"] = $(mnameb+"trigger").val()
+        json[mname]["Info"] = $(mnameb+"effect").val()
+    }
+
+    for (let x=0; x < 100; x++) {
+        var mname = "PokeEdge-"+x
+        var mnameb = "#pokeedge-"+x+"-"
+        if ($(mnameb+"name").val() == undefined) {
+            break
+        }
+        json[mname] = {}
+        json[mname]["Name"] = $(mnameb+"name").val()
+        json[mname]["Cost"] = $(mnameb+"cost").val()
+        json[mname]["Prereq"] = $(mnameb+"prereq").val()
+        json[mname]["Info"] = $(mnameb+"effect").val()
+    }
 
 
 
