@@ -1122,3 +1122,228 @@ function onClickEditPhoto() {
         }
     }
 }
+
+
+function onClickCopyR20ToClipboard() {
+    try {
+        navigator.clipboard.writeText(JSON.stringify(buildRoll20Json()))
+        buildToast("Roll20 JSON copied to clipboard!")
+    } catch (error) {
+        buildToast("Oops! Something went wrong with JSON construction.")
+        console.log(error)
+    }
+}
+
+// Conversions from roll20 JSON
+var skillLookup = {
+    "Athletics": "athletics",
+    "Acrobatics": "acrobatics",
+    "Charm": "charm",
+    "Combat": "combat",
+    "Command": "command",
+    "GeneralEducation": "generalEdu",
+    "MedicineEducation": "medicineEdu",
+    "OccultEducation": "occultEdu",
+    "PokeEducation": "pokemonEdu",
+    "TechnologyEducation": "techEdu",
+    "Focus": "focus",
+    "Guile": "guile",
+    "Intimidate": "intimidate",
+    "Intuition": "intuition",
+    "Perception": "perception",
+    "Stealth": "stealth",
+    "Survival": "survival"
+}
+
+function buildRoll20Json() {
+
+    var json = {
+        "CharType": 0,
+        "nickname": $("#char-name").val(),
+        "species": $("#char-species").val(),
+        "type1": "None",
+        "type2": "None",
+        "Level": $("#char-level").val(),
+        "HeldItem": "None",
+        "Gender": $("#char-gender").val(),
+        "Nature": $("#char-nature").val(),
+        "height": $("#char-size").val().split("(").pop().split(")")[0],
+        "weight":$("#char-weight").val(),
+        "weightClass": $("#char-weight").val().split("(").pop().split(")")[0],
+
+        "hitPoints":$("#char-hp-current").val(),
+        "injuries":$("#char-injuries").val(),
+        "tempHitPoints":$("#char-hp-temp").val(),
+
+        "base_HP":$("#char-stat-hp-base").val(),
+        "base_ATK":$("#char-stat-atk-base").val(),
+        "base_DEF":$("#char-stat-def-base").val(),
+        "base_SPATK":$("#char-stat-spatk-base").val(),
+        "base_SPDEF":$("#char-stat-spdef-base").val(),
+        "base_SPEED":$("#char-stat-spd-base").val(),
+        "HP": $("#char-stat-hp-lvlup").val(),
+        "ATK": $("#char-stat-atk-lvlup").val(),
+        "DEF": $("#char-stat-def-lvlup").val(),
+        "SPATK": $("#char-stat-spatk-lvlup").val(),
+        "SPDEF": $("#char-stat-spdef-lvlup").val(),
+        "SPEED": $("#char-stat-spd-lvlup").val(),
+
+        "Capabilities": {},
+        "Athletics": 2,
+        "Acrobatics": 2,
+        "Charm": 2,
+        "Combat": 2,
+        "Command": 2,
+        "GeneralEducation": 1,
+        "MedicineEducation": 1,
+        "OccultEducation": 1,
+        "PokeEducation": 1,
+        "TechnologyEducation": 1,
+        "Focus": 2,
+        "Guile": 2,
+        "Intimidate": 2,
+        "Intuition": 2,
+        "Perception": 2,
+        "Stealth": 2,
+        "Survival": 2,
+
+        "Athletics_bonus": 0,
+        "Acrobatics_bonus": 0,
+        "Charm_bonus": 0,
+        "Combat_bonus": 0,
+        "Command_bonus": 0,
+        "GeneralEducation_bonus": 0,
+        "MedicineEducation_bonus": 0,
+        "OccultEducation_bonus": 0,
+        "PokeEducation_bonus": 0,
+        "TechnologyEducation_bonus": 0,
+        "Focus_bonus": 0,
+        "Guile_bonus": 0,
+        "Intimidate_bonus": 0,
+        "Intuition_bonus": 0,
+        "Perception_bonus": 0,
+        "Stealth_bonus": 0,
+        "Survival_bonus": 0
+    }
+
+    var pokemonForm = $("#char-form").val()
+    if (pokemonForm != "") {
+        json["species"] = ($("#char-species").val() + " (" + pokemonForm + ")")
+    }
+
+    json["Capabilities"] = {
+        "Overland": Number($("#char-capble-overland").val()),
+        "Swim": Number($("#char-capble-swim").val()),
+        "LJ": Number($("#char-capble-high").val()),
+        "HJ": Number($("#char-capble-long").val()),
+        "Power": Number($("#char-capble-power").val())
+    }
+
+    var others = $("#char-capble-other").val()
+    if (others.includes("Naturewalk")) {
+        try {
+            splits = others.split("Naturewalk (")[1].split(")")[0].split(",")
+            for (var key in splits) {
+                json["Capabilities"]["Naturewalk (" + splits[key] + ")"] = true
+            }
+
+            splitsA = others.split("Naturewalk (")[0]
+            splitsB = others.split("Naturewalk (")[1].split(")")[1]
+            if (splitsB == undefined) {splitsB = ""}
+
+            moreSplits = (splitsA + splitsB).split(",")
+
+            for (var key in moreSplits) {
+                if (moreSplits[key] != "") {
+                    json["Capabilities"][moreSplits[key]] = true
+                }
+            }
+        } catch (meh) {
+
+            splits = others.split(",")
+            for (var key in splits) {
+                if (splits[key] != "") {
+                    json["Capabilities"][splits[key]] = true
+                }
+            }
+
+        }
+    } else {
+
+        splits = others.split(",")
+        for (var key in splits) {
+            if (splits[key] != "") {
+                json["Capabilities"][splits[key]] = true
+            }
+        }
+    }
+
+
+    var test
+    if ($("#char-types").val().length == 0) {
+        test = $("#char-types").magicSuggest().getValue()
+    } else {
+        test = $("#char-types").val().split(",")
+    }
+    json["type1"] = test[0]
+    json["type2"] = (test.length > 1 ? test[1] : "None")
+
+    for (var key in skillLookup) {
+        test = $("#char-"+skillLookup[key]).val()
+        if (test.length > 0) {
+            json[key] = Number(test.split("d6")[0]);
+            json[key+"_bonus"] = parseInt(test.substring(test.length-2))
+        }
+    }
+
+    test = $("#char-capble-burrow").val()
+    if (test>0) {json["Capabilities"]["Burrow"]=Number(test)}
+    test = $("#char-capble-sky").val()
+    if (test>0) {json["Capabilities"]["Sky"]=Number(test)}
+    test = $("#char-capble-levitate").val()
+    if (test>0) {json["Capabilities"]["Levitate"]=Number(test)}
+
+
+    for (let x=0; ($("#move-"+x+"-name").val() != undefined); x++) {
+        var mname = "#move-"+x+"-"
+        json["Move"+x] = {
+            "Name": $(mname+"name").val(),
+            "Type": $(mname+"type").val(),
+            "Freq": $(mname+"freq").val(),
+            "AC": $(mname+"ac").val(),
+            "DB": $(mname+"db").val(),
+            "DType": $(mname+"class").val(),
+            "Range": $(mname+"range").val(),
+            "Effects": $(mname+"effect").val()
+        }
+        var cont = $(mname+"contest").val().split(" / ")
+        json["Move"+x]["Contest Type"] = cont[0]
+        json["Move"+x]["Contest Effect"] = cont[1]
+
+    }
+
+    for (let x=0;($("#ability-"+x+"-name").val() != undefined); x++) {
+        var aname = "#ability-"+x+"-"
+        json["Ability-"+x] = {
+            "Name": $(aname+"name").val(),
+            "Freq": $(aname+"freq").val(),
+            "Target": $(aname+"target").val(),
+            "Trigger": $(aname+"trigger").val(),
+            "Info": $(aname+"effect").val()
+        }
+    }
+
+    for (let x=0; ($("#pokeedge-"+x+"-name").val() != undefined); x++) {
+        var ename = "#pokeedge-"+x+"-"
+        json["PokeEdge-"+x] = {
+            "Name": $(ename+"name").val(),
+            "Cost": $(ename+"cost").val(),
+            "Prereq": $(ename+"prereq").val(),
+            "Info": $(ename+"effect").val()
+        }
+    }
+
+
+    return json
+}
+

@@ -369,7 +369,8 @@ const LOADING_MESSAGES = [
     "Waking Snorlax...",
     "Debating feature wording...",
     "Banning Warper...",
-    "Praying for a crit..."
+    "Praying for a crit...",
+    "Clearing waist-high bushes..."
 ]
 
 //
