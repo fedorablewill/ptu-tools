@@ -668,6 +668,232 @@ class UploadDataTool {
         }
     }
 
+    fun populatePokedexWithPokeAPI(pokedexEntries: List<PokedexEntry>) {
+        val moveNameMap = mapOf(
+            "U-turn" to "U-Turn"
+        )
+        val habitatMap = mapOf(
+            "Sprigatito" to "Forest, Grasslands",
+            "Floragato" to "Forest, Grasslands",
+            "Meowscarada" to "Forest, Grasslands",
+            "Fuecoco" to "Marsh, Cave",
+            "Crocalor" to "Marsh, Cave",
+            "Skeledirge" to "Marsh, Cave",
+            "Quaxly" to "Beach, Freshwater",
+            "Quaxwell" to "Beach, Freshwater",
+            "Quaquaval" to "Beach, Freshwater",
+            "Lechonk" to "Grassland, Forest",
+            "Oinkologne Male" to "Grassland, Forest",
+            "Oinkologne Female" to "Grassland, Forest",
+            "Tarountula" to "Forest",
+            "Spidops" to "Forest",
+            "Nymble" to "Grassland, Forest",
+            "Lokix" to "Forest, Grassland",
+            "Pawmi" to "Forest, Grassland, Mountain",
+            "Pawmo" to "Forest, Grassland, Mountain",
+            "Pawmot" to "Forest, Grassland, Mountain",
+            "Tandemaus" to "Forest, Grassland, Urban",
+            "Maushold" to "Forest, Grassland, Urban",
+            "Fidough" to "Urban, Forest, Grassland",
+            "Dachsbun" to "Urban, Forest, Grassland",
+            "Smoliv" to "Forest, Grassland",
+            "Dolliv" to "Forest, Grassland",
+            "Arboliva" to "Forest, Grassland",
+            "Squawkabilly" to "Forest, Rainforest, Urban",
+            "Nacli" to "Cave, Desert, Mountain",
+            "Naclstack" to "Cave, Desert, Mountain",
+            "Garganacl" to "Cave, Desert, Mountain",
+            "Charcadet" to "Forest, Desert, Mountain",
+            "Armarouge" to "Forest, Desert, Mountain",
+            "Ceruledge" to "Forest, Desert, Mountain",
+            "Tadbulb" to "Freshwater, Marsh",
+            "Bellibolt" to "Freshwater, Marsh",
+            "Wattrel" to "Ocean, Beach",
+            "Kilowattrel" to "Ocean, Beach",
+            "Maschiff" to "Urban, Mountain, Desert, Forest, Grassland",
+            "Mabosstiff" to "Urban, Mountain, Desert, Forest, Grassland",
+            "Shroodle" to "Forest, Rainforest",
+            "Grafaiai" to "Forest, Rainforest",
+            "Bramblin" to "Desert",
+            "Brambleghast" to "Desert",
+            "Toedscool" to "Forest, Grassland, Rainforest",
+            "Toedscruel" to "Forest, Grassland, Rainforest",
+            "Klawf" to "Desert, Mountain",
+            "Capsakid" to "Desert, Grassland",
+            "Scovillain" to "Desert, Grassland",
+            "Rellor" to "Desert",
+            "Rabsca" to "Desert",
+            "Flittle" to "Desert, Grassland",
+            "Espathra" to "Desert, Grassland",
+            "Tinkatink" to "Grassland, Urban",
+            "Tinkatuff" to "Grassland, Urban",
+            "Tinkaton" to "Grassland, Urban",
+            "Wiglett" to "Beach, Ocean",
+            "Wugtrio" to "Beach, Ocean",
+            "Bombirdier" to "Beach, Mountain, Ocean, River",
+            "Finizen" to "Oceans",
+            "Palafin Zero Form" to "Ocean",
+            "Palafin Hero Form" to "Ocean",
+            "Varoom" to "Desert, Mountain, Urban",
+            "Revavroom" to "Desert, Mountain, Urban",
+            "Cyclizar" to "Grassland, Mountain, Forest",
+            "Orthworm" to "Mountain, Desert",
+            "Glimmet" to "Cave",
+            "Glimmora" to "Cave",
+            "Greavard" to "Forest, Mountain, Tundra, Desert",
+            "Houndstone" to "Forest, Mountain, Tundra, Desert",
+            "Flamigo" to "Beach, Marsh",
+            "Cetoddle" to "Tundra, Mountain",
+            "Cetitan" to "Tundra, Mountain",
+            "Veluza" to "Freshwater, Ocean",
+            "Dondozo" to "Freshwater",
+            "Tatsugiri" to "Freshwater",
+            "Paldean Tauros Combat Breed" to "Grassland",
+            "Paldean Tauros Blaze Breed" to "Grassland",
+            "Paldean Tauros Aqua Breed" to "Grassland",
+            "Annihilape" to "Forest, Grassland, Mountain, Rainforest",
+            "Paldean Wooper" to "Marsh",
+            "Clodsire" to "Marsh",
+            "Farigiraf" to "Grassland, Forest",
+            "Dudunsparce" to "Cave, Desert, Forest, Grassland",
+            "Kingambit" to "Cave, Mountain",
+            "Great Tusk" to "Desert, Mountain",
+            "Scream Tail" to "Cave, Grassland",
+            "Brute Bonnet" to "Cave, Forest, Grassland",
+            "Flutter Mane" to "Cave, Forest",
+            "Slither Wing" to "Cave, Mountain, Rainforest",
+            "Sandy Shocks" to "Desert, Mountain, Urban",
+            "Iron Treads" to "Desert, Mountain",
+            "Iron Bundle" to "Mountain, Taiga, Tundra",
+            "Iron Hands" to "Cave, Mountain",
+            "Iron Jugulis" to "Cave, Mountain",
+            "Iron Moth" to "Cave, Mountain",
+            "Iron Thorns" to "Cave, Mountain",
+            "Frigibax" to "Mountain, Tundra",
+            "Arctibax" to "Mountain, Tundra",
+            "Baxcalibur" to "Mountain, Tundra",
+            "Gimmighoul" to "Ruins, Urban",
+            "Gholdengo" to "Underground, Urban, Ruins",
+            "Wo-Chien" to "Forest, Marsh",
+            "Chien-Pao" to "Mountain, Tundra",
+            "Ting-Lu" to "Cave, Mountain",
+            "Chi-Yu" to "Cave, Mountain",
+            "Roaring Moon" to "Cave, Mountain",
+            "Iron Valiant" to "Forest, Urban",
+            "Koraidon" to "Mountain, Cave, Grassland",
+            "Miraidon" to "Mountain, Cave, Urban",
+            "Walking Wake" to "Beach, Grassland, Mountain",
+            "Gouging Fire" to "Grassland, Forest, Mountain",
+            "Raging Bolt" to "Grassland, Mountain, Rainforest",
+            "Iron Leaves" to "Forest, Grassland, Urban",
+            "Iron Boulder" to "Cave, Mountain, Urban",
+            "Iron Crown" to "Mountain, Urban",
+            "Dipplin" to "Forest, Grassland",
+            "Hydrapple" to "Forest, Grassland",
+            "Poltchageist" to "Forest, Grassland, Urban",
+            "Sinistcha" to "Forest, Grassland, Urban",
+            "Okidogi" to "Mountain, Urban",
+            "Munkidori" to "Forest, Mountain, Urban",
+            "Fezandipiti" to "Mountain, Urban",
+            "Ogerpon" to "Cave, Mountain, Urban",
+            "Ursaluna (Bloodmoon)" to "Cave, Mountain, Wetlands",
+            "Archaludon" to "Mountain",
+            "Terapagos" to "Cave",
+            "Pecharunt" to "Unknown"
+        )
+        for (pokedex in pokedexEntries) {
+            if (pokedex.pokeApiId == null) continue
+
+            val pokeApiResponse = fetchPokemonApiData(pokedex.pokeApiId!!)!!
+
+            pokedex.moveLearnset = PokedexEntry.MoveLearnset()
+
+            // Moves
+            for (moveData in pokeApiResponse.moves) {
+                var moveName = fetchPokeApiMoveName(moveData.move.name)
+                if (moveNameMap.containsKey(moveName)) {
+                    moveName = moveNameMap[moveName]!!
+                }
+
+                if (!FirestoreService().getDocument("moves", moveName).get().get().exists()) {
+                    println("Move $moveName doesn't exist, ${pokedex.species}")
+                }
+                for (groupDetail in moveData.version_group_details) {
+                    if (groupDetail.level_learned_at != 0) {
+                        pokedex.moveLearnset!!.levelUpMoves.add(
+                            PokedexEntry.MoveLearnset.Entry(moveName, groupDetail.level_learned_at))
+                    } else if (groupDetail.move_learn_method.name == "machine") {
+                        pokedex.moveLearnset!!.machineMoves.add(moveName)
+                    } else if (groupDetail.move_learn_method.name == "egg") {
+                        pokedex.moveLearnset!!.eggMoves.add(moveName)
+                    }
+                }
+            }
+
+            //Abilities
+            for (abilityName in pokedex.basicAbilities) {
+                val result = firestoreService.getCollection("abilities").offset(0)
+                    .whereEqualTo("name", abilityName).get().get().toObjects(Ability::class.java)
+                if (result.isEmpty()) {
+                    println("Could not find ability $abilityName for ${pokedex.species}")
+                } else {
+                    pokedex.abilityLearnset.basicAbilities.add(result[0])
+                }
+            }
+            for (abilityName in pokedex.advancedAbilities) {
+                val result = firestoreService.getCollection("abilities").offset(0)
+                    .whereEqualTo("name", abilityName).get().get().toObjects(Ability::class.java)
+                if (result.isEmpty()) {
+                    println("Could not find ability $abilityName for ${pokedex.species}")
+                } else {
+                    pokedex.abilityLearnset.advancedAbilities.add(result[0])
+                }
+            }
+            for (abilityName in pokedex.highAbilities) {
+                val result = firestoreService.getCollection("abilities").offset(0)
+                    .whereEqualTo("name", abilityName).get().get().toObjects(Ability::class.java)
+                if (result.isEmpty()) {
+                    println("Could not find ability $abilityName for ${pokedex.species}")
+                } else {
+                    pokedex.abilityLearnset.highAbilities.add(result[0])
+                }
+            }
+
+            // Other Data
+            val speciesData = fetchPokeApiSpeciesData(pokeApiResponse.species.name)
+
+            if (speciesData.gender_rate == -1) {
+                pokedex.genderless = true
+            } else {
+                pokedex.genderless = false
+                pokedex.femalePercent = speciesData.gender_rate * 12.5 // PokeAPI stores in 1/8 increments
+                pokedex.malePercent = 100 - pokedex.femalePercent!!
+            }
+
+            // Evolution Data
+            val chain = fetchPokeApiEvolutionData(speciesData.evolution_chain.url.split("/")[6])
+
+            pokedex.evolutionStage = findEvolutionStage(chain.chain, pokeApiResponse.species.name)
+
+            val remainingEvolutionsMale = findRemainingEvolutions(chain.chain, pokeApiResponse.species.name, 1)
+            val remainingEvolutionsFemale = findRemainingEvolutions(chain.chain, pokeApiResponse.species.name, 2)
+
+            if (remainingEvolutionsMale == remainingEvolutionsFemale) {
+                pokedex.evolutionsRemainingGenderless = remainingEvolutionsMale
+            } else {
+                pokedex.evolutionsRemainingMale = remainingEvolutionsMale
+                pokedex.evolutionsRemainingFemale = remainingEvolutionsFemale
+            }
+
+            val minMaxLevel = findMinMaxLevel(chain.chain, pokeApiResponse.species.name)
+            pokedex.evolutionMinLevel = minMaxLevel.first
+            pokedex.evolutionAtLevel = minMaxLevel.second
+
+            // Habitat
+            pokedex.habitats = habitatMap[pokedex.species]?.split(", ") ?: listOf("HABITAT-UNKNOWN")
+        }
+    }
+
     // Converts Forms and Names from CWStra's format to PokeGenesis format
     protected fun findPokedexEntryBySpecies(species_: String, form_: String?): QuerySnapshot {
 

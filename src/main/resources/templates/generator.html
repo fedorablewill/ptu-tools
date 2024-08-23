@@ -303,8 +303,12 @@
                     <textarea type="file" class="form-control" id="homebrew-moves-json"></textarea>
                 </div>
                 <a href="https://github.com/fedorablewill/ptu-tools/wiki/Homebrew-Pokedex-JSON" target="_blank">Format Documentation</a>
+                <hr/>
+                <strong class="d-inline-block mb-1">Featured Homebrew</strong>
                 <br/>
-                <small>Submit your homebrew Pokedex to be featured here in the <a href="https://discord.gg/kSzJjzErQS">Discord</a>!</small>
+                <a href="#" onclick="loadHomebrew('featHomebrew-gen9')">Gen 9 Homebrew by FedorableWill</a>
+                <br/>
+                <small class="text-white-50">Submit your homebrew Pokedex to be featured here in the <a href="https://discord.gg/kSzJjzErQS">Discord</a>!</small>
             </div>
             <div class="modal-footer bg-dark">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Done</button>
@@ -574,6 +578,15 @@
 
         f.submit();
         f.remove();
+    }
+
+    function loadHomebrew(fileName) {
+        $.get(`/json/${fileName}.dex.json`).done(function (result) {
+            $("#homebrew-dex-json").val(JSON.stringify(result));
+            buildToast("Applied Homebrew");
+        }).fail(function () {
+            alert(`Error loading file /json/${fileName}.dex.json`);
+        });
     }
 </script>
 </body>

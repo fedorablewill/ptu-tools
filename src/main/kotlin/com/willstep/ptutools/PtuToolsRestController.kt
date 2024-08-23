@@ -32,8 +32,15 @@ import javax.servlet.http.HttpServletResponse
 class PtuToolsRestController {
 
 //    @PostMapping("/uploadMoves")
-    fun uploadMoves(@RequestBody movesList: List<Map<String, Any>>, model: Model) {
+    fun uploadMovesOld(@RequestBody movesList: List<Map<String, Any>>, model: Model) {
         UploadDataTool().uploadMoveArray(movesList)
+    }
+
+//    @PostMapping("/uploadMoves")
+    fun uploadMoves(@RequestBody movesList: List<Move>, model: Model) {
+        for (move in movesList) {
+            FirestoreService().saveAsDocument("moves", move.name!!, move)
+        }
     }
 
 //    @PostMapping("/uploadAbilities")
@@ -83,6 +90,25 @@ class PtuToolsRestController {
         UploadDataTool().uploadEvolutionData(entries)
 
         return entries.size.toString() + " Entries Uploaded"
+    }
+
+    @PostMapping("/populatePokedexWithPokeAPI")
+    fun populatePokedexWithPokeAPI(@RequestBody entries: List<PokedexEntry>, model: Model): List<PokedexEntry> {
+        UploadDataTool().populatePokedexWithPokeAPI(entries)
+        return entries
+    }
+
+//    @PostMapping("/overengineeredHabitatParsing")
+    fun overengineeredHabitatParsing(@RequestBody pokedexMess: String, model: Model): String {
+        var output = ""
+        val entries = pokedexMess.split(" Unofficial Homebrew ")
+
+        for (entry in entries) {
+            val name = entry.substring(0, entry.indexOf("Base Stats")).trim()
+            val habitats = entry.substring(entry.indexOf("Habitat:") + 8, entry.indexOf("Capabilities")).trim()
+            output += "$name: $habitats\n"
+        }
+        return output
     }
 
     @GetMapping("/pokedex/{dexNumber}")

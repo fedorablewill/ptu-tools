@@ -17,6 +17,7 @@ data class PokedexEntry(
     var nationalDexNumber: String? = null,
     var regionOfOrigin: String? = null,
     var entryText: String? = null,
+    var pokeApiId: String? = null,
 
     var imageFileUrl: String? = null,
     var cryFileUrl: String? = null,
