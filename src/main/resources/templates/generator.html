@@ -382,7 +382,7 @@
     }).container).attr("data-filter", "types").attr("data-filter-method", "ARRAY_CONTAINS")
 
     $($("#filter-species").magicSuggest({
-        data: '/speciesOptions',
+        data: searchSpecies,
         valueField: 'value',
         displayField: 'label',
         queryParam: 'term',
@@ -413,6 +413,48 @@
         allowDuplicates: false,
         expandOnFocus: true
     }).container).attr("data-filter", "evolutionStage").attr("data-filter-method", "EQUALS")
+
+    function searchSpecies(query) {
+        var species = [];
+        var ajaxData = {
+            term: query
+        };
+        var homebrew = $("#homebrew-dex-json").val();
+        if (homebrew) {
+            try {
+                // Check if valid JSON
+                let homebrewDex = JSON.parse(homebrew);
+                var homebrewData = [];
+
+                homebrewDex.forEach(function (dexEntry) {
+                    var entryLabel = dexEntry["species"];
+                    if (dexEntry["form"]) {
+                        entryLabel += ` (${dexEntry['form']})`;
+                    }
+                    homebrewData.push({
+                        label: entryLabel,
+                        value: "homebrew-" + entryLabel
+                    });
+                });
+
+                ajaxData["homebrewPokedex"] = homebrewData;
+            } catch (e) {
+                alert("Invalid JSON format for Homebrew Pokedex. Please check documentation.")
+            }
+        }
+
+        $.ajax("/speciesOptions", {
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(ajaxData),
+            async: false
+        }).done(function (result) {
+            species = result;
+        }).fail(function () {
+            alert("Error loading species options");
+        });
+        return species;
+    }
 
 
     //

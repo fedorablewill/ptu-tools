@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import java.io.Serializable
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 import kotlin.reflect.full.memberProperties
 
@@ -44,6 +46,11 @@ class GeneratorController {
 
     enum class RequestMethod {
         EQUALS, EQUALS_LIST, ARRAY_CONTAINS, ARRAY_CONTAINS_LIST
+    }
+
+    class SpeciesSearchRequest {
+        lateinit var term: String
+        val homebrewPokedex: List<LabelValuePair> = ArrayList()
     }
 
     @PostMapping("/validatePokedex")
@@ -180,14 +187,26 @@ class GeneratorController {
         return GeneratorService().generatePokemon(requestBody.homebrewPokedex[0], requestBody.minLevel, requestBody.maxLevel, nature, requestBody.shinyOdds)
     }
 
-    @GetMapping("/speciesOptions")
-    fun speciesOptions(@RequestParam term: String): List<LabelValuePair> {
+    @PostMapping("/speciesOptions")
+    fun speciesOptions(@RequestBody request: SpeciesSearchRequest): List<LabelValuePair> {
+        // Capitalize first letter
+        val searchTerm = request.term.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() };
+
+        // Search Database
         val results = FirestoreService().getCollection("pokedexEntries")
             .whereEqualTo("pokedexDocumentId", "1.05")
-            .whereGreaterThanOrEqualTo("species", term.capitalize())
-            .whereLessThanOrEqualTo("species", term.capitalize() + '\uf8ff')
+            .whereGreaterThanOrEqualTo("species", searchTerm)
+            .whereLessThanOrEqualTo("species", searchTerm + '\uf8ff')
             .orderBy("species").orderBy("form")
             .limit(25).get().get()
+
+        // Apply homebrew
+        val homebrewResults = ArrayList<LabelValuePair>()
+        for (dexEntry in request.homebrewPokedex) {
+            if (dexEntry.label >= searchTerm && dexEntry.label <= searchTerm + '\uf8ff') {
+                homebrewResults.add(dexEntry)
+            }
+        }
 
         val options = ArrayList<LabelValuePair>()
 
@@ -201,6 +220,9 @@ class GeneratorController {
                 options.add(LabelValuePair(result["species"] as String, result["pokedexEntryDocumentId"] as String))
             }
         }
+
+        options.addAll(homebrewResults)
+        options.sortBy { lvp -> lvp.label }
 
         return options
     }
@@ -238,6 +260,22 @@ class GeneratorController {
 
     fun doFilter(obj: PokedexEntry, filters: List<GeneratorRequestParam>): Boolean {
         for (requestParam in filters) {
+            if (requestParam.field == "pokedexEntryDocumentId" && obj.pokedexEntryDocumentId == null) {
+                // Homebrew support for Species filter
+                var species = "homebrew-" + obj.species
+                if (obj.form != null) {
+                    species += " (${obj.form})"
+                }
+                when (requestParam.method) {
+                    RequestMethod.EQUALS ->
+                        if (requestParam.value.toString() != species) return false
+                    RequestMethod.EQUALS_LIST ->
+                        if (!parseList(requestParam.value as List<Any>).contains(species)) return false
+                    else -> return true
+                }
+                return true
+            }
+
             val method = obj::class.memberProperties.filter { it.name == requestParam.field }.get(0)
 
             when (requestParam.method) {
