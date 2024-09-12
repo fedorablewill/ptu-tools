@@ -1303,9 +1303,11 @@ function buildRoll20Json() {
     test = $("#char-capble-levitate").val()
     if (test>0) {json["Capabilities"]["Levitate"]=Number(test)}
 
+    $(".form-move").each(function(JQMove) {
 
-    for (let x=0; ($("#move-"+x+"-name").val() != undefined); x++) {
+        var x = $(".form-move")[JQMove].id.split("-")[1]
         var mname = "#move-"+x+"-"
+
         json["Move"+x] = {
             "Name": $(mname+"name").val(),
             "Type": $(mname+"type").val(),
@@ -1320,9 +1322,12 @@ function buildRoll20Json() {
         json["Move"+x]["Contest Type"] = cont[0]
         json["Move"+x]["Contest Effect"] = cont[1]
 
-    }
+    })
 
-    for (let x=0;($("#ability-"+x+"-name").val() != undefined); x++) {
+
+    $(".form-ability").each(function(JQAbility) {
+        var x = $(".form-ability")[JQAbility].id.split("-")[1]
+
         var aname = "#ability-"+x+"-"
         json["Ability-"+x] = {
             "Name": $(aname+"name").val(),
@@ -1331,9 +1336,11 @@ function buildRoll20Json() {
             "Trigger": $(aname+"trigger").val(),
             "Info": $(aname+"effect").val()
         }
-    }
+    })
 
-    for (let x=0; ($("#pokeedge-"+x+"-name").val() != undefined); x++) {
+    $(".form-pokeedge").each(function(JQEdge) {
+        var x = $(".form-pokeedge")[JQEdge].id.split("-")[1]
+
         var ename = "#pokeedge-"+x+"-"
         json["PokeEdge-"+x] = {
             "Name": $(ename+"name").val(),
@@ -1341,7 +1348,7 @@ function buildRoll20Json() {
             "Prereq": $(ename+"prereq").val(),
             "Info": $(ename+"effect").val()
         }
-    }
+    })
 
 
     return json
