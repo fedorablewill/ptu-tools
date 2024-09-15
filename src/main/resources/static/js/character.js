@@ -1304,7 +1304,6 @@ function buildRoll20Json() {
     if (test>0) {json["Capabilities"]["Levitate"]=Number(test)}
 
     $(".form-move").each(function(JQMove) {
-
         var x = $(".form-move")[JQMove].id.split("-")[1]
         var mname = "#move-"+x+"-"
 
@@ -1329,7 +1328,7 @@ function buildRoll20Json() {
         var x = $(".form-ability")[JQAbility].id.split("-")[1]
 
         var aname = "#ability-"+x+"-"
-        json["Ability-"+x] = {
+        json["Ability"+x] = {
             "Name": $(aname+"name").val(),
             "Freq": $(aname+"freq").val(),
             "Target": $(aname+"target").val(),
@@ -1342,7 +1341,7 @@ function buildRoll20Json() {
         var x = $(".form-pokeedge")[JQEdge].id.split("-")[1]
 
         var ename = "#pokeedge-"+x+"-"
-        json["PokeEdge-"+x] = {
+        json["PokeEdge"+x] = {
             "Name": $(ename+"name").val(),
             "Cost": $(ename+"cost").val(),
             "Prereq": $(ename+"prereq").val(),
