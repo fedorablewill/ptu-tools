@@ -256,8 +256,8 @@ class PtuToolsTemplateController {
         return ResponseEntity.ok(htmlTemplateEngine.process("fragments/characterFormFragments", fragmentsSelectors, context))
     }
 
-    @GetMapping("/pokemon/moveset")
-    fun getMoveLearnset(@RequestParam moveLearnset: PokedexEntry.MoveLearnset, @RequestParam stabTypes: List<String>): ResponseEntity<String> {
+    @PostMapping("/pokemon/moveset")
+    fun getMoveLearnset(@RequestBody moveLearnset: PokedexEntry.MoveLearnset, @RequestParam stabTypes: List<String>): ResponseEntity<String> {
         val machineMoveNames = ArrayList(moveLearnset.machineMoves)
         val eggMoveNames = ArrayList(moveLearnset.eggMoves)
         val tutorMoveNames = ArrayList(moveLearnset.tutorMoves)

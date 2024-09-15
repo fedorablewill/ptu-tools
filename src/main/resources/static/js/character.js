@@ -326,14 +326,13 @@ function buildNotesQuillEditor(elem, i) {
 function buildMoveLearnset() {
     window.moveCache = {}
 
+    let stabTypes = encodeURIComponent($("#char-types").magicSuggest().getValue().join())
+
     if (moveLearnset) {
-        $.ajax("/pokemon/moveset", {
-            method: "GET",
+        $.ajax(`/pokemon/moveset?stabTypes=${stabTypes}`, {
+            method: "POST",
             contentType: "application/json",
-            data: {
-                "moveLearnset": JSON.stringify(moveLearnset),
-                "stabTypes": $("#char-types").magicSuggest().getValue().join()
-            }
+            data: JSON.stringify(moveLearnset)
         }).done(function (response) {
             $("#moveLookupModal-learnable").html(response).find('.collapse').collapse('hide')
         }).fail(function (jqxhr, textStatus, errorThrown) {
