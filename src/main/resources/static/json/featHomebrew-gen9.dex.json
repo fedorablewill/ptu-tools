@@ -12,7 +12,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "906",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Sprigatito.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -248,7 +248,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "907",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Floragato.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -488,7 +488,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "908",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Meowscarada.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -764,7 +764,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "909",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Fuecoco.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -996,7 +996,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "910",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Crocalor.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -1231,7 +1231,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "911",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Skeledirge.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -1496,7 +1496,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "912",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Quaxly.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -1719,7 +1719,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "913",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Quaxwell.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -1955,7 +1955,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "914",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Quaquaval.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -2225,7 +2225,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "915",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Lechonk.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 5,
@@ -2457,7 +2457,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "916",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Oinkologne.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 11,
@@ -2698,7 +2698,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10254",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Oinkologne.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 11,
@@ -2939,7 +2939,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "917",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Tarountula.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -3173,7 +3173,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "918",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Spidops.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -3415,7 +3415,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "919",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Nymble.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 3,
@@ -3635,7 +3635,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "920",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Lokix.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -3888,7 +3888,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "921",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Pawmi.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 5,
@@ -4133,7 +4133,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "922",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Pawmo.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -4380,7 +4380,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "923",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Pawmot.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -4654,7 +4654,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "924",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Tandemaus.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 5,
@@ -4899,7 +4899,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "925",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Maushold (3).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -5148,7 +5148,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "926",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Fidough.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -5393,7 +5393,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "927",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Dachsbun.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -5638,7 +5638,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "928",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Smoliv.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -5863,7 +5863,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "929",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Dolliv.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 5,
@@ -6083,7 +6083,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "930",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Arboliva.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -6332,7 +6332,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "931",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Squawkabilly.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -6572,7 +6572,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "932",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Nacli.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -6808,7 +6808,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "933",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Naclstack.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -7043,7 +7043,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "934",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Garganacl.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -7305,7 +7305,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "935",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Charcadet.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -7514,7 +7514,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "936",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Armarouge.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -7775,7 +7775,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "937",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Ceruledge.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -8030,7 +8030,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "938",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Tadbulb.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -8259,7 +8259,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "939",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Bellibolt.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 11,
@@ -8493,7 +8493,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "940",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Wattrel.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -8728,7 +8728,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "941",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Kilowattrel.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -8963,7 +8963,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "942",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Maschiff.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -9206,7 +9206,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "943",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Mabosstiff.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -9457,7 +9457,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "944",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Shroodle.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -9709,7 +9709,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "945",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Grafaiai.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -9957,7 +9957,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "946",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Bramblin.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -10196,7 +10196,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "947",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Brambleghast.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -10432,7 +10432,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "948",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Toedscool.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -10695,7 +10695,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "949",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Toedscruel.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -10955,7 +10955,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "950",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Klawf.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -11205,7 +11205,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "951",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Capsakid.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 5,
@@ -11431,7 +11431,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "952",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Scovillain.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -11673,7 +11673,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "953",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Rellor.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -11887,7 +11887,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "954",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Rabsca.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -12153,7 +12153,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "955",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Flittle.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 3,
@@ -12376,7 +12376,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "956",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Espathra.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -12633,7 +12633,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "957",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Tinkatink.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 5,
@@ -12878,7 +12878,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "958",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Tinkatuff.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -13120,7 +13120,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "959",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Tinkaton.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -13365,7 +13365,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "960",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Wiglett.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 1,
@@ -13589,7 +13589,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "961",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Wugtrio.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -13818,7 +13818,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "962",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Bombirdier.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -14078,7 +14078,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "963",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Finizen.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -14310,7 +14310,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "964",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Palafin.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -14568,7 +14568,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10256",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Palafin.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -14827,7 +14827,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "965",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Varoom.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 5,
@@ -15072,7 +15072,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "966",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Revavroom.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -15325,7 +15325,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "967",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Cyclizar.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -15575,7 +15575,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "968",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Orthworm.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -15816,7 +15816,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "969",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Glimmet.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 5,
@@ -16052,7 +16052,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "970",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Glimmora.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -16297,7 +16297,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "971",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Greavard.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 5,
@@ -16549,7 +16549,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "972",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Houndstone.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -16798,7 +16798,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "973",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Flamigo.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -17045,7 +17045,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "974",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Cetoddle.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 11,
@@ -17290,7 +17290,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "975",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Cetitan.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 17,
@@ -17533,7 +17533,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "976",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Veluza.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -17767,7 +17767,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "977",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Dondozo.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 15,
@@ -18015,7 +18015,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "978",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Tatsugiri (C).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -18238,7 +18238,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10258",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Tatsugiri (D).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -18461,7 +18461,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10259",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Tatsugiri (S).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -18684,7 +18684,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "979",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Annihilape.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 11,
@@ -18964,7 +18964,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "980",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Clodsire.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 13,
@@ -19209,7 +19209,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "981",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Farigiraf.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 12,
@@ -19480,7 +19480,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "982",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Dudunsparce.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 13,
@@ -19768,7 +19768,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "983",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Kingambit.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -20023,7 +20023,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "984",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Great Tusk.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 12,
@@ -20286,7 +20286,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "985",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Scream Tail.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 12,
@@ -20567,7 +20567,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "986",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Brute Bonnet.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 11,
@@ -20812,7 +20812,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "987",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Flutter Mane.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -21064,7 +21064,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "988",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Slither Wing.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -21326,7 +21326,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "989",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Sandy Shocks.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -21586,7 +21586,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1005",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Roaring Moon.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 11,
@@ -21861,7 +21861,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "990",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Iron Treads.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -22114,7 +22114,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "991",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Iron Bundle.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -22353,7 +22353,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "992",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Iron Hands.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 15,
@@ -22612,7 +22612,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "993",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Iron Jugulis.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -22875,7 +22875,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "994",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Iron Moth.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -23134,7 +23134,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "995",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Iron Thorns.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -23419,7 +23419,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1006",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Iron Valiant.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -23703,7 +23703,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "996",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Frigibax.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -23931,7 +23931,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "997",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Arctibax.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -24154,7 +24154,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "998",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Baxcalibur.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 12,
@@ -24407,7 +24407,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "999",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Gimmighoul (Standalone).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 5,
@@ -24575,7 +24575,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1000",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Gholdengo.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -24808,7 +24808,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1001",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Wo-Chien.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -25068,7 +25068,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1002",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Chien-Pao.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -25321,7 +25321,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1003",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Ting-Lu.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 16,
@@ -25575,7 +25575,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1004",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Chi-Yu.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -25826,7 +25826,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1007",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Koraidon.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -26102,7 +26102,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1008",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Miraidon.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -26360,7 +26360,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1009",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Walking Wake.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -26592,7 +26592,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1010",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Iron Leaves.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -26834,7 +26834,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1011",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Dipplin.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -27071,7 +27071,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1012",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Poltchageist.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 4,
@@ -27298,7 +27298,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1013",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Sinistcha.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 7,
@@ -27526,7 +27526,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1014",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Okidogi.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -27776,7 +27776,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1015",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Munkidori.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -28023,7 +28023,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1016",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Fezandipiti.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -28272,7 +28272,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1017",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Ogerpon (B).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -28527,7 +28527,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10273",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Ogerpon (W).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -28782,7 +28782,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10274",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Ogerpon (H).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -29037,7 +29037,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10275",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Ogerpon (C).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -29291,7 +29291,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10250",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/P-Tauros (C).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -29534,7 +29534,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10251",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/P-Tauros (B).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -29783,7 +29783,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10252",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/P-Tauros (A).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 8,
@@ -30029,7 +30029,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10253",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/P-Wooper.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 6,
@@ -30280,7 +30280,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10272",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Ursaluna (BM).png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 13,
@@ -30552,7 +30552,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1018",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Archaludon.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -30801,7 +30801,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1019",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Hydrapple.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 11,
@@ -31057,7 +31057,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1020",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Gouging Fire.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 11,
@@ -31321,7 +31321,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1021",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Raging Bolt.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 13,
@@ -31581,7 +31581,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1022",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Iron Boulder.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -31832,7 +31832,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1023",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Iron Crown.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -32084,7 +32084,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1024",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Terapagos.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
@@ -32326,7 +32326,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10276",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Terapagos.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 10,
@@ -32568,7 +32568,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "10277",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Terapagos.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 16,
@@ -32811,7 +32811,7 @@
     "regionOfOrigin": "Paldea",
     "entryText": null,
     "pokeApiId": "1025",
-    "imageFileUrl": null,
+    "imageFileUrl": "gen9/Pecharunt.png",
     "cryFileUrl": null,
     "baseStats": {
       "hp": 9,
