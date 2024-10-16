@@ -1143,7 +1143,7 @@ var skillLookup = {
     "GeneralEducation": "generalEdu",
     "MedicineEducation": "medicineEdu",
     "OccultEducation": "occultEdu",
-    "PokeEducation": "pokemonEdu",
+    "PokemonEducation": "pokemonEdu",
     "TechnologyEducation": "techEdu",
     "Focus": "focus",
     "Guile": "guile",
@@ -1157,6 +1157,7 @@ var skillLookup = {
 function buildRoll20Json() {
 
     var json = {
+        "EXPORTER_VERSION": "Pokesheets",
         "CharType": 0,
         "nickname": $("#char-name").val(),
         "species": $("#char-species").val(),
@@ -1196,7 +1197,7 @@ function buildRoll20Json() {
         "GeneralEducation": 1,
         "MedicineEducation": 1,
         "OccultEducation": 1,
-        "PokeEducation": 1,
+        "PokemonEducation": 1,
         "TechnologyEducation": 1,
         "Focus": 2,
         "Guile": 2,
@@ -1214,7 +1215,7 @@ function buildRoll20Json() {
         "GeneralEducation_bonus": 0,
         "MedicineEducation_bonus": 0,
         "OccultEducation_bonus": 0,
-        "PokeEducation_bonus": 0,
+        "PokemonEducation_bonus": 0,
         "TechnologyEducation_bonus": 0,
         "Focus_bonus": 0,
         "Guile_bonus": 0,
@@ -1325,9 +1326,9 @@ function buildRoll20Json() {
 
     $(".form-ability").each(function(JQAbility) {
         var x = $(".form-ability")[JQAbility].id.split("-")[1]
-
         var aname = "#ability-"+x+"-"
-        json["Ability"+x] = {
+
+        json["Ability"+(parseInt(x)+1).toString()] = {
             "Name": $(aname+"name").val(),
             "Freq": $(aname+"freq").val(),
             "Target": $(aname+"target").val(),
@@ -1338,9 +1339,9 @@ function buildRoll20Json() {
 
     $(".form-pokeedge").each(function(JQEdge) {
         var x = $(".form-pokeedge")[JQEdge].id.split("-")[1]
-
         var ename = "#pokeedge-"+x+"-"
-        json["PokeEdge"+x] = {
+
+        json["PokeEdge"+(parseInt(x)+1).toString()] = {
             "Name": $(ename+"name").val(),
             "Cost": $(ename+"cost").val(),
             "Prereq": $(ename+"prereq").val(),
