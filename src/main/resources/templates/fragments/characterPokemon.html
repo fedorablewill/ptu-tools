@@ -94,7 +94,12 @@
         <div class="row row-slim">
             <div class="form-group label-floating col-md-3 col-sm-6 col-12" id="char-species-container">
                 <label class="control-label" for="char-species">Species</label>
-                <input class="form-control" type="text" id="char-species" th:field="*{pokedexEntry.species}" />
+                <button type="button" class="btn control-action text-danger" id="char-species-btn" th:text="*{pokedexEntry.species} ? '[Evolve]' : '[Lookup]'"
+                        onclick="$('#evolutionModal').modal('show');$('#evolutionModal-species').val($(this).val()).focus()">
+                    [Evolve]
+                </button>
+                <input class="form-control" type="text" id="char-species" th:field="*{pokedexEntry.species}"
+                       onchange="if ($(this).val()) $('#char-species-btn').text('[Evolve]'); else $('#char-species-btn').text('[Lookup]');" />
                 <input type="hidden" id="char-pokedexId" th:field="*{pokedexEntry.pokedexEntryDocumentId}">
             </div>
             <div class="form-group label-floating col-md-3 col-sm-6 col-12">
@@ -867,6 +872,50 @@
                     <div class="w-100">
                         <button type="button" class="btn btn-danger float-left" onclick="onClickAddNote()">Add Note</button>
                         <button type="button" class="btn btn-outline-danger float-right" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Evolution Modal -->
+    <div class="modal fade" id="evolutionModal" tabindex="-1" aria-labelledby="evolutionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-center text-white" id="evolutionModalLabel">
+                        Evolve/Change Species
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-dark" id="evolutionModal-body">
+                    <div class="form-group label-floating col-10 ml-auto mr-auto" id="evolutionModal-species-container">
+                        <label class="control-label ml-2" for="evolutionModal-species">Species</label>
+                        <input class="form-control" type="text" id="evolutionModal-species" th:value="*{pokedexEntry.species}" />
+                    </div>
+                    <h5 class="text-muted text-center mt-3">Homebrew Pokedex</h5>
+                    <hr class="mt-2 mb-3"/>
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="homebrew-dex-json">Homebrew Pokedex JSON</label>
+                        <textarea type="file" class="form-control" id="homebrew-dex-json"></textarea>
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="homebrew-moves-json">Homebrew Moves JSON</label>
+                        <textarea type="file" class="form-control" id="homebrew-moves-json"></textarea>
+                    </div>
+                    <a href="https://github.com/fedorablewill/ptu-tools/wiki/Homebrew-Pokedex-JSON" target="_blank">Format Documentation</a>
+                    <hr class="mw-100 mt-2"/>
+                    <strong class="d-inline-block mb-1">Featured Homebrew</strong>
+                    <br/>
+                    <a href="#" onclick="loadHomebrew('featHomebrew-gen9')">Gen 9 Homebrew by FedorableWill &amp; Emblem</a>
+                    <br/>
+                    <small class="text-white-50">Submit your homebrew Pokedex to be featured here in the <a href="https://discord.gg/kSzJjzErQS">Discord</a>!</small>
+                </div>
+                <div class="modal-footer bg-dark">
+                    <div class="w-100">
+                        <button type="button" class="btn btn-outline-danger float-right" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>

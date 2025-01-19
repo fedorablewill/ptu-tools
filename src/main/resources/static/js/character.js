@@ -10,6 +10,58 @@ $(function () {
     }
 })
 
+function evolveIntoDexEntry(pokedexEntry) {
+    applyNewAbilities(pokedexEntry["abilityLearnset"])
+
+    $("[name*='pokedexEntry.']").each(function () {
+        var propName = $(this).attr("name").substring(13)
+        var val = null
+        if (propName.includes("['")) {
+            var childProps = propName.match(/\['(.*?)'\]/);
+            propName = propName.substring(0, propName.indexOf("['"))
+            val = pokedexEntry[propName][childProps[1]]
+        } else {
+            val = pokedexEntry[propName]
+        }
+
+        if ($(this).is("[type='checkbox']")) {
+            $(this).prop("checked", val)
+        } else {
+            $(this).val(val)
+        }
+    })
+
+    moveLearnset = pokedexEntry["moveLearnset"]
+    buildMoveLearnset()
+    buildAbilityLearnset(pokedexEntry["abilityLearnset"])
+    checkEvolutionMoves()
+
+    // Check if Image exists
+    $.get('/img/pokemon/' + pokedexEntry["imageFileUrl"])
+        .done(function () {
+            $("#char-img").attr("src", '/img/pokemon/' + pokedexEntry["imageFileUrl"])
+        }).fail(function () {
+        $("#char-img").attr("src", '/img/exodus-ptu-icon.png')
+    })
+
+    // Update Types
+    let typesMs = $("#char-types").magicSuggest()
+    typesMs.clear()
+    typesMs.setValue(pokedexEntry.types)
+    typesMs.collapse()
+
+    // Base Stats
+    $("#char-stat-hp-base").val(pokedexEntry.baseStats.hp)
+    $("#char-stat-atk-base").val(pokedexEntry.baseStats.atk)
+    $("#char-stat-def-base").val(pokedexEntry.baseStats.def)
+    $("#char-stat-spatk-base").val(pokedexEntry.baseStats.spatk)
+    $("#char-stat-spdef-base").val(pokedexEntry.baseStats.spdef)
+    $("#char-stat-spd-base").val(pokedexEntry.baseStats.spd)
+    onChangeNature($("#char-nature").attr('data-prev', null))
+
+    $('#char-species-btn').text('[Evolve]')
+}
+
 function initialize() {
     let afflictions = AFFLICTIONS_VOLATILE.concat(AFFLICTIONS_PERSISTENT).concat(AFFLICTIONS_OTHER)
     afflictions.sort()
@@ -30,73 +82,64 @@ function initialize() {
         expandOnFocus: true
     })
 
-    $("#char-species").autocomplete({
-        source: "/speciesOptions",
+    $("#evolutionModal-species").autocomplete({
+        source: function(request, response) {
+            let results = searchSpecies(request.term)
+            response(results)
+        },
         minLength: 2,
-        appendTo: "#char-species-container",
+        appendTo: "#evolutionModal-species-container",
         select: function( event, ui ) {
             $("#char-pokedexId").val(ui.item.value);
             if (ui.item.value) {
-                $.ajax("/pokedex/" + ui.item.value, {
-                    method: "GET",
-                    contentType: "application/json"
-                }).done(function (pokedexEntries) {
-                    if (confirm("Would you like to evolve into " + ui.item.label + "?")) {
-                        let pokedexEntry = pokedexEntries[0]
-
-                        applyNewAbilities(pokedexEntry["abilityLearnset"])
-
-                        $("[name*='pokedexEntry.']").each(function () {
-                            var propName = $(this).attr("name").substring(13)
-                            var val = null
-                            if (propName.includes("['")) {
-                                var childProps = propName.match(/\['(.*?)'\]/);
-                                propName = propName.substring(0, propName.indexOf("['"))
-                                val = pokedexEntry[propName][childProps[1]]
-                            } else {
-                                val = pokedexEntry[propName]
-                            }
-
-                            if ($(this).is("[type='checkbox']")) {
-                                $(this).prop("checked", val)
-                            } else {
-                                $(this).val(val)
-                            }
-                        })
-
-                        moveLearnset = pokedexEntry["moveLearnset"]
-                        buildMoveLearnset()
-                        buildAbilityLearnset(pokedexEntry["abilityLearnset"])
-                        checkEvolutionMoves()
-
-                        // Check if Image exists
-                        $.get('/img/pokemon/' + pokedexEntry["imageFileUrl"])
-                            .done(function () {
-                                $("#char-img").attr("src", '/img/pokemon/' + pokedexEntry["imageFileUrl"])
-                            }).fail(function () {
-                                $("#char-img").attr("src", '/img/exodus-ptu-icon.png')
-                            })
-
-                        // Update Types
-                        let typesMs = $("#char-types").magicSuggest()
-                        typesMs.clear()
-                        typesMs.setValue(pokedexEntry.types)
-                        typesMs.collapse()
-
-                        // Base Stats
-                        $("#char-stat-hp-base").val(pokedexEntry.baseStats.hp)
-                        $("#char-stat-atk-base").val(pokedexEntry.baseStats.atk)
-                        $("#char-stat-def-base").val(pokedexEntry.baseStats.def)
-                        $("#char-stat-spatk-base").val(pokedexEntry.baseStats.spatk)
-                        $("#char-stat-spdef-base").val(pokedexEntry.baseStats.spdef)
-                        $("#char-stat-spd-base").val(pokedexEntry.baseStats.spd)
-                        onChangeNature($("#char-nature").attr('data-prev', null))
+                // Try Homebrew first
+                var homebrew = $("#homebrew-dex-json").val();
+                var homebrewFound = false;
+                if (homebrew) {
+                    $("#char-species").val(ui.item.label);
+                    var homebrewDex = {}
+                    try {
+                        // Check if valid JSON
+                        homebrewDex = JSON.parse(homebrew);
+                    } catch (e) {
+                        alert("Invalid JSON format for Homebrew Pokedex. Please check documentation.")
                     }
-                }).fail(function (jqxhr, textStatus, errorThrown) {
-                    alert("Error getting Pokedex Entry: " + textStatus + " : " + errorThrown)
-                })
+
+                    homebrewDex.forEach(function (dexEntry) {
+                        var entryLabel = "homebrew-" + dexEntry["species"];
+                        if (dexEntry["form"]) {
+                            entryLabel += ` (${dexEntry['form']})`;
+                        }
+                        if (entryLabel === ui.item.value) {
+                            if (confirm("Would you like to evolve into " + ui.item.label + "?")) {
+                                evolveIntoDexEntry(dexEntry);
+                            }
+                            homebrewFound = true;
+                        }
+                    });
+                }
+                // Not Homebrew
+                if (!homebrewFound) {
+                    $.ajax("/pokedex/" + ui.item.value, {
+                        method: "GET",
+                        contentType: "application/json"
+                    }).done(function (pokedexEntries) {
+                        if (confirm("Would you like to evolve into " + ui.item.label + "?")) {
+                            let pokedexEntry = pokedexEntries[0]
+
+                            evolveIntoDexEntry(pokedexEntry);
+                        }
+                    }).fail(function (jqxhr, textStatus, errorThrown) {
+                        alert("Error getting Pokedex Entry: " + textStatus + " : " + errorThrown)
+                    })
+                }
             }
+            $("#evolutionModal").modal('hide')
         }
+    });
+
+    $(document).on('shown.bs.modal', '#evolutionModal', function () {
+        $('#evolutionModal-species').focus();
     });
 
     $('[data-autocomplete="type"]').autocomplete({
@@ -617,6 +660,8 @@ function adjustNatureWithoutDex(prevVal, val) {
 }
 
 function applyNewNature(val) {
+    if (!val) return
+
     let statElem = $(`#char-stat-${NATURES[val].up}-base`)
     let amt = NATURES[val].up === "hp" ? 1 : 2
     if (statElem.val()) {
