@@ -21,16 +21,16 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.RequestContext
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
-import org.thymeleaf.spring5.SpringTemplateEngine
-import org.thymeleaf.spring5.context.webmvc.SpringWebMvcThymeleafRequestContext
+import org.thymeleaf.spring6.SpringTemplateEngine
+import org.thymeleaf.spring6.context.webmvc.SpringWebMvcThymeleafRequestContext
 import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import org.thymeleaf.templateresolver.ITemplateResolver
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
-import javax.servlet.ServletContext
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.ServletContext
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 
 
 @Controller

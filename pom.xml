@@ -5,19 +5,18 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
+        <version>3.3.3</version>
+        <relativePath/> </parent>
     <groupId>com.willstep</groupId>
     <artifactId>ptu-tools</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <name>ptu-tools</name>
-    <description>Pokemon Tabletop United Tools by FedorableWill</description>
+    <description>PokeSheets - Pokemon Tabletop United Tools by FedorableWill</description>
     <properties>
         <java.version>17</java.version>
         <kotlin.version>1.9.23</kotlin.version>
-        <spring-cloud-gcp.version>5.3.0</spring-cloud-gcp.version>
-        <spring-cloud.version>2020.0.2</spring-cloud.version>
+        <spring-cloud-gcp.version>5.4.0</spring-cloud-gcp.version>
+        <spring-cloud.version>2023.0.2</spring-cloud.version>
         <retrofit.version>2.11.0</retrofit.version>
     </properties>
     <dependencies>
@@ -60,19 +59,16 @@
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.oauth-client</groupId>
             <artifactId>google-oauth-client-jetty</artifactId>
-            <version>1.23.0</version>
-            <scope>compile</scope>
+            <version>1.35.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-drive</artifactId>
-            <version>v3-rev20220815-2.0.0</version>
-            <scope>compile</scope>
+            <version>v3-rev20250723-2.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -102,11 +98,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <version>2.4.4</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
