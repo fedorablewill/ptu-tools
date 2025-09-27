@@ -8,6 +8,10 @@ services:
     ports:
       - "8080:8080"
     restart: always
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/app/credentials.json
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
 
   # 2. Prometheus Service
   prometheus:
