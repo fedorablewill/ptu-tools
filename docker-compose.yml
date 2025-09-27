@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # 1. Your Spring Boot Application
+  my-spring-app:
+    build: .
+    container_name: pokesheets
+    ports:
+      - "8080:8080"
+    restart: always
+
+  # 2. Prometheus Service
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: always
+
+  # 3. Grafana Service
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: always
+
+volumes:
+  grafana-data:
