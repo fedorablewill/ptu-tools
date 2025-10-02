@@ -10,8 +10,7 @@ var clientId = "817792942985-udknrvailik97go5afcfgt6cr92f1asf.apps.googleusercon
 var appId = "817792942985";
 
 // Scope to use to access user's Drive items.
-var scope = ['https://www.googleapis.com/auth/drive',
-    'https://www.googleapis.com/auth/drive.file'];
+var scope = ['https://www.googleapis.com/auth/drive.file'];
 
 var pickerApiLoaded = false;
 var oauthToken;
