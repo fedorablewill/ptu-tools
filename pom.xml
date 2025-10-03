@@ -9,7 +9,7 @@
         <relativePath/> </parent>
     <groupId>com.willstep</groupId>
     <artifactId>ptu-tools</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
     <name>ptu-tools</name>
     <description>PokeSheets - Pokemon Tabletop United Tools by FedorableWill</description>
     <properties>
